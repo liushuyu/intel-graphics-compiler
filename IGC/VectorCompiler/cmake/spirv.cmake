@@ -154,49 +154,27 @@ else()
     set(SPIRV_REV_PATCH c67e6f26a7285aa753598ef792593ac4a545adf9)
     set(SPRIV_PATCHES ${CMAKE_CURRENT_SOURCE_DIR}/spirv-patches-11/)
     set(SPRIV_BRANCH_PATCH spirvdll_110)
+  elseif(${LLVM_VERSION_MAJOR} EQUAL 12)
+    message(STATUS "[VC] Found LLVM version 12")
   else()
     message(FATAL_ERROR "[VC] Found unsupported version of LLVM (LLVM_VERSION_MAJOR is set to ${LLVM_VERSION_MAJOR})")
   endif()
 
-  if(NOT EXISTS ${SPIRV_COPY})
-    message(STATUS "[VC] : Copying stock SPIRV-Translator sources to ${SPIRV_COPY}")
-    execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory ${SPIRV_SOURCES} ${SPIRV_COPY})
-  endif()
-
-  apply_patches(${SPIRV_COPY}
-  ${SPRIV_PATCHES}
-  ${SPIRV_REV_PATCH}
-  ${SPRIV_BRANCH_PATCH}
-  )
-
   if(IGC_BUILD__LLVM_PREBUILDS)
 
-    ExternalProject_Add(SPIRVDLL_EX
-        PREFIX ${CMAKE_CURRENT_BINARY_DIR}/SPIRVDLL
-        SOURCE_DIR ${SPIRV_COPY}
-        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/spirv-install
-        BUILD_COMMAND ${MAKE_EXEC} SPIRVDLL
-        INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/spirv-install
-      )
+    add_subdirectory(${SPIRV_SOURCES} "${SPIRV_COPY}")
+    add_dependencies(SPIRVDLL VCCodeGen)
 
   else()
 
-    ExternalProject_Add(SPIRVDLL_EX
-        PREFIX ${CMAKE_CURRENT_BINARY_DIR}/SPIRVDLL
-        SOURCE_DIR ${SPIRV_COPY}
-        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/spirv-install -DLLVM_DIR=${LLVM_DIR}
-        BUILD_COMMAND ${MAKE_EXEC} SPIRVDLL
-        INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/spirv-install
-      )
-
+    add_subdirectory(${SPIRV_SOURCES} "${SPIRV_COPY}")
+    add_dependencies(SPIRVDLL VCCodeGen)
   endif(IGC_BUILD__LLVM_PREBUILDS)
 
-  add_dependencies(SPIRVDLL_EX VCCodeGen)
-
   install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/spirv-install/lib/libSPIRVDLL.so
-    DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
-    COMPONENT igc-core
+      $<TARGET_FILE:SPIRVDLL>
+      DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+      COMPONENT igc-core
   )
 
 endif(DEFINED SPIRVDLL_SRC)
