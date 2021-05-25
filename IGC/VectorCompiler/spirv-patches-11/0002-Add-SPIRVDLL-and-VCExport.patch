@@ -1,4 +1,4 @@
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From e41330f630c54ae692da25e0a43246a6badc1d49 Mon Sep 17 00:00:00 2001
 From: nrudenko <nikita.rudenko@intel.com>
 Date: Thu, 4 Jun 2020 15:20:43 +0300
 Subject: [PATCH 2/6] Add SPIRVDLL and VCExport
@@ -9,23 +9,23 @@ Subject: [PATCH 2/6] Add SPIRVDLL and VCExport
  lib/SPIRV/VCExport.h     | 28 +++++++++++++
  3 files changed, 157 insertions(+), 1 deletion(-)
  mode change 100644 => 100755 lib/SPIRV/CMakeLists.txt
- create mode 100755 lib/SPIRV/VCExport.cpp
- create mode 100755 lib/SPIRV/VCExport.h
+ create mode 100644 lib/SPIRV/VCExport.cpp
+ create mode 100644 lib/SPIRV/VCExport.h
 
 diff --git a/lib/SPIRV/CMakeLists.txt b/lib/SPIRV/CMakeLists.txt
 old mode 100644
 new mode 100755
-index 00000000..00000000
+index 1d0b7f3e..001c2bf9
 --- a/lib/SPIRV/CMakeLists.txt
 +++ b/lib/SPIRV/CMakeLists.txt
 @@ -1,4 +1,5 @@
 -add_llvm_library(LLVMSPIRVLib
 +set(SPIRV_SOURCES
 +  VCExport.cpp
-   LLVMSPIRVOpts.cpp
    LLVMToSPIRVDbgTran.cpp
    Mangler/FunctionDescriptor.cpp
-@@ -35,6 +36,10 @@ add_llvm_library(LLVMSPIRVLib
+   Mangler/Mangler.cpp
+@@ -34,6 +35,10 @@ add_llvm_library(LLVMSPIRVLib
    libSPIRV/SPIRVStream.cpp
    libSPIRV/SPIRVType.cpp
    libSPIRV/SPIRVValue.cpp
@@ -36,7 +36,7 @@ index 00000000..00000000
    LINK_COMPONENTS
      Analysis
      BitWriter
-@@ -47,6 +52,31 @@ add_llvm_library(LLVMSPIRVLib
+@@ -46,6 +51,31 @@ add_llvm_library(LLVMSPIRVLib
      intrinsics_gen
  )
  
@@ -68,7 +68,7 @@ index 00000000..00000000
  target_include_directories(LLVMSPIRVLib
    PRIVATE
      ${LLVM_INCLUDE_DIRS}
-@@ -55,3 +85,12 @@ target_include_directories(LLVMSPIRVLib
+@@ -54,3 +84,12 @@ target_include_directories(LLVMSPIRVLib
      ${CMAKE_CURRENT_SOURCE_DIR}/libSPIRV
      ${CMAKE_CURRENT_SOURCE_DIR}/Mangler
  )
@@ -82,8 +82,8 @@ index 00000000..00000000
 +    ${CMAKE_CURRENT_SOURCE_DIR}/Mangler
 +)
 diff --git a/lib/SPIRV/VCExport.cpp b/lib/SPIRV/VCExport.cpp
-new file mode 100755
-index 00000000..00000000
+new file mode 100644
+index 00000000..e8893e19
 --- /dev/null
 +++ b/lib/SPIRV/VCExport.cpp
 @@ -0,0 +1,89 @@
@@ -177,8 +177,8 @@ index 00000000..00000000
 +  return 0;
 +}
 diff --git a/lib/SPIRV/VCExport.h b/lib/SPIRV/VCExport.h
-new file mode 100755
-index 00000000..00000000
+new file mode 100644
+index 00000000..3b989ed8
 --- /dev/null
 +++ b/lib/SPIRV/VCExport.h
 @@ -0,0 +1,28 @@
@@ -211,5 +211,5 @@ index 00000000..00000000
 +
 +#endif // SPIRV_VCEXPORT_H
 -- 
-2.31.0
+2.32.0
 

@@ -1,4 +1,4 @@
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From 00ba622cd3ec066dafb2ca54fc1e9950b487a1b1 Mon Sep 17 00:00:00 2001
 From: nrudenko <nikita.rudenko@intel.com>
 Date: Wed, 9 Sep 2020 16:24:41 +0300
 Subject: [PATCH 4/6] Simplify VCExport opts
@@ -8,7 +8,7 @@ Subject: [PATCH 4/6] Simplify VCExport opts
  1 file changed, 1 insertion(+), 18 deletions(-)
 
 diff --git a/lib/SPIRV/VCExport.cpp b/lib/SPIRV/VCExport.cpp
-index 00000000..00000000 100755
+index e8893e19..c67590df 100644
 --- a/lib/SPIRV/VCExport.cpp
 +++ b/lib/SPIRV/VCExport.cpp
 @@ -23,24 +23,7 @@
@@ -38,5 +38,5 @@ index 00000000..00000000 100755
    Opts.setDesiredBIsRepresentation(SPIRV::BIsRepresentation::SPIRVFriendlyIR);
    return Opts;
 -- 
-2.31.0
+2.32.0
 
