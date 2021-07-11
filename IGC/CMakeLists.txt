@@ -1493,7 +1493,7 @@ target_include_directories(${IGC_BUILD__PROJ__igc_dll} INTERFACE
   "${CMAKE_CURRENT_SOURCE_DIR}/AdaptorOCL/"
   "${IGC_BUILD__IGC_BIN_DIR}/AdaptorOCL/"
 )
-
+target_link_libraries(${IGC_BUILD__PROJ__igc_dll} PRIVATE pthread)
 
 #IGC_DLL
 igc_target_flag_property_add_once_config_var("${IGC_BUILD__PROJ__igc_dll}" LINK_FLAGS IGC_BUILD__EXPORT_SYMBOLS_LINK_FLAGS)
