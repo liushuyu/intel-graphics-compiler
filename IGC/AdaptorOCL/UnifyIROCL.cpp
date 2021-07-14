@@ -170,6 +170,7 @@ static void CommonOCLBasedPasses(
 #endif
 
     COMPILER_TIME_START(pContext, TIME_UnificationPasses);
+    initializeScalarOpts(*PassRegistry::getPassRegistry());
 
     unify_opt_PreProcess(pContext);
 
