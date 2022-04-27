@@ -633,7 +633,7 @@ public:
     {
         if (llvm::CallInst * pCall = llvm::dyn_cast<llvm::CallInst>(pInst))
         {
-            if (op < pCall->getNumArgOperands())
+            if (op < IGCLLVM::getNumArgOperands(pCall))
             {
                 return pInst->getOperand(op);
             }

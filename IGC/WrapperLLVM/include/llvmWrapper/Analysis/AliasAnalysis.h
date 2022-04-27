@@ -19,6 +19,12 @@ namespace IGCLLVM
 #else
   using AliasResultEnum = llvm::AliasResult::Kind;
 #endif
+
+#if LLVM_VERSION_MAJOR < 14
+  using AAQueryInfo = llvm::AAQueryInfo;
+#else
+  using AAQueryInfo = llvm::SimpleAAQueryInfo;
+#endif
 }
 
 #endif

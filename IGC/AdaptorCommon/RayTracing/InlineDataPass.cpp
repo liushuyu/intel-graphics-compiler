@@ -42,6 +42,7 @@ SPDX-License-Identifier: MIT
 #include "RTStackFormat.h"
 #include "Compiler/IGCPassSupport.h"
 #include "Compiler/CodeGenPublicEnums.h"
+#include "llvmWrapper/IR/Instructions.h"
 
 #include <vector>
 #include "common/LLVMWarningsPush.hpp"
@@ -155,7 +156,7 @@ bool BindlessInlineDataPass::runOnModule(Module &M)
                 // the size of the Shader Identifier + the size of the Local arguments
                 const uint64_t dereferenceable_size =
                     sizeof(ShaderIdentifier) +
-                    local_buffer_ptr->getDereferenceableBytes(AttributeList::ReturnIndex);
+                    IGCLLVM::getRetDereferenceableBytes(local_buffer_ptr);
 
                 // Return a CallInst* representing the InlinedData intrinsic call
                 // In the shader dumps,

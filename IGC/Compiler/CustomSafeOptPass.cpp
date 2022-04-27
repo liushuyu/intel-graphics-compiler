@@ -75,6 +75,7 @@ cmp+sel to avoid expensive VxH mov.
 #include <llvm/ADT/SetVector.h>
 #include <llvm/Analysis/ConstantFolding.h>
 #include <llvm/IR/Constants.h>
+#include <llvm/IR/DebugInfo.h>
 #include <llvm/IR/Function.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/IR/Intrinsics.h>
@@ -1977,7 +1978,7 @@ void IGC::CustomSafeOptPass::visitSampleBptr(llvm::SampleIntrinsic* sampleInst)
     {
         // Copy args skipping bias operand:
         llvm::SmallVector<llvm::Value*, 10> args;
-        for (unsigned int i = 1; i < sampleInst->getNumArgOperands(); i++)
+        for (unsigned int i = 1; i < IGCLLVM::getNumArgOperands(sampleInst); i++)
         {
             args.push_back(sampleInst->getArgOperand(i));
         }
@@ -6817,4 +6818,3 @@ bool InsertBranchOpt::runOnFunction(Function& F)
 
     return false;
 }
-

@@ -25,6 +25,7 @@ SPDX-License-Identifier: MIT
 #include <llvm/IR/InstIterator.h>
 #include "llvmWrapper/Transforms/Utils/Cloning.h"
 #include "llvmWrapper/Transforms/Utils/ValueMapper.h"
+#include "llvmWrapper/Support/Alignment.h"
 #include "common/LLVMWarningsPop.hpp"
 #include "Probe/Assertion.h"
 #include "Utils.h"
@@ -447,7 +448,7 @@ CallInst* LowerIntersectionAnyHit::codeGenReportHit(
                 CustomHitAttrPtr,
                 4,
                 Attrs,
-                std::min(4U, DL.getABITypeAlignment(AttrTy->getPointerElementType())),
+                std::min(static_cast<alignment_t>(4), DL.getABITypeAlignment(AttrTy->getPointerElementType())),
                 IRB.getInt64(DL.getTypeAllocSize(AttrTy->getPointerElementType())));
         }
 
