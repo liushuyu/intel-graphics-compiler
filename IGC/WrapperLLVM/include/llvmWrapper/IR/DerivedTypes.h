@@ -14,6 +14,7 @@ SPDX-License-Identifier: MIT
 #include "llvm/IR/DerivedTypes.h"
 #include "llvm/IR/Module.h"
 #include "common/CommonMacros.h"
+#include "llvmWrapper/Support/TypeSize.h"
 
 namespace IGCLLVM
 {
@@ -33,7 +34,7 @@ namespace IGCLLVM
 #if LLVM_VERSION_MAJOR <= 10
         return llvm::cast<llvm::VectorType>(pType)->getBitWidth();
 #else
-        return (uint32_t)pType->getPrimitiveSizeInBits().getFixedSize();
+        return (uint32_t)IGCLLVM::getFixedSize(pType->getPrimitiveSizeInBits());
 #endif
     }
 

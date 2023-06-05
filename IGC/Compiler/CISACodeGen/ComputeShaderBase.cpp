@@ -216,7 +216,7 @@ namespace IGC
             return getWalkOrder(order0, order1);
         }
 
-        return None;
+        return IGCLLVM::None;
     }
 
     Optional<CS_WALK_ORDER>
@@ -257,7 +257,7 @@ namespace IGC
             return getWalkOrder(order0, order1);
         }
 
-        return None;
+        return IGCLLVM::None;
     }
 
     bool

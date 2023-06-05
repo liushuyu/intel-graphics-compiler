@@ -950,18 +950,18 @@ convertRegionInstType(Instruction *Inst, Type *NewScalarTy,
   auto *OldVal = Inst->getOperand(OldValueOperandNum);
   // Do not change register category to predicate.
   if (NewScalarTy->isIntegerTy(1))
-    return None;
+    return IGCLLVM::None;
   auto *NewVecTy = genx::changeVectorType(OldVal->getType(), NewScalarTy, &DL);
   if (!NewVecTy)
-    return None;
+    return IGCLLVM::None;
   Region R = makeRegionFromBaleInfo(Inst, BaleInfo());
   if (!R.changeElementType(NewScalarTy, &DL))
-    return None;
+    return IGCLLVM::None;
   // Transformation is not profitable for 2D regions or if it will require
   // legalization.
   if (R.is2D() || R.NumElements > llvm::PowerOf2Floor(
                                       genx::getExecSizeAllowedBits(Inst, &ST)))
-    return None;
+    return IGCLLVM::None;
   return std::make_pair(NewVecTy, R);
 }
 

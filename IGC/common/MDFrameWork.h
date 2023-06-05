@@ -21,6 +21,7 @@ SPDX-License-Identifier: MIT
 #include <llvm/ADT/MapVector.h>
 #include <llvm/ADT/SetVector.h>
 #include "llvmWrapper/ADT/None.h"
+#include "llvmWrapper/ADT/Optional.h"
 #include "common/LLVMWarningsPop.hpp"
 
 #include "AdaptorCommon/RayTracing/API/MemoryStyleEnum.h" // ^MDFramework^: ../AdaptorCommon/RayTracing/API

@@ -519,7 +519,7 @@ void EstimateFunctionSize::updateStaticFuncFreq()
             Function* Caller = CS.getCaller();
             BasicBlock* CSBB = CS.getInstruction()->getParent();
 #else
-            Optional<Scaled64> Res = None;
+            Optional<Scaled64> Res = IGCLLVM::None;
             if (!Edge.first)
                 return Res;
             CallBase& CB = *cast<CallBase>(*Edge.first);

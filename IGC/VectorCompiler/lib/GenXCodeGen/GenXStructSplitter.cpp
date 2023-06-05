@@ -1480,7 +1480,7 @@ Substituter::getIndicesPath(GetElementPtrInst &GEPI) {
       CurrentType = GottenType;
     } else {
       LLVM_DEBUG(dbgs() << "WARN:: Non constant indices do not supported!\n");
-      return None;
+      return IGCLLVM::None;
     }
   }
   return std::make_tuple(std::move(IdxPath), std::move(GottenTypeArr));
@@ -1514,14 +1514,14 @@ Substituter::getInstUses(Instruction &I) {
             dbgs()
             << "WARN:: Bitcast is used where it cannot be used!\n\tBitcast: "
             << *BC << "\n\tUser:    " << **UnsupportedBCUser << "\n");
-        return None;
+        return IGCLLVM::None;
       }
     } else {
       LLVM_DEBUG(
           dbgs()
           << "WARN:: Struct is used where it cannot be used!\n\tInstruction: "
           << *U.getUser() << "\n");
-      return None;
+      return IGCLLVM::None;
     }
   return std::make_tuple(std::move(UsesGEP), std::move(UsesPTI));
 }
@@ -1738,7 +1738,7 @@ Optional<uint64_t> Substituter::processAddOrInst(Instruction &User,
     LLVM_DEBUG(dbgs() << "WARN:: Calculation of the pointer offset has to "
                          "be staticly known\n. Bad instruction: "
                       << BO << "\n");
-    return None;
+    return IGCLLVM::None;
   }
   Type *OffsetTy = ToCalculateOffset->getType();
   if (OffsetTy->isVectorTy()) {
@@ -1758,7 +1758,7 @@ Optional<uint64_t> Substituter::processAddOrInst(Instruction &User,
         dbgs()
         << "Offset is unsupported type. Has to be Integer or Vector, but: "
         << *OffsetTy << "\n");
-    return None;
+    return IGCLLVM::None;
   }
   return LocalPtrOffset;
 }

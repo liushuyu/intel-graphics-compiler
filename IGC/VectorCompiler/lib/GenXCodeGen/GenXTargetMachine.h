@@ -26,6 +26,7 @@ SPDX-License-Identifier: MIT
 #include "vc/Support/BackendConfig.h"
 #include "vc/Utils/General/Types.h"
 
+#include "llvmWrapper/ADT/Optional.h"
 #include "llvm/CodeGen/BasicTTIImpl.h"
 #include "llvm/IR/DataLayout.h"
 #include "llvm/Transforms/Utils/UnrollLoop.h"

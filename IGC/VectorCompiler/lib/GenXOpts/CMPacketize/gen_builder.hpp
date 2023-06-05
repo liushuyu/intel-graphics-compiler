@@ -220,7 +220,7 @@ IndirectBrInst* INDIRECT_BR(Value *Addr, unsigned NumDests = 10)
     return IRB()->CreateIndirectBr(Addr, NumDests);
 }
 
-InvokeInst* INVOKE(Value *Callee, BasicBlock *NormalDest, BasicBlock *UnwindDest, ArrayRef<Value *> Args = None, const Twine &Name = "")
+InvokeInst* INVOKE(Value *Callee, BasicBlock *NormalDest, BasicBlock *UnwindDest, ArrayRef<Value *> Args = IGCLLVM::None, const Twine &Name = "")
 {
 #if LLVM_VERSION_MAJOR >= 11
     auto *PTy = Callee->getType();
@@ -266,7 +266,7 @@ CatchPadInst* CATCH_PAD(Value *ParentPad, ArrayRef<Value *> Args, const Twine &N
     return IRB()->CreateCatchPad(ParentPad, Args, Name);
 }
 
-CleanupPadInst* CLEANUP_PAD(Value *ParentPad, ArrayRef<Value *> Args = None, const Twine &Name = "")
+CleanupPadInst* CLEANUP_PAD(Value *ParentPad, ArrayRef<Value *> Args = IGCLLVM::None, const Twine &Name = "")
 {
     return IRB()->CreateCleanupPad(ParentPad, Args, Name);
 }
@@ -871,7 +871,7 @@ PHINode* PHI(Type *Ty, unsigned NumReservedValues, const Twine &Name = "")
     return IRB()->CreatePHI(Ty, NumReservedValues, Name);
 }
 
-CallInst* CALLA(Value *Callee, ArrayRef<Value *> Args = None, const Twine &Name = "", MDNode *FPMathTag = nullptr)
+CallInst* CALLA(Value *Callee, ArrayRef<Value *> Args = IGCLLVM::None, const Twine &Name = "", MDNode *FPMathTag = nullptr)
 {
     return IRB()->CreateCall(Callee, Args, Name, FPMathTag);
 }

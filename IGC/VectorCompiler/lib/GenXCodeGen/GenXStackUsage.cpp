@@ -180,11 +180,11 @@ StackAnalysis::checkFunction(Function &F) {
   // Can't predict stack usage if there are indirect calls
   // or variable length arrays
   if (StateOfF.m_HasIndirect || StateOfF.m_HasVLA)
-    return None;
+    return IGCLLVM::None;
 
   // if function is stack call, we do not know stack usage
   if (vc::requiresStackCall(&F))
-    return None;
+    return IGCLLVM::None;
 
   StateOfF.m_ProcessingFlag = FunctionState::ProcessingState::Started;
 
@@ -204,12 +204,12 @@ StackAnalysis::checkFunction(Function &F) {
                "Recursion has been found in call graph. Called function: \"" +
                    NextCalledF->getName() + "\" from \"" + F.getName() +
                    "\"\nStack overflow can occur, but cannot be diagnosed.");
-      return None;
+      return IGCLLVM::None;
     }
     case FunctionState::ProcessingState::NotStarted: {
       auto Res = checkFunction(*NextCalledF);
       if (!Res)
-        return None;
+        return IGCLLVM::None;
       std::tie(UsedStackSize, std::ignore) = *Res;
       break;
     }

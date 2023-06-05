@@ -12,6 +12,7 @@ SPDX-License-Identifier: MIT
 #include "common/LLVMWarningsPush.hpp"
 
 #include "llvmWrapper/IR/Module.h"
+#include "llvmWrapper/ADT/None.h"
 
 #include "llvm/IR/Attributes.h"
 #include "llvm/IR/Intrinsics.h"
@@ -32,7 +33,7 @@ namespace GenISAIntrinsic {
 
   /// Intrinsic::getName(ID) - Return the LLVM name for an intrinsic, such as
   /// "llvm.ppc.altivec.lvx".
-  std::string getName(ID id, ArrayRef<Type*> Tys = None);
+  std::string getName(ID id, ArrayRef<Type*> Tys = IGCLLVM::None);
 
 
   struct IntrinsicComments
@@ -60,9 +61,9 @@ namespace GenISAIntrinsic {
   ///    Type Ts[2]{int2, int2}: to resolve to the first instance.
   ///    Type Ts[2]{int4, int4}: to resolve to the second.
 #if defined(ANDROID) || defined(__linux__)
-  __attribute__ ((visibility ("default"))) Function *getDeclaration(Module *M, ID id, ArrayRef<Type*> OverloadedTys = None);
+  __attribute__ ((visibility ("default"))) Function *getDeclaration(Module *M, ID id, ArrayRef<Type*> OverloadedTys = IGCLLVM::None);
 #else
-  Function *getDeclaration(Module *M, ID id, ArrayRef<Type*> OverloadedTys = None);
+  Function *getDeclaration(Module *M, ID id, ArrayRef<Type*> OverloadedTys = IGCLLVM::None);
 #endif
   AttributeList getGenIntrinsicAttributes(LLVMContext& C, GenISAIntrinsic::ID id);
 

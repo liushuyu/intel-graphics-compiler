@@ -873,11 +873,11 @@ protected:
         // GenISA intrinsics ID start after llvm intrinsics
         if (isaId != GenISAIntrinsic::num_genisa_intrinsics && isaId > static_cast<int>(Intrinsic::num_intrinsics))
         {
-            replaceGenISACallInst(isaId, this->isOverloadable ? overloadTypes : None);
+            replaceGenISACallInst(isaId, this->isOverloadable ? overloadTypes : IGCLLVM::None);
         }
         else
         {
-            replaceCallInst(id, this->isOverloadable ? overloadTypes : None);
+            replaceCallInst(id, this->isOverloadable ? overloadTypes : IGCLLVM::None);
         }
     }
 public:
@@ -1105,7 +1105,7 @@ public:
             break;
         }
         default:
-            replaceGenISACallInst(id, m_IsOverLoaded ? ArrayRef<Type*>(m_pCallInst->getArgOperand(0)->getType()) : None);
+            replaceGenISACallInst(id, m_IsOverLoaded ? ArrayRef<Type*>(m_pCallInst->getArgOperand(0)->getType()) : IGCLLVM::None);
             break;
         }
     }

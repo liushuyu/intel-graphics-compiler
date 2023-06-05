@@ -195,7 +195,7 @@ namespace
             }
             else
             {
-                return None;
+                return IGCLLVM::None;
             }
         }
     };
@@ -305,7 +305,7 @@ namespace
             {
                 return AbstractStoreInst{ SRI, DL };
             }
-            return None;
+            return IGCLLVM::None;
         }
     };
 

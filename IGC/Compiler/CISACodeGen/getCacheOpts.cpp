@@ -143,7 +143,7 @@ Optional<LSC_L1_L3_CC> getCacheOptsStorePolicy(
     auto Region = getRTRegion(Ptr, *Ctx.getModuleMetaData());
 
     if (!Region)
-        return None;
+        return IGCLLVM::None;
 
     Optional<LSC_L1_L3_CC> cacheOpts;
 
@@ -180,7 +180,7 @@ Optional<LSC_L1_L3_CC> getCacheOptsLoadPolicy(
     auto Region = getRTRegion(Ptr, *Ctx.getModuleMetaData());
 
     if (!Region)
-        return None;
+        return IGCLLVM::None;
 
     Optional<LSC_L1_L3_CC> cacheOpts;
 

@@ -20,6 +20,7 @@ See LICENSE.TXT for details.
 // clang-format off
 #include "common/LLVMWarningsPush.hpp"
 #include "llvmWrapper/ADT/StringExtras.h"
+#include "llvmWrapper/ADT/None.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/BinaryFormat/Dwarf.h"
 #include "llvm/IR/Constants.h"
@@ -764,8 +765,8 @@ DIE *DwarfDebug::constructInlinedScopeDIE(CompileUnit *TheCU,
       cast<DILocation>(const_cast<MDNode *>(Scope->getInlinedAt()));
   unsigned int fileId = getOrCreateSourceID(
       DL->getFilename(), DL->getDirectory(), TheCU->getUniqueID());
-  TheCU->addUInt(ScopeDIE, dwarf::DW_AT_call_file, None, fileId);
-  TheCU->addUInt(ScopeDIE, dwarf::DW_AT_call_line, None, DL->getLine());
+  TheCU->addUInt(ScopeDIE, dwarf::DW_AT_call_file, IGCLLVM::None, fileId);
+  TheCU->addUInt(ScopeDIE, dwarf::DW_AT_call_line, IGCLLVM::None, DL->getLine());
 
   // .debug_range section has not been laid out yet. Emit offset in
   // .debug_range as a uint, size 4, for now. emitDIE will handle
@@ -1220,7 +1221,7 @@ void DwarfDebug::computeInlinedDIEs() {
                                        AE = InlinedSubprogramDIEs.end();
        AI != AE; ++AI) {
     DIE *ISP = *AI;
-    FirstCU->addUInt(ISP, dwarf::DW_AT_inline, None, dwarf::DW_INL_inlined);
+    FirstCU->addUInt(ISP, dwarf::DW_AT_inline, IGCLLVM::None, dwarf::DW_INL_inlined);
   }
   // TODO: fixup non-deterministic traversal
   for (DenseMap<const MDNode *, DIE *>::iterator AI = AbstractSPDies.begin(),
@@ -1229,7 +1230,7 @@ void DwarfDebug::computeInlinedDIEs() {
     DIE *ISP = AI->second;
     if (InlinedSubprogramDIEs.count(ISP))
       continue;
-    FirstCU->addUInt(ISP, dwarf::DW_AT_inline, None, dwarf::DW_INL_inlined);
+    FirstCU->addUInt(ISP, dwarf::DW_AT_inline, IGCLLVM::None, dwarf::DW_INL_inlined);
   }
 }
 

@@ -192,7 +192,7 @@ public:
         Instruction* IP,
         const IGC::CodeGenContext& Ctx,
         MDNode* FPMathTag = nullptr,
-        ArrayRef<OperandBundleDef> OpBundles = None)
+        ArrayRef<OperandBundleDef> OpBundles = IGCLLVM::None)
         : IGCIRBuilder<>(IP, FPMathTag, OpBundles),
           Ctx(Ctx),
           SysInfo(Ctx.platform.GetGTSystemInfo()) {
@@ -204,7 +204,7 @@ public:
         BasicBlock::iterator IP,
         const IGC::CodeGenContext& Ctx,
         MDNode* FPMathTag = nullptr,
-        ArrayRef<OperandBundleDef> OpBundles = None)
+        ArrayRef<OperandBundleDef> OpBundles = IGCLLVM::None)
         : IGCIRBuilder<>(TheBB->getContext(), FPMathTag, OpBundles),
           Ctx(Ctx),
           SysInfo(Ctx.platform.GetGTSystemInfo()) {

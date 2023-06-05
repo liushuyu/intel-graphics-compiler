@@ -944,13 +944,13 @@ Optional<unsigned> MemOpt::chainedSelectAndPhis(Instruction* Inst , unsigned dep
     //Max depth set to 300
     if (depth >= 300)
     {
-        return None;
+        return IGCLLVM::None;
     }
 
     if (auto I = depthTracking.find(Inst); I != depthTracking.end())
     {
         if ((depth + I->second) >= 300)
-            return None;
+            return IGCLLVM::None;
 
         return I->second;
     }
@@ -964,7 +964,7 @@ Optional<unsigned> MemOpt::chainedSelectAndPhis(Instruction* Inst , unsigned dep
             {
                 Optional<unsigned> RemDepth = chainedSelectAndPhis(op_inst, depth + 1, depthTracking);
                 if (!RemDepth)
-                    return None;
+                    return IGCLLVM::None;
                 MaxRemDepth = std::max(MaxRemDepth, *RemDepth + 1);
             }
         }

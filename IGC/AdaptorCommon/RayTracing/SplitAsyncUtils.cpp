@@ -312,7 +312,7 @@ RematChecker::canFullyRemat(
     std::vector<Instruction*> Insts;
     std::unordered_set<Instruction*> Visited;
     if (!canFullyRemat(I, Insts, Visited, Threshold, Threshold, VM))
-        return None;
+        return IGCLLVM::None;
 
     return Insts;
 }

@@ -53,9 +53,9 @@ static Optional<RTMemRegion> getIntrinsicRegion(const GenIntrinsicInst* GII)
         if (isGlobalPtr(cast<InlineDataIntrinsic>(GII)))
             return RTMemRegion::RTGlobals;
         else
-            return None;
+            return IGCLLVM::None;
     default:
-        return None;
+        return IGCLLVM::None;
     }
 }
 
@@ -66,7 +66,7 @@ getRTRegionByAddrspace(const Value* V, const ModuleMetaData &MMD)
 {
     auto* PtrTy = dyn_cast<PointerType>(V->getType());
     if (!PtrTy)
-        return None;
+        return IGCLLVM::None;
 
     uint32_t Addrspace = PtrTy->getPointerAddressSpace();
 
@@ -81,7 +81,7 @@ getRTRegionByAddrspace(const Value* V, const ModuleMetaData &MMD)
     else if (Addrspace == rtInfo.RTSyncStackAddrspace)
         return RTMemRegion::RTSyncStack;
 
-    return None;
+    return IGCLLVM::None;
 }
 
 Optional<RTMemRegion> getRegionOffset(const Value* Ptr, const DataLayout *DL, uint64_t* Offset, uint64_t* dereferenceable_value)
@@ -111,7 +111,7 @@ Optional<RTMemRegion> getRegionOffset(const Value* Ptr, const DataLayout *DL, ui
                 // If there is a non-constant or variable offset on the getelementptr instruction like i64 %x
                 // we cannot evaluate it at compile time, only at run time
                 else {
-                    return None;
+                    return IGCLLVM::None;
                 }
             }
         }
@@ -138,7 +138,7 @@ Optional<RTMemRegion> getRegionOffset(const Value* Ptr, const DataLayout *DL, ui
         }
     }
 
-    return None;
+    return IGCLLVM::None;
 }
 
 // This is conceptually the same idea as getRegionOffset() but it doesn't
@@ -157,7 +157,7 @@ Optional<RTMemRegion> getRTRegion(const Value* V, const ModuleMetaData &MMD)
     {
         auto* I = dyn_cast<Instruction>(V);
         if (!I)
-            return None;
+            return IGCLLVM::None;
 
         switch (I->getOpcode())
         {
@@ -172,13 +172,13 @@ Optional<RTMemRegion> getRTRegion(const Value* V, const ModuleMetaData &MMD)
         case Instruction::Call:
             if (auto* GII = dyn_cast<GenIntrinsicInst>(I))
                 return getIntrinsicRegion(GII);
-            return None;
+            return IGCLLVM::None;
         default:
-            return None;
+            return IGCLLVM::None;
         }
     }
 
-    return None;
+    return IGCLLVM::None;
 }
 
 } // namespace IGC

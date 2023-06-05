@@ -147,6 +147,7 @@ SPDX-License-Identifier: MIT
 
 #include "Probe/Assertion.h"
 #include "llvmWrapper/Analysis/CallGraph.h"
+#include "llvmWrapper/ADT/Optional.h"
 #include "llvmWrapper/IR/Attributes.h"
 #include "llvmWrapper/IR/DerivedTypes.h"
 #include "llvmWrapper/IR/Function.h"
@@ -308,7 +309,7 @@ private:
     Type * Ty = getIntrinRetType(F->getContext(), IID);
     IGC_ASSERT(Ty);
 
-    auto IntrinsicName = vc::getAnyName(IID, None);
+    auto IntrinsicName = vc::getAnyName(IID, IGCLLVM::None);
     GlobalVariable *NewVar = new GlobalVariable(
         *F->getParent(), Ty, false, GlobalVariable::InternalLinkage,
         UndefValue::get(Ty), "__imparg_" + IntrinsicName);
@@ -985,7 +986,7 @@ void CMImpParam::ConvertToOCLPayload(Module &M) {
       auto UInst = dyn_cast<Instruction>(*UI++);
       if (UInst) {
         IRBuilder<> Builder(UInst);
-        Value *Val = Builder.CreateCall(LID16, None, UInst->getName() + ".i16");
+        Value *Val = Builder.CreateCall(LID16, IGCLLVM::None, UInst->getName() + ".i16");
         Val = Builder.CreateZExt(Val, Ty32);
         Val->takeName(UInst);
         UInst->replaceAllUsesWith(Val);
@@ -1055,7 +1056,7 @@ template <bool IsEntry> void CallGraphTraverser::visitFunction(Function &F) {
 
 static std::string getImplicitArgName(unsigned IID) {
   if (!isPseudoIntrinsic(IID))
-    return "impl.arg." + vc::getAnyName(IID, None);
+    return "impl.arg." + vc::getAnyName(IID, IGCLLVM::None);
   switch (IID) {
   case PseudoIntrinsic::ImplicitArgsBuffer:
     return "impl.arg.impl.args.buffer";

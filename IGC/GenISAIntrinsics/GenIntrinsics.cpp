@@ -31,7 +31,7 @@ namespace GenISAIntrinsic {
 /// Intrinsic::getType(ID) - Return the function type for an intrinsic.
 ///
 static FunctionType *getType(LLVMContext &Context, ID id,
-    ArrayRef<Type*> Tys = None);
+    ArrayRef<Type*> Tys = IGCLLVM::None);
 
 /// Map a GCC builtin name to an intrinsic ID.
 ID getIntrinsicForGCCBuiltin(const char *Prefix, const char *BuiltinName);
@@ -219,7 +219,7 @@ static Type *DecodeFixedType(ArrayRef<GenISAIntrinsic::IITDescriptor> &Infos,
 
 
 static void DecodeIITType(unsigned &NextElt, ArrayRef<unsigned char> Infos,
-                      SmallVectorImpl<GenISAIntrinsic::IITDescriptor> &OutputTable, ArrayRef<Type*> Tys = None) {
+                      SmallVectorImpl<GenISAIntrinsic::IITDescriptor> &OutputTable, ArrayRef<Type*> Tys = IGCLLVM::None) {
   IIT_Info Info = IIT_Info(Infos[NextElt++]);
   unsigned StructElts = 2;
   using namespace GenISAIntrinsic;

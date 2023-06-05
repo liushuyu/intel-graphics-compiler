@@ -20574,7 +20574,7 @@ setCacheOptionsForConstantBufferLoads(Instruction& inst, LSC_L1_L3_CC Ctrl)
             return translateLSCCacheControlsEnum(Ctrl, true);
         }
     }
-    return None;
+    return IGCLLVM::None;
 }
 
 Optional<LSC_CACHE_OPTS>
