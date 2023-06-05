@@ -34,6 +34,14 @@ inline llvm::TypeSize getTypeSize(unsigned TS) {
   return llvm::TypeSize::get(TS, false);
 }
 #endif
+
+inline uint64_t getFixedSize(llvm::TypeSize TS) {
+#if LLVM_VERSION_MAJOR < 16
+  return TS.getFixedSize();
+#else
+  return TS.getFixedValue();
+#endif
+}
 } // namespace IGCLLVM
 
 #endif // IGCLLVM_SUPPORT_TYPESIZE_H

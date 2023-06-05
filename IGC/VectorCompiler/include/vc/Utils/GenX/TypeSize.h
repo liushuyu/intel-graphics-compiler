@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
 
 #include "Probe/Assertion.h"
 #include "llvmWrapper/IR/DerivedTypes.h"
+#include "llvmWrapper/Support/TypeSize.h"
 
 #include <llvm/IR/Type.h>
 #include <llvm/Support/MathExtras.h>
@@ -121,7 +122,7 @@ private:
   template <unsigned UnitBitSize, bool Strict> SzType asIntegral() const {
 #if LLVM_VERSION_MAJOR >= 10
     IGC_ASSERT(!TS.isScalable());
-    uint64_t BitsAsUI = TS.getFixedSize();
+    uint64_t BitsAsUI = IGCLLVM::getFixedSize(TS);
 #else
     uint64_t BitsAsUI = TS;
 #endif

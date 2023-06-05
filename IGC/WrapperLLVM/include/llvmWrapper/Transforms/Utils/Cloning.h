@@ -25,7 +25,11 @@ namespace IGCLLVM
 #else
             *llvm::dyn_cast<llvm::CallBase>(CB)
 #endif
-            , IFI, CalleeAAR, InsertLifetime, ForwardVarArgsTo)
+            , IFI
+#if LLVM_VERSION_MAJOR >= 16
+            , /* MergeAttributes */ false
+#endif
+            , CalleeAAR, InsertLifetime, ForwardVarArgsTo)
 #if LLVM_VERSION_MAJOR >= 11
             .isSuccess()
 #endif

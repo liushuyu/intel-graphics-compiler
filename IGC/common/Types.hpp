@@ -17,9 +17,7 @@ SPDX-License-Identifier: MIT
 
 #include "IGC/common/LLVMWarningsPush.hpp"
 #include "llvm/Config/llvm-config.h"
-#if LLVM_VERSION_MAJOR >= 10
-#include "llvm/Support/TypeSize.h"
-#endif
+#include "llvmWrapper/Support/TypeSize.h"
 #include "IGC/common/LLVMWarningsPop.hpp"
 #include "Probe/Assertion.h"
 #include "IGC/common/shaderHash.hpp"
@@ -339,8 +337,8 @@ inline typename std::enable_if<
     static_assert(std::is_integral<TDst>::value,
         "int_cast<>() should be used only for conversions between integer types.");
 
-    IGC_ASSERT(value.getFixedSize() <= std::numeric_limits<TDst>::max());
-    return static_cast<TDst>(value.getFixedSize());
+    IGC_ASSERT(IGCLLVM::getFixedSize(value) <= std::numeric_limits<TDst>::max());
+    return static_cast<TDst>(IGCLLVM::getFixedSize(value));
 }
 
 template <typename TDst>
@@ -351,8 +349,8 @@ inline typename std::enable_if<
     static_assert(std::is_integral<TDst>::value,
         "int_cast<>() should be used only for conversions between integer types.");
 
-    IGC_ASSERT(value.getFixedSize() <= static_cast<typename std::make_unsigned<TDst>::type>(std::numeric_limits<TDst>::max()));
-    return static_cast<TDst>(value.getFixedSize());
+    IGC_ASSERT(IGCLLVM::getFixedSize(value) <= static_cast<typename std::make_unsigned<TDst>::type>(std::numeric_limits<TDst>::max()));
+    return static_cast<TDst>(IGCLLVM::getFixedSize(value));
 }
 
 #endif
