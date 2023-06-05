@@ -749,9 +749,9 @@ bool PrivateMemoryResolution::resolveAllocaInstructions(bool privateOnStack)
     if (privateOnStack)
     {
         // Creates intrinsics that will be lowered in the CodeGen and will handle the stack-pointer
-        Instruction* simdLaneId16 = entryBuilder.CreateCall(simdLaneIdFunc, llvm::None, VALUE_NAME("simdLaneId16"));
+        Instruction* simdLaneId16 = entryBuilder.CreateCall(simdLaneIdFunc, IGCLLVM::None, VALUE_NAME("simdLaneId16"));
         Value* simdLaneId = entryBuilder.CreateIntCast(simdLaneId16, typeInt32, false, VALUE_NAME("simdLaneId"));
-        Instruction* simdSize = entryBuilder.CreateCall(simdSizeFunc, llvm::None, VALUE_NAME("simdSize"));
+        Instruction* simdSize = entryBuilder.CreateCall(simdSizeFunc, IGCLLVM::None, VALUE_NAME("simdSize"));
         for (auto pAI : allocaInsts)
         {
             bool isUniform = pAI->getMetadata("uniform") != nullptr;
@@ -830,9 +830,9 @@ bool PrivateMemoryResolution::resolveAllocaInstructions(bool privateOnStack)
         // private base from threadid as we did previously.  In this case, we only need
         // PrivateMemoryUsageAnalysis pass, no need to run AddImplicitArgs pass.
 
-        Instruction* simdLaneId16 = entryBuilder.CreateCall(simdLaneIdFunc, llvm::None, VALUE_NAME("simdLaneId16"));
+        Instruction* simdLaneId16 = entryBuilder.CreateCall(simdLaneIdFunc, IGCLLVM::None, VALUE_NAME("simdLaneId16"));
         Value* simdLaneId = entryBuilder.CreateIntCast(simdLaneId16, typeInt32, false, VALUE_NAME("simdLaneId"));
-        Instruction* simdSize = entryBuilder.CreateCall(simdSizeFunc, llvm::None, VALUE_NAME("simdSize"));
+        Instruction* simdSize = entryBuilder.CreateCall(simdSizeFunc, IGCLLVM::None, VALUE_NAME("simdSize"));
 
         Value* privateBase = nullptr;
         ADDRESS_SPACE scratchMemoryAddressSpace = ADDRESS_SPACE_PRIVATE;
@@ -1019,9 +1019,9 @@ bool PrivateMemoryResolution::resolveAllocaInstructions(bool privateOnStack)
 
     ConstantInt* totalPrivateMemPerWIValue = ConstantInt::get(typeInt32, totalPrivateMemPerWI);
 
-    Instruction* simdLaneId16 = entryBuilder.CreateCall(simdLaneIdFunc, llvm::None, VALUE_NAME("simdLaneId16"));
+    Instruction* simdLaneId16 = entryBuilder.CreateCall(simdLaneIdFunc, IGCLLVM::None, VALUE_NAME("simdLaneId16"));
     Value* simdLaneId = entryBuilder.CreateIntCast(simdLaneId16, typeInt32, false, VALUE_NAME("simdLaneId"));
-    Instruction* simdSize = entryBuilder.CreateCall(simdSizeFunc, llvm::None, VALUE_NAME("simdSize"));
+    Instruction* simdSize = entryBuilder.CreateCall(simdSizeFunc, IGCLLVM::None, VALUE_NAME("simdSize"));
     Value* totalPrivateMemPerThread = entryBuilder.CreateMul(simdSize, totalPrivateMemPerWIValue, VALUE_NAME("totalPrivateMemPerThread"));
     if (!safe32bitOffset)
         totalPrivateMemPerThread = entryBuilder.CreateZExt(totalPrivateMemPerThread, typeInt64);

@@ -41,6 +41,7 @@ SPDX-License-Identifier: MIT
 #include <llvm/ADT/DenseMap.h>
 #include <llvm/ADT/StringMap.h>
 #include <llvm/ADT/StringRef.h>
+#include <llvm/ADT/Optional.h>
 #include <llvm/IR/IRBuilder.h>
 #include "llvm/IR/Function.h"
 #include "llvm/IR/ValueMap.h"
@@ -1112,7 +1113,7 @@ namespace IGC
         uint64_t GetSIMDInfo() { return m_SIMDInfo; }
 
         virtual llvm::Optional<SIMDMode> knownSIMDSize() const {
-            return llvm::None;
+            return IGCLLVM::None;
         }
 
         // This can be paired with `EncodeAS4GFXResource()` to get a unique

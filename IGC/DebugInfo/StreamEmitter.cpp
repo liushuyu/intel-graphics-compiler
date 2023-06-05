@@ -33,6 +33,7 @@ See LICENSE.TXT for details.
 #include "llvm/MC/MCSymbol.h"
 #include "llvm/MC/MCValue.h"
 #include "llvm/Support/SourceMgr.h"
+#include "llvmWrapper/ADT/None.h"
 #include "llvmWrapper/Support/TargetRegistry.h"
 #include "common/LLVMWarningsPop.hpp"
 // clang-format on
@@ -757,10 +758,10 @@ bool StreamEmitter::EmitDwarfFileDirective(unsigned fileNo, StringRef directory,
                                            unsigned cuID) const {
 #if LLVM_VERSION_MAJOR <= 10
   return (m_pMCStreamer->EmitDwarfFileDirective(
-              fileNo, directory, filename, llvm::None, llvm::None, cuID) != 0);
+              fileNo, directory, filename, IGCLLVM::None, IGCLLVM::None, cuID) != 0);
 #else
   return (m_pMCStreamer->emitDwarfFileDirective(
-              fileNo, directory, filename, llvm::None, llvm::None, cuID) != 0);
+              fileNo, directory, filename, IGCLLVM::None, IGCLLVM::None, cuID) != 0);
 #endif
 }
 

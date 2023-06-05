@@ -3748,7 +3748,7 @@ inline llvm::CallInst* setUnsafeToHoistAttr(llvm::CallInst *CI)
         CI->setOnlyAccessesInaccessibleMemory();
         CI->removeAttribute(llvm::AttributeList::FunctionIndex, llvm::Attribute::ReadNone);
 #endif
-        llvm::OperandBundleDef OpDef("nohoist", llvm::None);
+        llvm::OperandBundleDef OpDef("nohoist", IGCLLVM::None);
 
         // An operand bundle cannot be appended onto a call after creation.
         // clone the instruction but add our operandbundle on as well.

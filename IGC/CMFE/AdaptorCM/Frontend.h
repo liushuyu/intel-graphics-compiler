@@ -18,6 +18,7 @@ SPDX-License-Identifier: MIT
 #include <llvm/Support/DynamicLibrary.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/Process.h>
+#include "llvmWrapper/ADT/None.h"
 
 #include <memory>
 #include <sstream>
@@ -219,9 +220,9 @@ makeFEWrapper(ErrFn &&ErrH, const std::string &DefaultDir = std::string{}) {
   FEWrapper<ErrFnTy> IFace{std::forward<ErrFn>(ErrH), DefaultDir};
 
   if (!IFace.Lib.isValid())
-    return llvm::None;
+    return IGCLLVM::None;
   if (!IFace.isCompatibleABI())
-    return llvm::None;
+    return IGCLLVM::None;
   return IFace;
 }
 

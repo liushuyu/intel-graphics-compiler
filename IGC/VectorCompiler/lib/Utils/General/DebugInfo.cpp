@@ -19,6 +19,7 @@ SPDX-License-Identifier: MIT
 #include <llvm/Support/Debug.h>
 
 #include <llvmWrapper/IR/DerivedTypes.h>
+#include "llvmWrapper/ADT/None.h"
 
 #include "Probe/Assertion.h"
 
@@ -157,7 +158,7 @@ llvm::DIGlobalVariableExpression *vc::DIBuilder::createGlobalVariableExpression(
       , nullptr /*Annotation*/
 #endif
       );
-  auto *EmptyExpr = DIExpression::get(Ctx, llvm::None);
+  auto *EmptyExpr = DIExpression::get(Ctx, IGCLLVM::None);
   auto *GVE = DIGlobalVariableExpression::get(Ctx, GV, EmptyExpr);
 
   // all globals should be registered in DICompileUnit::globals

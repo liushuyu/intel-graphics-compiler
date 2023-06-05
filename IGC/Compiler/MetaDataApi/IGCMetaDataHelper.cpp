@@ -69,12 +69,12 @@ IGCMetaDataHelper::getThreadGroupDims(
 {
     auto finfo = mdUtils.findFunctionsInfoItem(pKernelFunc);
     if (finfo == mdUtils.end_FunctionsInfo())
-        return llvm::None;
+        return IGCLLVM::None;
 
     auto& FI = finfo->second;
 
     if (!FI->getThreadGroupSize()->hasValue())
-        return llvm::None;
+        return IGCLLVM::None;
 
     auto Dims = FI->getThreadGroupSize();
 

@@ -22,6 +22,7 @@ SPDX-License-Identifier: MIT
 #include <llvm/IR/Function.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/IR/Intrinsics.h>
+#include "llvmWrapper/ADT/None.h"
 
 #include "llvm/GenXIntrinsics/GenXIntrinsics.h"
 
@@ -108,7 +109,7 @@ inline bool isInternalNonTrivialIntrinsic(const llvm::Value *V) {
 /// the intrinsic.
 llvm::Function *
 getInternalDeclaration(llvm::Module *M, ID id,
-                       llvm::ArrayRef<llvm::Type *> Tys = llvm::None);
+                       llvm::ArrayRef<llvm::Type *> Tys = IGCLLVM::None);
 
 /// InternalIntrinsic::isOverloadedArg(ID, ArgNum) - Return true if ArgNum
 /// in intrinsic overloaded

@@ -80,6 +80,6 @@ namespace IGC {
 
 #undef RT_DISPATCH_GETTER_DECL
 
-    llvm::Value* getIntrinsicValue(llvm::GenISAIntrinsic::ID intrinsicId, llvm::ArrayRef<llvm::Value*> args = llvm::None);
+    llvm::Value* getIntrinsicValue(llvm::GenISAIntrinsic::ID intrinsicId, llvm::ArrayRef<llvm::Value*> args = IGCLLVM::None);
   };
 }

@@ -39,7 +39,7 @@ bool isAnyNonTrivialIntrinsic(unsigned ID);
 // Tys must provide exactly one type for each overloaded type in the intrinsic.
 llvm::Function *
 getAnyDeclaration(llvm::Module *M, unsigned ID,
-                  llvm::ArrayRef<llvm::Type *> Tys = llvm::None);
+                  llvm::ArrayRef<llvm::Type *> Tys = IGCLLVM::None);
 
 std::string getAnyName(unsigned id, llvm::ArrayRef<llvm::Type *> Tys);
 } // namespace vc
