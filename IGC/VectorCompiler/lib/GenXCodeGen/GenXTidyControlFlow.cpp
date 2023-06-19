@@ -64,7 +64,7 @@ SPDX-License-Identifier: MIT
 #include "llvm/ADT/SetVector.h"
 #include "llvm/Analysis/LoopInfo.h"
 #include "llvm/CodeGen/TargetPassConfig.h"
-#include "llvm/IR/BasicBlock.h"
+#include "llvmWrapper/IR/BasicBlock.h"
 #include "llvm/IR/CFG.h"
 #include "llvm/IR/Function.h"
 #include "llvm/IR/Instructions.h"
@@ -314,7 +314,7 @@ void GenXTidyControlFlow::fixReturns(Function *F) {
       // If the function doesn't return void, add a PHI node to the block.
       PN = PHINode::Create(F->getReturnType(), ReturningBlocks.size(),
                            "UnifiedRetVal");
-      NewRetBlock->getInstList().push_back(PN);
+      IGCLLVM::insertIntoBB(NewRetBlock, PN);
       ReturnInst::Create(F->getContext(), PN, NewRetBlock);
     }
 

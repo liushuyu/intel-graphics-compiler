@@ -22,6 +22,7 @@ SPDX-License-Identifier: MIT
 
 #include "llvmWrapper/IR/DerivedTypes.h"
 #include "llvmWrapper/Support/Alignment.h"
+#include "llvmWrapper/IR/BasicBlock.h"
 #include "llvmWrapper/IR/Instructions.h"
 #include "llvmWrapper/Transforms/Utils/Cloning.h"
 
@@ -181,7 +182,7 @@ static bool GenXUnifyReturnBlocks(Function& F) {
     // If the function doesn't return void... add a PHI node to the block...
     PN = PHINode::Create(F.getReturnType(), ReturningBlocks.size(),
                          "UnifiedRetVal");
-    NewRetBlock->getInstList().push_back(PN);
+    IGCLLVM::insertIntoBB(NewRetBlock, PN);
         ReturnInst::Create(F.getContext(), PN, NewRetBlock);
   }
 

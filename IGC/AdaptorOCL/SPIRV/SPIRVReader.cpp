@@ -46,6 +46,7 @@ THE SOFTWARE.
 
 #include "common/LLVMWarningsPush.hpp"
 #include "llvm/Config/llvm-config.h"
+#include "llvmWrapper/IR/BasicBlock.h"
 #include "llvmWrapper/IR/DerivedTypes.h"
 #include "llvmWrapper/IR/Function.h"
 #include "llvmWrapper/IR/IRBuilder.h"
@@ -2884,14 +2885,14 @@ Value *SPIRVToLLVM::truncBool(Value *pVal, BasicBlock *BB)
     auto* nextInst = pInst->getNextNonDebugInstruction();
     if (nullptr != nextInst && nextInst->getOpcode() == Instruction::Trunc && (nextInst->getOperand(0) == Cast->getOperand(0)))
     {
-      BB->getInstList().push_back(Cast);
+      IGCLLVM::insertIntoBB(BB, Cast);
       return Cast;
     }
     // Insert Cast instruction into BB if pInst is placeholder
     if (isa<LoadInst>(pInst) && isa<GlobalVariable>(dyn_cast<LoadInst>(pInst)->getPointerOperand()) &&
         dyn_cast<GlobalVariable>(dyn_cast<LoadInst>(pInst)->getPointerOperand())->getName().startswith(kPlaceholderPrefix))
     {
-        BB->getInstList().push_back(Cast);
+        IGCLLVM::insertIntoBB(BB, Cast);
         return Cast;
     }
 

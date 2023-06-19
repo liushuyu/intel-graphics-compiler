@@ -14,6 +14,7 @@ SPDX-License-Identifier: MIT
 #include "Compiler/MetaDataApi/MetaDataApi.h"
 #include "common/LLVMWarningsPush.hpp"
 #include "llvm/Config/llvm-config.h"
+#include "llvmWrapper/IR/BasicBlock.h"
 #include "llvmWrapper/IR/DerivedTypes.h"
 #include "llvmWrapper/IR/IRBuilder.h"
 #include "llvm/Support/CommandLine.h"
@@ -140,7 +141,7 @@ void Legalization::unifyReturnInsts(llvm::Function& F)
         // If the function doesn't return void... add a PHI node to the block...
         PN = PHINode::Create(F.getReturnType(), ReturningBlocks.size(),
             "UnifiedRetVal");
-        NewRetBlock->getInstList().push_back(PN);
+        IGCLLVM::insertIntoBB(NewRetBlock, PN);
         ReturnInst::Create(F.getContext(), PN, NewRetBlock);
     }
 
