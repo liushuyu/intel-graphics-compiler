@@ -77,6 +77,17 @@ using llvm::SubOverflow;
 using llvm::MulOverflow;
 
 #endif
+
+// NOTE: Using the new function signature from LLVM 16+,
+// assuming the ZeroBehavior argument is always `ZB_Width`.
+template <typename T>
+inline unsigned countTrailingZeros(T Val) {
+#if LLVM_VERSION_MAJOR < 16
+  return llvm::countTrailingZeros(Val, llvm::ZB_Width);
+#else
+  return llvm::countTrailingZeros(Val);
+#endif
+}
 }
 
 #endif
