@@ -675,7 +675,7 @@ bool CGen8OpenCLProgram::GetZEBinary(
                 //elfVecNames.push_back(elfLinkerOpt1);
                 //elfVecPtrs.push_back((char*)(elfVecNames.at(elfVecNames.size() - 1).c_str()));
 
-                auto elfArrRef = makeArrayRef(elfVecPtrs);
+                llvm::ArrayRef<const char*> elfArrRef = elfVecPtrs;
                 std::string linkErrStr = "";
                 llvm::raw_string_ostream linkErr(linkErrStr);
 

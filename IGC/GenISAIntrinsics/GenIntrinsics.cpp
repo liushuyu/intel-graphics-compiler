@@ -15,6 +15,7 @@ SPDX-License-Identifier: MIT
 #include "llvm/IR/Intrinsics.h"
 #include "llvm/IR/Module.h"
 #include "llvm/IR/Type.h"
+#include <llvm/ADT/ArrayRef.h>
 #include <llvm/ADT/StringExtras.h>
 #include <llvm/ADT/StringMap.h>
 #include <llvm/CodeGen/ValueTypes.h>
@@ -166,7 +167,7 @@ static Type *DecodeFixedType(ArrayRef<GenISAIntrinsic::IITDescriptor> &Infos,
     IGC_ASSERT_MESSAGE(D.Struct_NumElements <= 5, "Can't handle this yet");
     for (unsigned i = 0, e = D.Struct_NumElements; i != e; ++i)
       Elts[i] = DecodeFixedType(Infos, Tys, Context);
-    return StructType::get(Context, makeArrayRef(Elts,D.Struct_NumElements));
+    return StructType::get(Context, ArrayRef{Elts,D.Struct_NumElements});
   }
 
   case IITDescriptor::Argument:

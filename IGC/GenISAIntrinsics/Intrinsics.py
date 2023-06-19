@@ -434,7 +434,7 @@ def createAttributeTable():
       }}\n""".format(num=i+1, attrs=','.join(Attrs)))
     f.write("    }\n"
             "  }\n"
-            "  return AttributeList::get(C, makeArrayRef(AS, NumAttrs));\n"
+            "  return AttributeList::get(C, llvm::ArrayRef{AS, NumAttrs});\n"
             "}\n"
             "#endif // GET_INTRINSIC_ATTRIBUTES\n\n")
     f.close()

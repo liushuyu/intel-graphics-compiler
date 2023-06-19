@@ -831,9 +831,9 @@ bool GenXPromoteArray::replaceAggregatedStore(StoreInst *StI) {
     Value *Ptr = nullptr;
     auto *PtrOp = StI->getPointerOperand();
     if (ST)
-      Ptr = Builder.CreateInBoundsGEP(ST, PtrOp, makeArrayRef(Indices));
+      Ptr = Builder.CreateInBoundsGEP(ST, PtrOp, Indices);
     else
-      Ptr = Builder.CreateInBoundsGEP(AT, PtrOp, makeArrayRef(Indices));
+      Ptr = Builder.CreateInBoundsGEP(AT, PtrOp, Indices);
 
     auto *Val = Builder.CreateExtractValue(ValueOp, I);
     auto *NewStI = Builder.CreateStore(Val, Ptr, StI->isVolatile());

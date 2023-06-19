@@ -20,6 +20,7 @@ See LICENSE.TXT for details.
 
 #include "vc/InternalIntrinsics/InternalIntrinsics.h"
 
+#include <llvm/ADT/ArrayRef.h>
 #include <llvm/ADT/StringExtras.h>
 #include <llvm/ADT/StringMap.h>
 #include <llvm/CodeGen/ValueTypes.h>
@@ -529,7 +530,7 @@ static ArrayRef<const char *> findTargetSubtable(StringRef Name) {
   // We've either found the target or just fall back to the generic set, which
   // is always first.
   const auto &TI = It != Targets.end() && It->Name == Target ? *It : Targets[0];
-  return makeArrayRef(&InternalIntrinsicNameTable[1] + TI.Offset, TI.Count);
+  return ArrayRef{&InternalIntrinsicNameTable[1] + TI.Offset, TI.Count};
 }
 
 static InternalIntrinsic::ID lookupInternalIntrinsicID(StringRef Name) {
