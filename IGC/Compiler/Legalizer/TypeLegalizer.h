@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
 #include "common/LLVMWarningsPush.hpp"
 #include "llvmWrapper/IR/Instructions.h"
 #include "llvmWrapper/IR/InstrTypes.h"
+#include "llvmWrapper/IR/DataLayout.h"
 #include "llvmWrapper/IR/DerivedTypes.h"
 #include "llvmWrapper/Support/Alignment.h"
 #include "llvm/ADT/ArrayRef.h"
@@ -610,7 +611,7 @@ namespace IGC {
             alignment_t TypeLegalizer::getAlignment(LoadInst* Ld) const {
             auto Align = IGCLLVM::getAlignmentValue(Ld);
             if (Align == 0)
-                Align = DL->getABITypeAlignment(Ld->getType());
+                Align = IGCLLVM::getABITypeAlignment(DL, Ld->getType());
             return Align;
         }
 
@@ -618,7 +619,7 @@ namespace IGC {
             alignment_t TypeLegalizer::getAlignment(StoreInst* St) const {
             auto Align = IGCLLVM::getAlignmentValue(St);
             if (Align == 0)
-                Align = DL->getABITypeAlignment(St->getValueOperand()->getType());
+                Align = IGCLLVM::getABITypeAlignment(DL, St->getValueOperand()->getType());
             return Align;
         }
 

@@ -14,6 +14,7 @@ SPDX-License-Identifier: MIT
 #include "llvm/IR/InstIterator.h"
 #include "llvm/Support/MathExtras.h"
 #include "llvm/IR/GetElementPtrTypeIterator.h"
+#include "llvmWrapper/IR/DataLayout.h"
 #include "llvmWrapper/Support/Alignment.h"
 #include "common/LLVMWarningsPop.hpp"
 #include <deque>
@@ -133,7 +134,7 @@ auto AlignmentAnalysis::getAlignValue(Value* V) const
             if (!align)
             {
                 Type* gvType = GV->getType();
-                return m_DL->getABITypeAlignment(IGCLLVM::getNonOpaquePtrEltTy(gvType));
+                return IGCLLVM::getABITypeAlignment(m_DL, IGCLLVM::getNonOpaquePtrEltTy(gvType));
             }
             else
             {
@@ -152,7 +153,7 @@ auto AlignmentAnalysis::getAlignValue(Value* V) const
             Type* pointedTo = IGCLLVM::getNonOpaquePtrEltTy(arg->getType());
             if (pointedTo->isSized())
             {
-                return m_DL->getABITypeAlignment(pointedTo);
+                return IGCLLVM::getABITypeAlignment(m_DL, pointedTo);
             }
             else
             {
@@ -226,7 +227,7 @@ alignment_t AlignmentAnalysis::visitAllocaInst(AllocaInst& I)
     if (!newAlign)
     {
         Type* allocaType = I.getType();
-        newAlign = m_DL->getABITypeAlignment(IGCLLVM::getNonOpaquePtrEltTy(allocaType));
+        newAlign = IGCLLVM::getABITypeAlignment(m_DL, IGCLLVM::getNonOpaquePtrEltTy(allocaType));
     }
 
     return newAlign;

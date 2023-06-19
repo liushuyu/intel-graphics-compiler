@@ -18,6 +18,7 @@ SPDX-License-Identifier: MIT
 #include "llvm/IR/Function.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/Instruction.h"
+#include "llvmWrapper/IR/DataLayout.h"
 #include "llvmWrapper/IR/Instructions.h"
 #include "llvm/IR/IntrinsicInst.h"
 #include "llvm/IR/Module.h"
@@ -126,7 +127,7 @@ namespace {
         alignment_t getAlignment(LoadInst* LD) const {
             auto Align = IGCLLVM::getAlignmentValue(LD);
             if (Align == 0)
-                Align = DL->getABITypeAlignment(LD->getType());
+                Align = IGCLLVM::getABITypeAlignment(DL, LD->getType());
             return Align;
         }
 

@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
 
 #include "Compiler/Optimizer/OpenCLPasses/KernelArgs.hpp"
 #include "AdaptorCommon/ImplicitArgs.hpp"
+#include "llvmWrapper/IR/DataLayout.h"
 #include "llvmWrapper/IR/DerivedTypes.h"
 #include "common/LLVMWarningsPush.hpp"
 #include <llvm/IR/Argument.h>
@@ -110,7 +111,7 @@ alignment_t KernelArg::calcAlignment(const Argument* arg, const DataLayout* DL) 
         typeToAlign = IGCLLVM::getNonOpaquePtrEltTy(typeToAlign);
     }
 
-    return DL->getABITypeAlignment(typeToAlign);
+    return IGCLLVM::getABITypeAlignment(DL, typeToAlign);
 }
 
 unsigned int KernelArg::calcElemAllocateSize(const Argument* arg, const DataLayout* DL) const

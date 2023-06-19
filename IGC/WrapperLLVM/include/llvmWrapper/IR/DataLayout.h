@@ -30,6 +30,15 @@ namespace IGCLLVM
 #endif
     }
 
+    inline uint64_t getABITypeAlignment(const llvm::DataLayout* DL, llvm::Type *Ty)
+    {
+#if LLVM_VERSION_MAJOR <= 14
+        return IGCLLVM::getABITypeAlignment(Ty);
+#else
+        return (uint64_t)DL->getABITypeAlign(Ty).value();
+#endif
+    }
+
 } // namespace IGCLLVM
 
 #endif // IGCLLVM_IR_DATALAYOUT_H

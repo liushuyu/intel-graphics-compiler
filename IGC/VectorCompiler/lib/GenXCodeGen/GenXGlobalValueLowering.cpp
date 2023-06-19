@@ -60,6 +60,7 @@ SPDX-License-Identifier: MIT
 #include "Probe/Assertion.h"
 
 #include "llvmWrapper/Analysis/CallGraph.h"
+#include "llvmWrapper/IR/DataLayout.h"
 #include "llvmWrapper/IR/Value.h"
 #include "llvmWrapper/Support/Alignment.h"
 
@@ -492,7 +493,7 @@ alignment_t GenXGlobalValueLowering::getGlobalVarAlign(const GlobalValue &V) {
   auto *GV = cast<const GlobalVariable>(&V);
   auto Align = GV->getAlignment();
   if (!Align)
-    return DL->getABITypeAlignment(GV->getValueType());
+    return IGCLLVM::getABITypeAlignment(DL, GV->getValueType());
   return Align;
 }
 

@@ -13,6 +13,7 @@ SPDX-License-Identifier: MIT
 #include "common/Stats.hpp"
 #include "common/secure_string.h"
 #include "common/LLVMWarningsPush.hpp"
+#include "llvmWrapper/IR/DataLayout.h"
 #include "llvmWrapper/IR/Instructions.h"
 #include "llvmWrapper/Support/Alignment.h"
 #include <llvm/IR/Function.h>
@@ -370,7 +371,7 @@ bool StatelessToStateful::pointerIsPositiveOffsetFromKernelArgument(
             if (!pointeeTy->isSized()) {
                 return 0;
             }
-            return DL->getABITypeAlignment(pointeeTy);
+            return IGCLLVM::getABITypeAlignment(DL, pointeeTy);
         }
         return 0;
     };

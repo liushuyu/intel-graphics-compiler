@@ -15,6 +15,7 @@ SPDX-License-Identifier: MIT
 #include <llvm/IR/Module.h>
 #include <llvm/IR/Function.h>
 #include <llvm/Analysis/ValueTracking.h>
+#include "llvmWrapper/IR/DataLayout.h"
 #include "common/LLVMWarningsPop.hpp"
 #include "Probe/Assertion.h"
 
@@ -420,7 +421,7 @@ void ProgramScopeConstantAnalysis::addData(Constant* initializer,
     bool forceAlignmentOne)
 {
     // Initial alignment padding before insert the current constant into the buffer.
-    alignment_t typeAlignment = forceAlignmentOne ? 1 : m_DL->getABITypeAlignment(initializer->getType());
+    alignment_t typeAlignment = forceAlignmentOne ? 1 : IGCLLVM::getABITypeAlignment(m_DL, initializer->getType());
     alignBuffer(inlineProgramScopeBuffer, typeAlignment);
 
     // If the initializer is packed struct make sure, that every variable inside

@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
 #include "Compiler/MetaDataUtilsWrapper.h"
 #include "Compiler/IGCPassSupport.h"
 #include "Compiler/CISACodeGen/GenCodeGenModule.h"
+#include "llvmWrapper/IR/DataLayout.h"
 #include "llvm/IR/Instructions.h"
 
 using namespace llvm;
@@ -358,7 +359,7 @@ void ModuleAllocaAnalysis::analyze(Function* F, unsigned& Offset, alignment_t& M
     auto getAlignment = [=](AllocaInst* AI) -> alignment_t {
         alignment_t Alignment = IGCLLVM::getAlignmentValue(AI);
         if (Alignment == 0)
-            Alignment = DL->getABITypeAlignment(AI->getAllocatedType());
+            Alignment = IGCLLVM::getABITypeAlignment(DL, AI->getAllocatedType());
         return Alignment;
     };
 
