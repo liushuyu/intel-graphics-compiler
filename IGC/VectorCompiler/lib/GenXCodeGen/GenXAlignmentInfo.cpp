@@ -30,6 +30,7 @@ SPDX-License-Identifier: MIT
 #include "llvm/IR/Instructions.h"
 #include "llvm/IR/Intrinsics.h"
 #include "llvm/Support/Debug.h"
+#include "llvmWrapper/Support/MathExtras.h"
 
 #include "Probe/Assertion.h"
 
@@ -345,7 +346,7 @@ Alignment Alignment::merge(Alignment Other) const
     unsigned DisagreeExtraBits = (ExtraBits ^ Other.ExtraBits)
       & ((1 << MinLogAlign) - 1);
     MinLogAlign = std::min(MinLogAlign,
-      (unsigned)countTrailingZeros(DisagreeExtraBits, ZB_Width));
+      (unsigned)IGCLLVM::countTrailingZeros(DisagreeExtraBits));
   }
   return Alignment(MinLogAlign, ExtraBits & ((1 << MinLogAlign) - 1));
 }
@@ -364,7 +365,7 @@ Alignment Alignment::add(Alignment Other) const
     ExtraBits2 = (ExtraBits + Other.ExtraBits)
       & ((1 << MinLogAlign) - 1);
     MinLogAlign = std::min(MinLogAlign,
-      (unsigned)countTrailingZeros(ExtraBits2, ZB_Width));
+      (unsigned)IGCLLVM::countTrailingZeros(ExtraBits2));
   }
   return Alignment(MinLogAlign, ExtraBits2 & ((1 << MinLogAlign) - 1));
 }
@@ -389,7 +390,7 @@ Alignment Alignment::mul(Alignment Other) const
     ExtraBits2 = (ExtraBits * Other.ExtraBits)
       & ((1 << MinLogAlign) - 1);
     MinLogAlign = std::min(MinLogAlign,
-      (unsigned)countTrailingZeros(ExtraBits2, ZB_Width));
+      (unsigned)IGCLLVM::countTrailingZeros(ExtraBits2));
   }
   return Alignment(MinLogAlign, ExtraBits2 & ((1 << MinLogAlign) - 1));
 }
@@ -407,7 +408,7 @@ Alignment Alignment::logicalOp(ConstantInt *CI, SelectFunction F) const {
       Val > std::numeric_limits<int>::max())
     return Alignment::getUnknown();
   unsigned UVal = static_cast<unsigned>(std::abs(Val));
-  unsigned ValLSB = countTrailingZeros(UVal, ZB_Width);
+  unsigned ValLSB = IGCLLVM::countTrailingZeros(UVal);
   // Chop off constant bits according to log align
   unsigned NewLogAlign = F(ValLSB, LogAlign);
   return Alignment(NewLogAlign, UVal & ((1 << NewLogAlign) - 1));

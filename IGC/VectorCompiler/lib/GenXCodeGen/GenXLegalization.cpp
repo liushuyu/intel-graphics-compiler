@@ -227,6 +227,7 @@ SPDX-License-Identifier: MIT
 #include "llvm/Transforms/Utils/Local.h"
 
 #include "llvmWrapper/IR/DerivedTypes.h"
+#include "llvmWrapper/Support/MathExtras.h"
 
 #define DEBUG_TYPE "GENX_LEGALIZATION"
 
@@ -1331,7 +1332,7 @@ unsigned GenXLegalization::determineWidth(unsigned WholeWidth,
     ExecSizeAllowedBits &= 0x1f;
 
   unsigned MainInstMinWidth =
-      1 << countTrailingZeros(ExecSizeAllowedBits, ZB_Undefined);
+      1 << IGCLLVM::countTrailingZeros(ExecSizeAllowedBits, true);
   // Determine the vector width that we need to split into.
   bool IsReadSameVector = false;
   unsigned Width = WholeWidth - StartIdx;

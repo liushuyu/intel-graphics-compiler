@@ -1212,7 +1212,7 @@ unsigned ConstantLoader::getRegionBits(unsigned NeededBits,
   if (!NeededBits)
     return 0;
   // Get the first and last element numbers in NeededBits.
-  unsigned FirstNeeded = countTrailingZeros(NeededBits, ZB_Undefined);
+  unsigned FirstNeeded = IGCLLVM::countTrailingZeros(NeededBits, true);
   unsigned LastNeeded = 31 - countLeadingZeros((uint32_t)NeededBits, ZB_Undefined);
   // Set the max width to the min size including both those elements
   // rounded up to the next power of two.

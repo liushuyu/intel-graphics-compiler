@@ -12,6 +12,7 @@ SPDX-License-Identifier: MIT
 //===----------------------------------------------------------------------===//
 
 #include "llvmWrapper/IR/DerivedTypes.h"
+#include "llvmWrapper/Support/MathExtras.h"
 #include "llvmWrapper/Support/TypeSize.h"
 
 #include "vc/Utils/General/Types.h"
@@ -217,11 +218,11 @@ CMRegion::CMRegion(unsigned Bits, unsigned ElementBytes)
       IndirectAddrOffset(0), Mask(0), ParentWidth(0)
 {
   IGC_ASSERT(Bits);
-  Offset = countTrailingZeros(Bits, ZB_Undefined);
+  Offset = IGCLLVM::countTrailingZeros(Bits, true);
   Bits >>= Offset;
   Offset *= ElementBytes;
   if (Bits != 1) {
-    Stride = countTrailingZeros(Bits & ~1, ZB_Undefined);
+    Stride = IGCLLVM::countTrailingZeros(Bits & ~1, true);
     NumElements = Width = countPopulation(Bits);
   }
 }

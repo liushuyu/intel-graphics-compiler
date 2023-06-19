@@ -27,6 +27,7 @@ SPDX-License-Identifier: MIT
 #include "llvmWrapper/IR/DerivedTypes.h"
 #include "llvmWrapper/IR/Instructions.h"
 #include "llvmWrapper/Support/Alignment.h"
+#include "llvmWrapper/Support/MathExtras.h"
 
 #include "Probe/Assertion.h"
 
@@ -769,8 +770,8 @@ void CMABI::diagnoseOverlappingArgs(CallInst *CI)
                                    ->getType()
                                    ->getScalarType()
                                    ->getPrimitiveSizeInBits();
-      int LogRatio = countTrailingZeros(OutElementSize, ZB_Undefined) -
-                     countTrailingZeros(InElementSize, ZB_Undefined);
+      int LogRatio = IGCLLVM::countTrailingZeros(OutElementSize, true) -
+                     IGCLLVM::countTrailingZeros(InElementSize, true);
       auto OpndEntry = &ValMap[BC->getOperand(0)];
       if (!LogRatio)
         VectorToMerge = OpndEntry;
