@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
 ============================= end_copyright_notice ===========================*/
 
 #include "vc/Utils/GenX/Printf.h"
+#include "llvmWrapper/ADT/Optional.h"
 #include "vc/Utils/General/IRBuilder.h"
 #include "vc/Utils/General/RegexIterator.h"
 #include "vc/Utils/General/Types.h"
@@ -122,7 +123,7 @@ Optional<StringRef> vc::getConstStringFromOperandOptional(const Value &Op) {
 }
 
 StringRef vc::getConstStringFromOperand(const Value &Op) {
-  auto FmtStr = getConstStringFromOperandOptional(Op);
+  auto FmtStr = IGCLLVM::wrapOptional(getConstStringFromOperandOptional(Op));
   IGC_ASSERT_MESSAGE(FmtStr.hasValue(),
                      "couldn't reach constexpr string through pointer operand");
   return FmtStr.getValue();

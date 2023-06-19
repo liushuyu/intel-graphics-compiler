@@ -10,11 +10,22 @@ SPDX-License-Identifier: MIT
 #define IGCLLVM_ADT_OPTIONAL_H
 
 #include <llvm/ADT/Optional.h>
+#include <optional>
 
 namespace IGCLLVM {
-template <typename T> class Optional : public llvm::Optional<T> {
+template <typename T> class Optional : public
+#if LLVM_VERSION_MAJOR < 16
+llvm::Optional<T> 
+#else
+std::optional<T>
+#endif
+{
 public:
+#if LLVM_VERSION_MAJOR < 16
   using BaseT = llvm::Optional<T>;
+#else
+  using BaseT = std::optional<T>;
+#endif
   constexpr Optional(const BaseT &O) : BaseT(O) {}
   constexpr Optional(BaseT &&O) : BaseT(std::move(O)) {}
 
@@ -31,11 +42,22 @@ public:
   }
 #endif
 
-  // TODO: Once relevant, add similar wrappers per LLVM 16 deprecations.
-  // Example:
-  // T &value() &noexcept {
-  //   return getValue();
-  // }
+  constexpr T &value() &noexcept {
+#if LLVM_VERSION_MAJOR < 16
+    return this->getValue();
+#else
+    assert(this.has_value());
+    return *this;
+#endif
+  }
+
+  constexpr bool hasValue() const noexcept {
+#if LLVM_VERSION_MAJOR < 16
+    return this->hasValue();
+#else
+    return this.has_value();
+#endif
+  }
 };
 
 template <typename T>
