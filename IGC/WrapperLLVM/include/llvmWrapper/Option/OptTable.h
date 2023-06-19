@@ -14,6 +14,14 @@ SPDX-License-Identifier: MIT
 #include "llvm/Support/raw_ostream.h"
 
 namespace IGCLLVM {
+#if LLVM_VERSION_MAJOR >= 16
+      typedef llvm::ArrayRef<llvm::StringLiteral> igc_prefixes_list_t;
+      using IGCOptTable = llvm::opt::GenericOptTable;
+#else
+      typedef const char *const igc_prefixes_list_t[];
+      using IGCOptTable = llvm::opt::OptTable;
+#endif
+
 inline void printHelp(const llvm::opt::OptTable &Options, llvm::raw_ostream &OS,
                       const char *Usage, const char *Title,
                       unsigned FlagsToInclude, unsigned FlagsToExclude,
