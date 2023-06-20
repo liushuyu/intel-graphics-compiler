@@ -26,6 +26,7 @@ SPDX-License-Identifier: MIT
 #include "llvm/IR/Module.h"
 
 #include "llvmWrapper/ADT/Optional.h"
+#include "llvmWrapper/Support/MathExtras.h"
 #include "llvmWrapper/IR/DerivedTypes.h"
 
 #include "Probe/Assertion.h"
@@ -49,7 +50,7 @@ class Bale;
 // the input is not a power of 2.
 inline int exactLog2(unsigned Val)
 {
-  unsigned CLZ = countLeadingZeros(Val, ZB_Width);
+  unsigned CLZ = IGCLLVM::countLeadingZeros(Val);
   if (CLZ != 32 && 1U << (31 - CLZ) == Val)
     return 31 - CLZ;
   return -1;
@@ -62,7 +63,7 @@ inline int log2(T Val)
 {
   if (Val <= 0)
     return -1;
-  unsigned CLZ = countLeadingZeros((uint32_t)Val, ZB_Width);
+  unsigned CLZ = IGCLLVM::countLeadingZeros((uint32_t)Val);
   return 31 - CLZ;
 }
 

@@ -183,7 +183,7 @@ static unsigned getAndNumBits(Instruction *Inst)
   if (auto C = dyn_cast<Constant>(Inst->getOperand(1))) {
     if ((C = C->getSplatValue())) {
       uint64_t Val = cast<ConstantInt>(C)->getZExtValue();
-      return 64 - countLeadingZeros(Val, ZB_Width);
+      return 64 - IGCLLVM::countLeadingZeros(Val);
     }
   }
   return Inst->getType()->getScalarType()->getPrimitiveSizeInBits();
@@ -974,7 +974,7 @@ GenXReduceIntSize::ValueNumBits GenXReduceIntSize::getValueNumBits(
     if (C) {
       int64_t Val = cast<ConstantInt>(C)->getSExtValue();
       if (Val >= 0)
-        return ValueNumBits(64 - countLeadingZeros((uint64_t)Val, ZB_Width)
+        return ValueNumBits(64 - IGCLLVM::countLeadingZeros((uint64_t)Val)
             + PreferSigned, /*IsSignExtended=*/PreferSigned);
       if (Val == std::numeric_limits<int64_t>::min())
         return ValueNumBits(64, /*isSignExtended=*/false);

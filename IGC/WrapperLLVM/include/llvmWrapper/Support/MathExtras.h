@@ -86,6 +86,15 @@ inline unsigned countTrailingZeros(T Val, [[maybe_unused]] bool ZB_Undefined = f
   return llvm::countTrailingZeros(Val);
 #endif
 }
+
+template <typename T>
+inline unsigned countLeadingZeros(T Val, [[maybe_unused]] bool ZB_Undefined = false) {
+#if LLVM_VERSION_MAJOR < 16
+  return llvm::countLeadingZeros(Val, ZB_Undefined ? llvm::ZB_Undefined : llvm::ZB_Width);
+#else
+  return llvm::countLeadingZeros(Val);
+#endif
+}
 }
 
 #endif

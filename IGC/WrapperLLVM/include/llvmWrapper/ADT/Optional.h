@@ -12,7 +12,10 @@ SPDX-License-Identifier: MIT
 #if LLVM_VERSION_MAJOR < 16
 #include <llvm/ADT/Optional.h>
 #endif
+#include <cassert>
 #include <optional>
+
+#include "llvmWrapper/ADT/None.h"
 
 namespace IGCLLVM {
 #if LLVM_VERSION_MAJOR < 16
@@ -42,11 +45,12 @@ template <typename T> class Optional : public std::optional<T>
 public:
 
   constexpr Optional<T>(): std::optional<T>() {}
+  constexpr Optional<T>(const std::optional<T> &O): std::optional<T>(O) {}
   constexpr Optional<T>(std::nullopt_t O): std::optional<T>(O) {}
   constexpr Optional<T>(T &O): std::optional<T>(O) {}
   constexpr Optional<T>(T &&O): std::optional<T>(O) {}
 
-  constexpr T &value() &noexcept {
+  constexpr T &getValue() &noexcept {
     assert(this->has_value());
     return *this;
   }
@@ -58,7 +62,7 @@ public:
 
 template <typename T>
 Optional<T> wrapOptional(const std::optional<T> &O) {
-  return { O };
+  return Optional{ O };
 }
 #endif
 
