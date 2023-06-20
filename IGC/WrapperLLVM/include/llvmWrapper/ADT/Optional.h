@@ -9,61 +9,59 @@ SPDX-License-Identifier: MIT
 #ifndef IGCLLVM_ADT_OPTIONAL_H
 #define IGCLLVM_ADT_OPTIONAL_H
 
+#if LLVM_VERSION_MAJOR < 16
 #include <llvm/ADT/Optional.h>
+#endif
 #include <optional>
 
 namespace IGCLLVM {
-template <typename T> class Optional : public
 #if LLVM_VERSION_MAJOR < 16
-llvm::Optional<T> 
-#else
-std::optional<T>
+  template <typename T>
+  using Optional = llvm::Optional<T>;
+
+  template <typename T>
+  Optional<T> wrapOptional(const llvm::Optional<T> &O) {
+    return { O };
+  }
+  /* ---------------------|
+  | Deprecated in LLVM 15 |
+  | -------------------- */
+#if LLVM_VERSION_MAJOR < 15
+    template <typename U> constexpr T value_or(U &&alt) const & {
+      return this->getValueOr(std::forward<U>(alt));
+    }
+
+    template <typename U> T value_or(U &&alt) && {
+      return this->getValueOr(std::forward<U>(alt));
+    }
 #endif
+#else
+// compatibility layer
+template <typename T> class Optional : public std::optional<T>
 {
 public:
-#if LLVM_VERSION_MAJOR < 16
-  using BaseT = llvm::Optional<T>;
-#else
-  using BaseT = std::optional<T>;
-#endif
-  constexpr Optional(const BaseT &O) : BaseT(O) {}
-  constexpr Optional(BaseT &&O) : BaseT(std::move(O)) {}
 
-/* ---------------------|
-| Deprecated in LLVM 15 |
-| -------------------- */
-#if LLVM_VERSION_MAJOR < 15
-  template <typename U> constexpr T value_or(U &&alt) const & {
-    return this->getValueOr(std::forward<U>(alt));
-  }
-
-  template <typename U> T value_or(U &&alt) && {
-    return this->getValueOr(std::forward<U>(alt));
-  }
-#endif
+  constexpr Optional<T>(): std::optional<T>() {}
+  constexpr Optional<T>(std::nullopt_t O): std::optional<T>(O) {}
+  constexpr Optional<T>(T &O): std::optional<T>(O) {}
+  constexpr Optional<T>(T &&O): std::optional<T>(O) {}
 
   constexpr T &value() &noexcept {
-#if LLVM_VERSION_MAJOR < 16
-    return this->getValue();
-#else
-    assert(this.has_value());
+    assert(this->has_value());
     return *this;
-#endif
   }
 
   constexpr bool hasValue() const noexcept {
-#if LLVM_VERSION_MAJOR < 16
-    return this->hasValue();
-#else
-    return this.has_value();
-#endif
+    return this->has_value();
   }
 };
 
 template <typename T>
-Optional<T> wrapOptional(const llvm::Optional<T> &O) {
+Optional<T> wrapOptional(const std::optional<T> &O) {
   return { O };
 }
+#endif
+
 } // namespace IGCLLVM
 
 #endif // IGCLLVM_ADT_OPTIONAL_H
