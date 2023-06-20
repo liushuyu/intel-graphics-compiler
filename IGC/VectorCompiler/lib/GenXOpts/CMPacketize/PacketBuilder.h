@@ -25,6 +25,7 @@ SPDX-License-Identifier: MIT
 
 #include <deque>
 #include <unordered_map>
+#include <cmath>
 
 using namespace llvm;
 

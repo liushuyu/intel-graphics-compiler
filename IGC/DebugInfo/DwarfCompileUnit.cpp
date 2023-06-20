@@ -48,6 +48,8 @@ See LICENSE.TXT for details.
 
 #include "Probe/Assertion.h"
 
+#include <cmath>
+
 #define DEBUG_TYPE "dwarfdebug"
 
 using namespace llvm;
