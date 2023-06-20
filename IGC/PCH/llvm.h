@@ -254,7 +254,7 @@ SPDX-License-Identifier: MIT
 // Excluded LLVM headers with reasons
 
 // #include "llvm/ADT/APInt.h" - uses llvmWrapper
-// #include "llvm/ADT/Optional.h" - uses llvmWrapper
+// #include "llvmWrapper/ADT/Optional.h" - uses llvmWrapper
 // #include "llvm/ADT/STLExtras.h" - uses llvmWrapper
 // #include "llvm/ADT/StringExtras.h" - uses llvmWrapper
 // #include "llvm/ADT/StringRef.h" - uses llvmWrapper

@@ -19,7 +19,7 @@ SPDX-License-Identifier: MIT
 #include <inc/common/sku_wa.h>
 
 #include <llvm/ADT/ArrayRef.h>
-#include <llvm/ADT/Optional.h>
+#include <llvmWrapper/ADT/Optional.h>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/MemoryBuffer.h>
 #include <llvm/Target/TargetOptions.h>
@@ -96,8 +96,8 @@ struct CompileOptions {
   OptimizerLevel IROptLevel = OptimizerLevel::Full;
   OptimizerLevel CodegenOptLevel = OptimizerLevel::Full;
 
-  llvm::Optional<unsigned> StackMemSize;
-  llvm::Optional<unsigned> GRFSize;
+  IGCLLVM::Optional<unsigned> StackMemSize;
+  IGCLLVM::Optional<unsigned> GRFSize;
 
   bool ForceLiveRangesLocalizationForAccUsage = false;
   bool ForceDisableNonOverlappingRegionOpt = false;

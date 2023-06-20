@@ -41,7 +41,7 @@ SPDX-License-Identifier: MIT
 #include <llvm/ADT/DenseMap.h>
 #include <llvm/ADT/StringMap.h>
 #include <llvm/ADT/StringRef.h>
-#include <llvm/ADT/Optional.h>
+#include <llvmWrapper/ADT/Optional.h>
 #include <llvm/IR/IRBuilder.h>
 #include "llvm/IR/Function.h"
 #include "llvm/IR/ValueMap.h"
@@ -541,7 +541,7 @@ namespace IGC
         // This is the default shader that is executed when the RTUnit
         // encounters a null shader. It is optional because there is
         // no need to compile it for collection state objects.
-        llvm::Optional<SBindlessProgram> callStackHandler;
+        IGCLLVM::Optional<SBindlessProgram> callStackHandler;
         // These are the raygen shaders
         llvm::SmallVector<SBindlessProgram, 4> m_DispatchPrograms;
         // Non raygen shaders
@@ -1112,7 +1112,7 @@ namespace IGC
 
         uint64_t GetSIMDInfo() { return m_SIMDInfo; }
 
-        virtual llvm::Optional<SIMDMode> knownSIMDSize() const {
+        virtual IGCLLVM::Optional<SIMDMode> knownSIMDSize() const {
             return IGCLLVM::None;
         }
 

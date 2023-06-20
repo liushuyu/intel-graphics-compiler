@@ -285,7 +285,7 @@ Instruction *genx::findClosestCommonDominator(const DominatorTree *DT,
  * in the same register as the result. This function returns the operand number
  * of the two address operand if any, or IGCLLVM::None if not.
  */
-llvm::Optional<unsigned> genx::getTwoAddressOperandNum(CallInst *CI)
+IGCLLVM::Optional<unsigned> genx::getTwoAddressOperandNum(CallInst *CI)
 {
   auto IntrinsicID = vc::getAnyIntrinsicID(CI);
   if (IntrinsicID == GenXIntrinsic::not_any_intrinsic)
@@ -625,7 +625,7 @@ void makeSVIIndexesOperandIndexes(const ShuffleVectorInst &SI,
 //    or std::next(FirstIt) if there is no such one and second element to
 //    be estimated stride if positive and integer, empty value otherwise.
 template <typename ForwardIter>
-std::pair<ForwardIter, llvm::Optional<int>>
+std::pair<ForwardIter, IGCLLVM::Optional<int>>
 estimateHorizontalStride(ForwardIter FirstIt, ForwardIter LastIt) {
 
   IGC_ASSERT_MESSAGE(FirstIt != LastIt, "the range must contain at least 1 element");
@@ -638,13 +638,13 @@ estimateHorizontalStride(ForwardIter FirstIt, ForwardIter LastIt) {
                    [](MaskIndex Elem) { return Elem.isDefined(); });
 
   if (NextDefined == LastIt)
-    return {std::next(FirstIt), llvm::Optional<int>{}};
+    return {std::next(FirstIt), IGCLLVM::Optional<int>{}};
 
   int TotalStride = *NextDefined - *FirstIt;
   int TotalWidth = std::distance(FirstIt, NextDefined);
 
   if (TotalStride < 0 || (TotalStride % TotalWidth != 0 && TotalStride != 0))
-    return {NextDefined, llvm::Optional<int>{}};
+    return {NextDefined, IGCLLVM::Optional<int>{}};
 
   return {NextDefined, TotalStride / TotalWidth};
 }
@@ -676,14 +676,14 @@ Region matchVectorRegionByIndexes(Region FirstElemRegion, ForwardIter FirstIt,
   if (std::distance(FirstIt, LastIt) == 1)
     return FirstElemRegion;
 
-  llvm::Optional<int> RefStride;
+  IGCLLVM::Optional<int> RefStride;
   ForwardIter NewRowIt;
   std::tie(NewRowIt, RefStride) = estimateHorizontalStride(FirstIt, LastIt);
 
   if (!RefStride)
     return FirstElemRegion;
 
-  llvm::Optional<int> Stride = RefStride;
+  IGCLLVM::Optional<int> Stride = RefStride;
   while (Stride == RefStride)
     std::tie(NewRowIt, Stride) = estimateHorizontalStride(NewRowIt, LastIt);
 
@@ -719,7 +719,7 @@ Region matchVectorRegionByIndexes(Region FirstElemRegion, ForwardIter FirstIt,
 //    Value of estimated vertical stride if it is positive and integer,
 //    empty value otherwise
 template <typename ForwardIter>
-llvm::Optional<int> estimateVerticalStride(Region FirstRowRegion,
+IGCLLVM::Optional<int> estimateVerticalStride(Region FirstRowRegion,
                                            ForwardIter FirstIt,
                                            ForwardIter ReferenceIt) {
 
@@ -736,9 +736,9 @@ llvm::Optional<int> estimateVerticalStride(Region FirstRowRegion,
   int HStridesToDef = TotalDistance % Width;
   int TotalVerticalStride = *ReferenceIt - *std::next(FirstIt, HStridesToDef);
   if (TotalVerticalStride < 0 || TotalVerticalStride % VStridesToDef != 0)
-    return llvm::Optional<int>{};
+    return IGCLLVM::Optional<int>{};
 
-  return llvm::Optional<int>{TotalVerticalStride / VStridesToDef};
+  return IGCLLVM::Optional<int>{TotalVerticalStride / VStridesToDef};
 }
 
 // Matches "matrix" region (vstride may not equal to 0) pattern in
@@ -787,7 +787,7 @@ Region matchMatrixRegionByIndexes(Region FirstRowRegion, ForwardIter FirstIt,
   std::generate(std::next(FirstIt), FirstRowEndIt,
                 [Idx, Stride]() mutable { return MaskIndex{Idx += Stride}; });
 
-  llvm::Optional<int> VStride =
+  IGCLLVM::Optional<int> VStride =
       estimateVerticalStride(FirstRowRegion, FirstIt, FirstDefined);
   if (!VStride)
     return FirstRowRegion;

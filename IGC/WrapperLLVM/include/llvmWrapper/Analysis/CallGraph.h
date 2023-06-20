@@ -34,7 +34,7 @@ using CallGraphNode = llvm::CallGraphNode;
 
 #if LLVM_VERSION_MAJOR < 11
     struct CallRecord final {
-        llvm::Optional<llvm::WeakTrackingVH> first{};
+        IGCLLVM::Optional<llvm::WeakTrackingVH> first{};
         llvm::CallGraphNode *second{nullptr};
 
         CallRecord() = default;

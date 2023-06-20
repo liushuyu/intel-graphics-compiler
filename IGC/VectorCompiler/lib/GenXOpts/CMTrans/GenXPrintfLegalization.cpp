@@ -42,7 +42,7 @@ SPDX-License-Identifier: MIT
 #include "Probe/Assertion.h"
 #include "llvmWrapper/Support/Alignment.h"
 
-#include <llvm/ADT/Optional.h>
+#include <llvmWrapper/ADT/Optional.h>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/IR/GlobalVariable.h>
 #include <llvm/IR/IRBuilder.h>

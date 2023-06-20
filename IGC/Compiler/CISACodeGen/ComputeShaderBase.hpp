@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
 
 #include "Compiler/CISACodeGen/ShaderCodeGen.hpp"
 #include "common/LLVMWarningsPush.hpp"
-#include "llvm/ADT/Optional.h"
+#include "llvmWrapper/ADT/Optional.h"
 #include "common/LLVMWarningsPop.hpp"
 
 namespace IGC
@@ -48,12 +48,12 @@ namespace IGC
         bool m_enableHWGenerateLID = false;
 
         void setEmitLocalMask(SGVUsage channelNum);
-        static llvm::Optional<CS_WALK_ORDER> selectBestWalkOrder(
+        static IGCLLVM::Optional<CS_WALK_ORDER> selectBestWalkOrder(
             ThreadIDLayout Layout,
             bool is_pow2_x, bool is_pow2_y, bool is_pow2_z);
         // Determines if HW can handle auto generating local IDs with this
         // order
-        static llvm::Optional<CS_WALK_ORDER> checkLegalWalkOrder(
+        static IGCLLVM::Optional<CS_WALK_ORDER> checkLegalWalkOrder(
             const std::array<uint32_t, 3>& Dims,
             const WorkGroupWalkOrderMD& WO);
         static bool enableHWGenerateLID(

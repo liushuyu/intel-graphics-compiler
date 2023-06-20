@@ -113,7 +113,7 @@ class StackAnalysis : public InstVisitor<StackAnalysis> {
   // map between Function and its State
   std::unordered_map<Function *, FunctionState> m_ProcessedFs{};
 
-  llvm::Optional<std::pair<uint64_t, alignment_t>> checkFunction(Function &F);
+  IGCLLVM::Optional<std::pair<uint64_t, alignment_t>> checkFunction(Function &F);
   std::string GenerateCallSequence(Function &F);
   void checkKernel(Function &Kernel);
 
@@ -169,7 +169,7 @@ void StackAnalysis::visitFunction(Function &F) {
 }
 
 // Check CallGraph and usage of allocas in function
-llvm::Optional<std::pair<uint64_t, alignment_t>>
+IGCLLVM::Optional<std::pair<uint64_t, alignment_t>>
 StackAnalysis::checkFunction(Function &F) {
   auto pOnF = m_ProcessedFs.find(&F);
   IGC_ASSERT_MESSAGE(pOnF != m_ProcessedFs.end(),

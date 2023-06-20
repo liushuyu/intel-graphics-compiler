@@ -20,13 +20,13 @@ namespace IGCLLVM {
   using Optional = llvm::Optional<T>;
 
   template <typename T>
-  Optional<T> wrapOptional(const llvm::Optional<T> &O) {
+  Optional<T> wrapOptional(const IGCLLVM::Optional<T> &O) {
     return { O };
   }
   /* ---------------------|
   | Deprecated in LLVM 15 |
   | -------------------- */
-#if LLVM_VERSION_MAJOR < 15
+#if 0
     template <typename U> constexpr T value_or(U &&alt) const & {
       return this->getValueOr(std::forward<U>(alt));
     }

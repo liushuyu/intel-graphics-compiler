@@ -29,7 +29,7 @@ struct DebugInfo {
 // Implementation of CGen8CMProgram.
 CGen8CMProgram::CGen8CMProgram(PLATFORM platform, const WA_TABLE &WATable,
                                llvm::ArrayRef<char> SPIRV,
-                               llvm::Optional<llvm::StringRef> Opts)
+                               IGCLLVM::Optional<llvm::StringRef> Opts)
     : CGen8OpenCLProgramBase(platform, m_ContextProvider, WATable),
       m_programInfo(new IGC::SOpenCLProgramInfo), m_spirv(SPIRV), m_opts(Opts) {
 }

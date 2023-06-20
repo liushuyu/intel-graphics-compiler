@@ -346,7 +346,7 @@ public:
     void emitFastClear(llvm::LoadInst* inst);
     void emitFastClearSend(llvm::Instruction* pInst);
     void setRovCacheCtrl(llvm::GenIntrinsicInst* inst);
-    llvm::Optional<LSC_CACHE_OPTS>
+    IGCLLVM::Optional<LSC_CACHE_OPTS>
         setCacheOptionsForConstantBufferLoads(Instruction& inst) const;
     bool useRasterizerOrderedByteAddressBuffer(llvm::GenIntrinsicInst* inst);
     void emitUniformAtomicCounter(llvm::GenIntrinsicInst* pInst);

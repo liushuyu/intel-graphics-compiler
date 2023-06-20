@@ -22,7 +22,7 @@ See LICENSE.TXT for details.
 // clang-format off
 #include "common/LLVMWarningsPush.hpp"
 #include "llvm/ADT/DenseMap.h"
-#include "llvm/ADT/Optional.h"
+#include "llvmWrapper/ADT/Optional.h"
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/ADT/StringMap.h"
 #include "llvm/ADT/StringRef.h"
@@ -153,7 +153,7 @@ public:
   /// addUInt - Add an unsigned integer attribute data and value.
   ///
   void addUInt(DIE *Die, llvm::dwarf::Attribute Attribute,
-               llvm::Optional<llvm::dwarf::Form> Form, uint64_t Integer);
+               IGCLLVM::Optional<llvm::dwarf::Form> Form, uint64_t Integer);
 
   void addUInt(DIEBlock *Block, llvm::dwarf::Form Form, uint64_t Integer);
 
@@ -163,9 +163,9 @@ public:
   /// addSInt - Add an signed integer attribute data and value.
   ///
   void addSInt(DIE *Die, llvm::dwarf::Attribute Attribute,
-               llvm::Optional<llvm::dwarf::Form> Form, int64_t Integer);
+               IGCLLVM::Optional<llvm::dwarf::Form> Form, int64_t Integer);
 
-  void addSInt(DIEBlock *Die, llvm::Optional<llvm::dwarf::Form> Form,
+  void addSInt(DIEBlock *Die, IGCLLVM::Optional<llvm::dwarf::Form> Form,
                int64_t Integer);
 
   /// addString - Add a string attribute data and value.

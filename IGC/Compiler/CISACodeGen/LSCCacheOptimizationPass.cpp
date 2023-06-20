@@ -58,7 +58,7 @@ SPDX-License-Identifier: MIT
 #include <llvm/IR/Constants.h>                           // for llvm::ConstantInt, llvm::ConstantFP, llvm::ConstantVector, llvm::ConstantDataVector, llvm::UndefValue
 #include <llvm/IR/Instruction.h>                         // for llvm::Instruction
 #include <llvm/IR/Instructions.h>                        // for llvm::StoreInst, llvm::CallInst
-#include <llvm/ADT/Optional.h>                           // for llvm::Optional
+#include <llvmWrapper/ADT/Optional.h>                           // for IGCLLVM::Optional
 #include <llvm/ADT/APInt.h>                              // for llvm::APInt, llvm::ArrayRef
 #include <llvm/Support/raw_ostream.h>                    // for llvm::raw_ostream, llvm::raw_string_ostream, llvm::outs(), llvm::errs()
 #include "common/LLVMWarningsPop.hpp"                    // for suppressing LLVM warnings

@@ -183,7 +183,7 @@ DumpName DumpName::PostFix(std::string const& postfixStr) const
     return copy;
 }
 
-DumpName DumpName::Pass(std::string const& name, llvm::Optional<unsigned int> index) const
+DumpName DumpName::Pass(std::string const& name, IGCLLVM::Optional<unsigned int> index) const
 {
     std::string newName = name;
     //remove spaces

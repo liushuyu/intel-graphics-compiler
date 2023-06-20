@@ -25,7 +25,7 @@ SPDX-License-Identifier: MIT
 #include "getCacheOpts.h"
 #include "common/LLVMWarningsPush.hpp"
 #include "llvm/IR/Function.h"
-#include "llvm/ADT/Optional.h"
+#include "llvmWrapper/ADT/Optional.h"
 #include "common/LLVMWarningsPop.hpp"
 
 using namespace llvm;

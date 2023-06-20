@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
 
 #include "Interface.h"
 
-#include <llvm/ADT/Optional.h>
+#include <llvmWrapper/ADT/Optional.h>
 #include <llvm/ADT/StringExtras.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/ADT/Twine.h>
@@ -146,7 +146,7 @@ template <typename Fn> class FEWrapper {
       : ErrHandler(std::forward<ErrFn>(ErrH)), Lib(loadLibrary(DefaultPath)) {}
 
   template <typename ErrFn, typename ErrFnTy>
-  friend llvm::Optional<FEWrapper<ErrFnTy>>
+  friend IGCLLVM::Optional<FEWrapper<ErrFnTy>>
   makeFEWrapper(ErrFn &&ErrH, const std::string &DefaultDir);
 
 public:
@@ -215,7 +215,7 @@ public:
 // Return Optional as it can fail during loading.
 template <typename ErrFn,
           typename ErrFnTy = typename std::decay<ErrFn>::type>
-inline llvm::Optional<FEWrapper<ErrFnTy>>
+inline IGCLLVM::Optional<FEWrapper<ErrFnTy>>
 makeFEWrapper(ErrFn &&ErrH, const std::string &DefaultDir = std::string{}) {
   FEWrapper<ErrFnTy> IFace{std::forward<ErrFn>(ErrH), DefaultDir};
 

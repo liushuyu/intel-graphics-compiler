@@ -135,7 +135,7 @@ public:
 
   explicit CGen8CMProgram(PLATFORM platform, const WA_TABLE &WATable,
                           llvm::ArrayRef<char> SPIRV = IGCLLVM::None,
-                          llvm::Optional<llvm::StringRef> Opts = IGCLLVM::None);
+                          IGCLLVM::Optional<llvm::StringRef> Opts = IGCLLVM::None);
 
   // Produce the final ELF binary with the given CM kernels
   // in OpenCL format.
@@ -158,7 +158,7 @@ public:
 
 private:
   llvm::ArrayRef<char> m_spirv;
-  llvm::Optional<llvm::StringRef> m_opts;
+  IGCLLVM::Optional<llvm::StringRef> m_opts;
 
   TmpFilesStorage extractRawDebugInfo(llvm::raw_ostream &ErrStream);
   std::unique_ptr<llvm::MemoryBuffer> buildZeDebugInfo();

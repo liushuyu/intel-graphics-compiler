@@ -504,7 +504,7 @@ bool fillPrintfData(vc::ExternalData &ExtData) {
   return static_cast<bool>(ExtData.VCPrintf64BIFModule);
 }
 
-static llvm::Optional<vc::ExternalData>
+static IGCLLVM::Optional<vc::ExternalData>
 fillExternalData(vc::BinaryKind Binary, llvm::StringRef CPUStr,
                  llvm::ArrayRef<const char *> VISALTOStrings,
                  llvm::ArrayRef<const char *> DirectCallFunctions) {

@@ -62,7 +62,7 @@ void IGCMetaDataHelper::removeFunction(
     }
 }
 
-llvm::Optional<std::array<uint32_t, 3>>
+IGCLLVM::Optional<std::array<uint32_t, 3>>
 IGCMetaDataHelper::getThreadGroupDims(
     MetaDataUtils& mdUtils,
     llvm::Function* pKernelFunc)
