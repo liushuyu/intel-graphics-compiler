@@ -233,7 +233,7 @@ namespace {
 struct OperandTreatment {
   bool IsEntry;
   unsigned OperandNo;
-  Optional<Value *> NewOperand;
+  IGCLLVM::Optional<Value *> NewOperand;
 };
 } // anonymous namespace
 

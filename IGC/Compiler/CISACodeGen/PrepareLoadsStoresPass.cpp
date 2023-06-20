@@ -61,9 +61,9 @@ public:
 
     static char ID;
 private:
-    Optional<uint32_t> RTAsyncStackAddrSpace;
-    Optional<uint32_t> RTSyncStackAddrSpace;
-    Optional<uint32_t> SWStackAddrSpace;
+    IGCLLVM::Optional<uint32_t> RTAsyncStackAddrSpace;
+    IGCLLVM::Optional<uint32_t> RTSyncStackAddrSpace;
+    IGCLLVM::Optional<uint32_t> SWStackAddrSpace;
 
     bool shouldSplit(uint32_t AddrSpace) const;
 };

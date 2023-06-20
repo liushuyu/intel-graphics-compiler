@@ -22,6 +22,7 @@ SPDX-License-Identifier: MIT
 #include "GenXUtil.h"
 #include "GenXVisa.h"
 
+#include "llvmWrapper/ADT/Optional.h"
 #include "vc/Support/BackendConfig.h"
 #include "vc/Support/GenXDiagnostic.h"
 #include "vc/Utils/General/STLExtras.h"
@@ -777,7 +778,7 @@ bool GenXPromoteArray::runOnFunction(Function &F) {
 IGCLLVM::FixedVectorType &
 GenXPromoteArray::getVectorTypeForAlloca(AllocaInst &Alloca,
                                          Type &ElemTy) const {
-  auto AllocaSize = Alloca.getAllocationSizeInBits(*DL);
+  auto AllocaSize = IGCLLVM::wrapOptional(Alloca.getAllocationSizeInBits(*DL));
   IGC_ASSERT_MESSAGE(AllocaSize.hasValue(), "VLA is not expected");
   auto NumElem = AllocaSize.getValue() / DL->getTypeAllocSizeInBits(&ElemTy);
   return *IGCLLVM::FixedVectorType::get(&ElemTy, NumElem);
@@ -1016,7 +1017,7 @@ bool GenXPromoteArray::checkAllocaUsesInternal(Instruction *I) const {
 
 bool GenXPromoteArray::isAllocaPromotable(AllocaInst &Alloca) {
   // Cannot promote VLA.
-  auto MaybeSize = Alloca.getAllocationSizeInBits(*DL);
+  auto MaybeSize = IGCLLVM::wrapOptional(Alloca.getAllocationSizeInBits(*DL));
   if (!MaybeSize.hasValue())
     return false;
   auto AllocaSize = MaybeSize.getValue() / genx::ByteBits;

@@ -476,13 +476,13 @@ private:
                                const TypeToInstrMap &NewInstr,
                                unsigned PlainTyIdx) const;
 
-  static Optional<
+  static IGCLLVM::Optional<
       std::tuple<DependencyGraph::SElementsOfType, std::vector<Type *>>>
   getIndicesPath(GetElementPtrInst &GEPI);
-  static Optional<
+  static IGCLLVM::Optional<
       std::tuple<std::vector<GetElementPtrInst *>, std::vector<PtrToIntInst *>>>
   getInstUses(Instruction &I);
-  static Optional<uint64_t> processAddOrInst(Instruction &I,
+  static IGCLLVM::Optional<uint64_t> processAddOrInst(Instruction &I,
                                              BinaryOperator &BO);
 
   bool processGEP(GetElementPtrInst &GEPI, const TypeToInstrMap &NewInstr,
@@ -1450,7 +1450,7 @@ bool Substituter::processAlloca(AllocaInst &Alloca) {
 //  (C, 4) -> D
 //  (D, 0) -> A
 //
-Optional<std::tuple<DependencyGraph::SElementsOfType, std::vector<Type *>>>
+IGCLLVM::Optional<std::tuple<DependencyGraph::SElementsOfType, std::vector<Type *>>>
 Substituter::getIndicesPath(GetElementPtrInst &GEPI) {
   const unsigned Size = GEPI.getNumIndices() - 1;
   DependencyGraph::SElementsOfType IdxPath{Size};
@@ -1489,7 +1489,7 @@ Substituter::getIndicesPath(GetElementPtrInst &GEPI) {
 //
 // Gets GEP and PTI users of instruction I.
 //
-Optional<
+IGCLLVM::Optional<
     std::tuple<std::vector<GetElementPtrInst *>, std::vector<PtrToIntInst *>>>
 Substituter::getInstUses(Instruction &I) {
   // Checks That users of Instruction are appropriate.
@@ -1721,7 +1721,7 @@ bool Substituter::processPTI(PtrToIntInst &PTI, const TypeToInstrMap &NewInstr,
 //
 // Callculates offset after add instruction.
 //
-Optional<uint64_t> Substituter::processAddOrInst(Instruction &User,
+IGCLLVM::Optional<uint64_t> Substituter::processAddOrInst(Instruction &User,
                                                  BinaryOperator &BO) {
   IGC_ASSERT_EXIT(BO.getOpcode() == Instruction::Add ||
                   BO.getOpcode() == Instruction::Or);

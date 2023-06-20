@@ -183,7 +183,7 @@ namespace IGC
         overrideWalkOrderKeys(is_pow2_x, is_pow2_y, is_pow2_z, MMD->csInfo);
     }
 
-    Optional<CS_WALK_ORDER>
+    IGCLLVM::Optional<CS_WALK_ORDER>
     CComputeShaderBase::checkLegalWalkOrder(
         const std::array<uint32_t, 3>& Dims,
         const WorkGroupWalkOrderMD& WO)
@@ -219,7 +219,7 @@ namespace IGC
         return IGCLLVM::None;
     }
 
-    Optional<CS_WALK_ORDER>
+    IGCLLVM::Optional<CS_WALK_ORDER>
     CComputeShaderBase::selectBestWalkOrder(
         ThreadIDLayout Layout,
         bool is_pow2_x, bool is_pow2_y, bool is_pow2_z)

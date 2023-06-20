@@ -435,7 +435,7 @@ Instruction* LSCFuncsResolution::CreateLSCFenceIntrinsicCallInst() {
     }
 
     Function *lscFunc = GenISAIntrinsic::getDeclaration(
-        m_pCurrInstFunc->getParent(), GenISAIntrinsic::GenISA_LSCFence, None);
+        m_pCurrInstFunc->getParent(), GenISAIntrinsic::GenISA_LSCFence, IGCLLVM::None);
     Instruction* lscCall = CallInst::Create(lscFunc, args, "", m_pCurrInst);
     return lscCall;
 }

@@ -183,7 +183,7 @@ namespace
                 return builder.CreateAdd(offsetInBytes, getLdRaw()->getOffsetValue());
             }
         }
-        static Optional<AbstractLoadInst> get(llvm::Value* value, const DataLayout &DL)
+        static IGCLLVM::Optional<AbstractLoadInst> get(llvm::Value* value, const DataLayout &DL)
         {
             if (LoadInst * LI = dyn_cast<LoadInst>(value))
             {
@@ -295,7 +295,7 @@ namespace
                 return builder.CreateAdd(offsetInBytes, getStoreRaw()->getArgOperand(1));
             }
         }
-        static Optional<AbstractStoreInst> get(llvm::Value* value, const DataLayout &DL)
+        static IGCLLVM::Optional<AbstractStoreInst> get(llvm::Value* value, const DataLayout &DL)
         {
             if (StoreInst * SI = dyn_cast<StoreInst>(value))
             {
@@ -972,8 +972,8 @@ bool VectorPreProcess::splitLoad(
 bool VectorPreProcess::splitLoadStore(
     Instruction* Inst, V2SMap& vecToSubVec, WIAnalysisRunner& WI)
 {
-    Optional<AbstractLoadInst> ALI = AbstractLoadInst::get(Inst, *m_DL);
-    Optional<AbstractStoreInst> ASI = AbstractStoreInst::get(Inst, *m_DL);
+    IGCLLVM::Optional<AbstractLoadInst> ALI = AbstractLoadInst::get(Inst, *m_DL);
+    IGCLLVM::Optional<AbstractStoreInst> ASI = AbstractStoreInst::get(Inst, *m_DL);
     IGC_ASSERT_MESSAGE((ALI || ASI), "Inst should be either load or store");
     Type* Ty = ALI ? ALI->getInst()->getType() : ASI->getValueOperand()->getType();
     IGCLLVM::FixedVectorType* VTy = dyn_cast<IGCLLVM::FixedVectorType>(Ty);
@@ -1005,7 +1005,7 @@ bool VectorPreProcess::splitLoadStore(
     // has not been splitted yet, then splitting the load first
     // so that the stored value will be directly from loaded values
     // without adding insert/extract instructions.
-    Optional<AbstractLoadInst> aALI = (ASI && !isInMap) ? AbstractLoadInst::get(V, *m_DL) : ALI;
+    IGCLLVM::Optional<AbstractLoadInst> aALI = (ASI && !isInMap) ? AbstractLoadInst::get(V, *m_DL) : ALI;
 
     if (aALI)
     {
@@ -1028,9 +1028,9 @@ bool VectorPreProcess::splitLoadStore(
 // payloads larger than 4 DW.
 bool VectorPreProcess::splitVector3LoadStore(Instruction* Inst)
 {
-    Optional<AbstractLoadInst> optionalALI = AbstractLoadInst::get(Inst, *m_DL);
+    IGCLLVM::Optional<AbstractLoadInst> optionalALI = AbstractLoadInst::get(Inst, *m_DL);
     AbstractLoadInst* ALI = optionalALI ? optionalALI.getPointer() : nullptr;
-    Optional<AbstractStoreInst> optionalASI = AbstractStoreInst::get(Inst, *m_DL);
+    IGCLLVM::Optional<AbstractStoreInst> optionalASI = AbstractStoreInst::get(Inst, *m_DL);
     AbstractStoreInst* ASI = optionalASI ? optionalASI.getPointer() : nullptr;
     IGC_ASSERT_MESSAGE((optionalALI || optionalASI), "Inst should be either load or store");
     Type* Ty = ALI ? ALI->getInst()->getType() : ASI->getValueOperand()->getType();
@@ -1330,7 +1330,7 @@ void VectorPreProcess::getOrGenScalarValues(
 //
 Instruction* VectorPreProcess::simplifyLoadStore(Instruction* Inst)
 {
-    if (Optional<AbstractLoadInst> optionalALI = AbstractLoadInst::get(Inst, *m_DL))
+    if (IGCLLVM::Optional<AbstractLoadInst> optionalALI = AbstractLoadInst::get(Inst, *m_DL))
     {
         bool optReportEnabled = IGC_IS_FLAG_ENABLED(EnableOptReportLoadNarrowing);
         auto emitOptReport = [&](std::string report, Instruction* from, Instruction* to)
@@ -1584,7 +1584,7 @@ Instruction* VectorPreProcess::simplifyLoadStore(Instruction* Inst)
     // store <3 x float> %8, <3 x float>* %5, align 16
     //
     IGC_ASSERT(isAbstractStoreInst(Inst));
-    Optional<AbstractStoreInst> optionalASI = AbstractStoreInst::get(Inst, *m_DL);
+    IGCLLVM::Optional<AbstractStoreInst> optionalASI = AbstractStoreInst::get(Inst, *m_DL);
     AbstractStoreInst& ASI = optionalASI.getValue();
     Value* Val = ASI.getValueOperand();
     if (isa<UndefValue>(Val))
@@ -1833,7 +1833,7 @@ bool VectorPreProcess::runOnFunction(Function& F)
         for (uint32_t i = 0; i < m_Temps.size(); ++i)
         {
             Value* V = m_Temps[i];
-            Optional<AbstractLoadInst> ALI = AbstractLoadInst::get(V, *m_DL);
+            IGCLLVM::Optional<AbstractLoadInst> ALI = AbstractLoadInst::get(V, *m_DL);
             if (!ALI)
             {
                 continue;

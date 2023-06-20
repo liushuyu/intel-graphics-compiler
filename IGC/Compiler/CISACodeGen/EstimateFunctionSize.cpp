@@ -28,6 +28,7 @@ SPDX-License-Identifier: MIT
 #include <deque>
 #include <iostream>
 #include <cfloat>
+#include <cmath>
 
 using namespace llvm;
 using namespace IGC;
@@ -519,7 +520,7 @@ void EstimateFunctionSize::updateStaticFuncFreq()
             Function* Caller = CS.getCaller();
             BasicBlock* CSBB = CS.getInstruction()->getParent();
 #else
-            Optional<Scaled64> Res = IGCLLVM::None;
+            IGCLLVM::Optional<Scaled64> Res = IGCLLVM::None;
             if (!Edge.first)
                 return Res;
             CallBase& CB = *cast<CallBase>(*Edge.first);
@@ -535,7 +536,7 @@ void EstimateFunctionSize::updateStaticFuncFreq()
             IGC_ASSERT(EntryFreq != 0);
             BBCount /= EntryFreq;
             BBCount *= Counts[Caller];
-            return Optional<Scaled64>(BBCount);
+            return IGCLLVM::Optional<Scaled64>(BBCount);
     };
     CallGraph CG(*M);
     // Propgate the entry counts on the callgraph.

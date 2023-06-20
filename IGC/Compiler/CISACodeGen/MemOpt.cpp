@@ -123,7 +123,7 @@ namespace {
         bool removeRedBlockRead(GenIntrinsicInst* LeadingLoad, MemRefListTy::iterator MI,
             MemRefListTy& MemRefs, TrivialMemRefListTy& ToOpt, unsigned& SimdSize);
 
-        Optional<unsigned> chainedSelectAndPhis(Instruction* Inst, unsigned depth,
+        IGCLLVM::Optional<unsigned> chainedSelectAndPhis(Instruction* Inst, unsigned depth,
             llvm::DenseMap<Instruction*, unsigned> &depthTracking);
 
         void removeVectorBlockRead(Instruction* BlockReadToOptimize, Instruction* BlockReadToRemove,
@@ -938,7 +938,7 @@ Value* MemOpt::getShuffle(Value* ShflId,
 // The following function "chainedSelectAndPhis" is designed to avoid going into SCEV in special circumstances
 // when the shader has a large set of chained phi nodes and selects. One of the downsides of SCEV is it is a
 // recursive approach and can cause a stack overflow when tracing back instructions.
-Optional<unsigned> MemOpt::chainedSelectAndPhis(Instruction* Inst , unsigned depth,
+IGCLLVM::Optional<unsigned> MemOpt::chainedSelectAndPhis(Instruction* Inst , unsigned depth,
     llvm::DenseMap<Instruction*, unsigned> &depthTracking)
 {
     //Max depth set to 300
@@ -962,7 +962,7 @@ Optional<unsigned> MemOpt::chainedSelectAndPhis(Instruction* Inst , unsigned dep
         {
             if (isa<PHINode>(op_inst) || isa<SelectInst>(op_inst))
             {
-                Optional<unsigned> RemDepth = chainedSelectAndPhis(op_inst, depth + 1, depthTracking);
+                IGCLLVM::Optional<unsigned> RemDepth = chainedSelectAndPhis(op_inst, depth + 1, depthTracking);
                 if (!RemDepth)
                     return IGCLLVM::None;
                 MaxRemDepth = std::max(MaxRemDepth, *RemDepth + 1);

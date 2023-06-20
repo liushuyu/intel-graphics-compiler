@@ -20559,7 +20559,7 @@ LSC_CACHE_OPTS EmitPass::translateLSCCacheControlsFromValue(
         isLoad);
 }
 
-static Optional<LSC_CACHE_OPTS>
+static IGCLLVM::Optional<LSC_CACHE_OPTS>
 setCacheOptionsForConstantBufferLoads(Instruction& inst, LSC_L1_L3_CC Ctrl)
 {
     if (const Value* resourcePointer = GetBufferOperand(&inst))
@@ -20577,10 +20577,10 @@ setCacheOptionsForConstantBufferLoads(Instruction& inst, LSC_L1_L3_CC Ctrl)
     return IGCLLVM::None;
 }
 
-Optional<LSC_CACHE_OPTS>
+IGCLLVM::Optional<LSC_CACHE_OPTS>
 EmitPass::setCacheOptionsForConstantBufferLoads(Instruction& inst) const
 {
-    Optional<LSC_CACHE_OPTS> cacheOpts;
+    IGCLLVM::Optional<LSC_CACHE_OPTS> cacheOpts;
     if (m_pCtx->type == ShaderType::RAYTRACING_SHADER &&
         IGC_IS_FLAG_ENABLED(ForceRTConstantBufferCacheCtrl))
     {

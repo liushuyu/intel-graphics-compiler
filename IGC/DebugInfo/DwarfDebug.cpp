@@ -982,7 +982,7 @@ CompileUnit *DwarfDebug::constructCompileUnit(DICompileUnit *DIUnit) {
   } else {
     auto highPC = m_pModule->getUnpaddedProgramSize();
     NewCU->addUInt(Die, dwarf::DW_AT_low_pc, dwarf::DW_FORM_addr, 0);
-    NewCU->addUInt(Die, dwarf::DW_AT_high_pc, Optional<dwarf::Form>(), highPC);
+    NewCU->addUInt(Die, dwarf::DW_AT_high_pc, IGCLLVM::Optional<dwarf::Form>(), highPC);
 
     // DW_AT_stmt_list is a offset of line number information for this
     // compile unit in debug_line section. For split dwarf this is

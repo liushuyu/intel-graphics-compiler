@@ -39,7 +39,7 @@ namespace {
     public:
         DominatedSubgraph(DominatorTreeBasicBlock* D, BasicBlock* N) : DT(D), Entry(N) {}
 
-        bool preVisit(Optional<BasicBlock*> From, BasicBlock* To) {
+        bool preVisit(IGCLLVM::Optional<BasicBlock*> From, BasicBlock* To) {
             // Skip BB not dominated by the specified entry.
             if (!DT->dominates(Entry, To))
                 return false;
@@ -57,7 +57,7 @@ namespace llvm {
     public:
         po_iterator_storage(DominatedSubgraph& G) : DSG(G) {}
 
-        bool insertEdge(Optional<BasicBlock*> From, BasicBlock* To) {
+        bool insertEdge(IGCLLVM::Optional<BasicBlock*> From, BasicBlock* To) {
             return DSG.preVisit(From, To);
         }
         void finishPostorder(BasicBlock* BB) { DSG.postVisit(BB); }

@@ -256,7 +256,7 @@ namespace {
     public:
         RegionSubgraph(BasicBlock* E) : Exit(E) {}
 
-        bool preVisit(Optional<BasicBlock*> From, BasicBlock* To) {
+        bool preVisit(IGCLLVM::Optional<BasicBlock*> From, BasicBlock* To) {
             if (To == Exit)
                 return false;
             return Visited.insert(To).second;
@@ -274,7 +274,7 @@ namespace llvm {
     public:
         po_iterator_storage(RegionSubgraph& G) : RSG(G) {}
 
-        bool insertEdge(Optional<BasicBlock*> From, BasicBlock* To) {
+        bool insertEdge(IGCLLVM::Optional<BasicBlock*> From, BasicBlock* To) {
             return RSG.preVisit(From, To);
         }
         void finishPostorder(BasicBlock*) {}

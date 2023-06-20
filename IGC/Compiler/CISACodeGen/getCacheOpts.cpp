@@ -136,7 +136,7 @@ LSC_L1_L3_CC SWStackLoadPolicy()
     return cacheOpts;
 }
 
-Optional<LSC_L1_L3_CC> getCacheOptsStorePolicy(
+IGCLLVM::Optional<LSC_L1_L3_CC> getCacheOptsStorePolicy(
     const Value* Ptr,
     const CodeGenContext &Ctx)
 {
@@ -145,7 +145,7 @@ Optional<LSC_L1_L3_CC> getCacheOptsStorePolicy(
     if (!Region)
         return IGCLLVM::None;
 
-    Optional<LSC_L1_L3_CC> cacheOpts;
+    IGCLLVM::Optional<LSC_L1_L3_CC> cacheOpts;
 
     switch (*Region)
     {
@@ -166,14 +166,14 @@ Optional<LSC_L1_L3_CC> getCacheOptsStorePolicy(
     return cacheOpts;
 }
 
-Optional<LSC_L1_L3_CC> getCacheOptsStorePolicy(
+IGCLLVM::Optional<LSC_L1_L3_CC> getCacheOptsStorePolicy(
     const StoreInst& storeInst,
     const CodeGenContext &Ctx)
 {
     return getCacheOptsStorePolicy(storeInst.getPointerOperand(), Ctx);
 }
 
-Optional<LSC_L1_L3_CC> getCacheOptsLoadPolicy(
+IGCLLVM::Optional<LSC_L1_L3_CC> getCacheOptsLoadPolicy(
     const Value* Ptr,
     const CodeGenContext &Ctx)
 {
@@ -182,7 +182,7 @@ Optional<LSC_L1_L3_CC> getCacheOptsLoadPolicy(
     if (!Region)
         return IGCLLVM::None;
 
-    Optional<LSC_L1_L3_CC> cacheOpts;
+    IGCLLVM::Optional<LSC_L1_L3_CC> cacheOpts;
 
     switch (*Region)
     {
@@ -203,7 +203,7 @@ Optional<LSC_L1_L3_CC> getCacheOptsLoadPolicy(
     return cacheOpts;
 }
 
-Optional<LSC_L1_L3_CC> getCacheOptsLoadPolicy(
+IGCLLVM::Optional<LSC_L1_L3_CC> getCacheOptsLoadPolicy(
     const LoadInst& loadInst,
     const CodeGenContext &Ctx)
 {

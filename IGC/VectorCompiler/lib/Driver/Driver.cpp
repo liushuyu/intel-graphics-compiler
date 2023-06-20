@@ -327,7 +327,7 @@ createTargetMachine(const vc::CompileOptions &Opts,
       createBackendData(ExtData, vc::is32BitArch(TheTriple) ? 32 : 64));
   std::unique_ptr<TargetMachine> TM{vc::createGenXTargetMachine(
       *TheTarget, TheTriple, Opts.CPUStr, FeaturesStr, Options,
-      /*RelocModel=*/None, /*CodeModel=*/None, OptLevel, std::move(BC))};
+      /*RelocModel=*/IGCLLVM::None, /*CodeModel=*/IGCLLVM::None, OptLevel, std::move(BC))};
   if (!TM)
     return make_error<vc::TargetMachineError>();
   return {std::move(TM)};
@@ -642,16 +642,16 @@ static Error makeOptionError(const opt::Arg &A, const opt::ArgList &Opts,
   return make_error<vc::OptionError>(BadOpt, IsInternal);
 }
 
-static Optional<vc::OptimizerLevel>
+static IGCLLVM::Optional<vc::OptimizerLevel>
 parseOptimizationLevelString(StringRef Val) {
-  return StringSwitch<Optional<vc::OptimizerLevel>>(Val)
+  return StringSwitch<IGCLLVM::Optional<vc::OptimizerLevel>>(Val)
       .Case("none", vc::OptimizerLevel::None)
       .Case("full", vc::OptimizerLevel::Full)
-      .Default(None);
+      .Default(IGCLLVM::None);
 }
 
 template <typename OptSpecifier>
-static Optional<vc::OptimizerLevel>
+static IGCLLVM::Optional<vc::OptimizerLevel>
 deriveOptimizationLevel(opt::Arg *A, OptSpecifier PrimaryOpt) {
   using namespace IGC::options::api;
   if (A->getOption().matches(PrimaryOpt)) {
@@ -692,10 +692,10 @@ static Error fillApiOptions(const opt::ArgList &ApiOptions,
 
   if (opt::Arg *A = ApiOptions.getLastArg(OPT_register_file_size)) {
     StringRef V = A->getValue();
-    auto MaybeGRFSize = StringSwitch<Optional<unsigned>>(V)
+    auto MaybeGRFSize = StringSwitch<IGCLLVM::Optional<unsigned>>(V)
                             .Case("128", 128)
                             .Case("256", 256)
-                            .Default(None);
+                            .Default(IGCLLVM::None);
     if (!MaybeGRFSize)
       return makeOptionError(*A, ApiOptions, /*IsInternal=*/false);
     Opts.GRFSize = MaybeGRFSize;
@@ -717,11 +717,11 @@ static Error fillApiOptions(const opt::ArgList &ApiOptions,
   if (opt::Arg *A = ApiOptions.getLastArg(OPT_fp_contract)) {
     StringRef Val = A->getValue();
     auto MayBeAllowFPOPFusion =
-        StringSwitch<Optional<FPOpFusion::FPOpFusionMode>>(Val)
+        StringSwitch<IGCLLVM::Optional<FPOpFusion::FPOpFusionMode>>(Val)
             .Case("on", FPOpFusion::Standard)
             .Case("fast", FPOpFusion::Fast)
             .Case("off", FPOpFusion::Strict)
-            .Default(None);
+            .Default(IGCLLVM::None);
     if (!MayBeAllowFPOPFusion)
       return makeOptionError(*A, ApiOptions, /*IsInternal=*/false);
     Opts.AllowFPOpFusion = MayBeAllowFPOPFusion.getValue();
@@ -794,11 +794,11 @@ static Error fillInternalOptions(const opt::ArgList &InternalOptions,
 
   if (opt::Arg *A = InternalOptions.getLastArg(OPT_vc_interop_subgroup_size)) {
     StringRef Val = A->getValue();
-    auto MaybeSize = StringSwitch<Optional<unsigned>>(Val)
+    auto MaybeSize = StringSwitch<IGCLLVM::Optional<unsigned>>(Val)
                          .Case("8", 8)
                          .Case("16", 16)
                          .Case("32", 32)
-                         .Default(None);
+                         .Default(IGCLLVM::None);
     if (!MaybeSize)
       return makeOptionError(*A, InternalOptions, /*IsInternal=*/true);
     Opts.InteropSubgroupSize = MaybeSize.getValue();
@@ -814,11 +814,11 @@ static Error fillInternalOptions(const opt::ArgList &InternalOptions,
       Opts.Binary = vc::BinaryKind::OpenCL;
     else {
       StringRef Val = A->getValue();
-      auto MaybeBinary = StringSwitch<Optional<vc::BinaryKind>>(Val)
+      auto MaybeBinary = StringSwitch<IGCLLVM::Optional<vc::BinaryKind>>(Val)
                              .Case("cm", vc::BinaryKind::CM)
                              .Case("ocl", vc::BinaryKind::OpenCL)
                              .Case("ze", vc::BinaryKind::ZE)
-                             .Default(None);
+                             .Default(IGCLLVM::None);
       if (!MaybeBinary)
         return makeOptionError(*A, InternalOptions, /*IsInternal=*/true);
       Opts.Binary = MaybeBinary.getValue();

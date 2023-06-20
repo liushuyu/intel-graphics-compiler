@@ -169,7 +169,7 @@ static cl::opt<bool>
 // vector represents it. When the vector is not set, the full list cannot be
 // defined but it is not empty. Empty vector means that the full set can be
 // defined but it is just empty.
-template <typename T> using MaybeUndefSeq = Optional<std::vector<T>>;
+template <typename T> using MaybeUndefSeq = IGCLLVM::Optional<std::vector<T>>;
 using MaybeUndefFuncSeq = MaybeUndefSeq<Function *>;
 using FunctionRef = std::reference_wrapper<Function>;
 

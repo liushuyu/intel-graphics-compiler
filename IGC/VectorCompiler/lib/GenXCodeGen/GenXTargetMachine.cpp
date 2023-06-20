@@ -220,8 +220,8 @@ static std::unique_ptr<TargetLoweringObjectFile> createTLOF(const Triple &TT) {
 GenXTargetMachine::GenXTargetMachine(const Target &T, const Triple &TT,
                                      StringRef CPU, StringRef FS,
                                      const TargetOptions &Options,
-                                     Optional<Reloc::Model> RM,
-                                     Optional<CodeModel::Model> CM,
+                                     IGCLLVM::Optional<Reloc::Model> RM,
+                                     IGCLLVM::Optional<CodeModel::Model> CM,
                                      CodeGenOpt::Level OL, bool Is64Bit,
                                      std::unique_ptr<GenXBackendConfig> BC)
     : IGCLLVM::LLVMTargetMachine(T, getDL(Is64Bit), TT, CPU, FS, Options,
@@ -245,8 +245,8 @@ TargetPassConfig *GenXTargetMachine::createPassConfig(PassManagerBase &PM) {
 GenXTargetMachine32::GenXTargetMachine32(const Target &T, const Triple &TT,
                                          StringRef CPU, StringRef FS,
                                          const TargetOptions &Options,
-                                         Optional<Reloc::Model> RM,
-                                         Optional<CodeModel::Model> CM,
+                                         IGCLLVM::Optional<Reloc::Model> RM,
+                                         IGCLLVM::Optional<CodeModel::Model> CM,
                                          CodeGenOpt::Level OL, bool JIT,
                                          std::unique_ptr<GenXBackendConfig> BC)
     : GenXTargetMachine(T, TT, CPU, FS, Options, RM, CM, OL, false,
@@ -255,8 +255,8 @@ GenXTargetMachine32::GenXTargetMachine32(const Target &T, const Triple &TT,
 GenXTargetMachine64::GenXTargetMachine64(const Target &T, const Triple &TT,
                                          StringRef CPU, StringRef FS,
                                          const TargetOptions &Options,
-                                         Optional<Reloc::Model> RM,
-                                         Optional<CodeModel::Model> CM,
+                                         IGCLLVM::Optional<Reloc::Model> RM,
+                                         IGCLLVM::Optional<CodeModel::Model> CM,
                                          CodeGenOpt::Level OL, bool JIT,
                                          std::unique_ptr<GenXBackendConfig> BC)
     : GenXTargetMachine(T, TT, CPU, FS, Options, RM, CM, OL, true,
@@ -266,8 +266,8 @@ namespace vc {
 std::unique_ptr<llvm::TargetMachine>
 createGenXTargetMachine(const Target &T, Triple TT, StringRef CPU,
                         StringRef Features, const TargetOptions &Options,
-                        Optional<Reloc::Model> RM,
-                        Optional<CodeModel::Model> CM, CodeGenOpt::Level OL,
+                        IGCLLVM::Optional<Reloc::Model> RM,
+                        IGCLLVM::Optional<CodeModel::Model> CM, CodeGenOpt::Level OL,
                         std::unique_ptr<GenXBackendConfig> BC) {
   if (is32BitArch(TT))
     return std::make_unique<GenXTargetMachine32>(T, TT, CPU, Features, Options,

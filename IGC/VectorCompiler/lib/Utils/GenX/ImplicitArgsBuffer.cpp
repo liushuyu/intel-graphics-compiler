@@ -13,6 +13,7 @@ SPDX-License-Identifier: MIT
 #include "vc/Utils/General/Types.h"
 
 #include "Probe/Assertion.h"
+#include "llvmWrapper/ADT/None.h"
 #include "llvmWrapper/IR/Module.h"
 
 #include <llvm/GenXIntrinsics/GenXIntrinsics.h>
@@ -86,7 +87,7 @@ Value &vc::ImplicitArgs::Buffer::getPointer<vc::ThreadPayloadKind::InMemory>(
   auto *R0Decl = GenXIntrinsic::getGenXDeclaration(
       IRB.GetInsertBlock()->getModule(), GenXIntrinsic::genx_r0,
       IRB.getInt32Ty());
-  auto *R0 = IRB.CreateCall(R0Decl, None, "r0.0");
+  auto *R0 = IRB.CreateCall(R0Decl, IGCLLVM::None, "r0.0");
   auto *IntPtr = IRB.CreateAnd(
       R0, IRB.getInt32(maskTrailingZeros<uint32_t>(vc::PtrOffsetInR00)),
       "indir.data.heap.ptr.int");

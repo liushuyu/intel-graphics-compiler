@@ -115,7 +115,7 @@ GlobalVariable &vc::getConstStringGVFromOperand(Value &Op) {
       getConstStringGVFromOperand(static_cast<const Value &>(Op)));
 }
 
-Optional<StringRef> vc::getConstStringFromOperandOptional(const Value &Op) {
+IGCLLVM::Optional<StringRef> vc::getConstStringFromOperandOptional(const Value &Op) {
   auto *GV = getConstStringGVFromOperandOptional(Op);
   if (!GV)
     return {};

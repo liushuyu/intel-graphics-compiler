@@ -941,7 +941,7 @@ static Instruction* simplifyConstIndirectRegion(Instruction* Inst) {
   return Inst;
 }
 
-static Optional<std::pair<IGCLLVM::FixedVectorType *, Region>>
+static IGCLLVM::Optional<std::pair<IGCLLVM::FixedVectorType *, Region>>
 convertRegionInstType(Instruction *Inst, Type *NewScalarTy,
                       const DataLayout &DL, const GenXSubtarget &ST) {
   using namespace GenXIntrinsic::GenXRegion;
