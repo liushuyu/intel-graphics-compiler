@@ -155,6 +155,7 @@ $ sudo make install
 
 | Version          | Product quality |
 |:----------------:|-----------------|
+| LLVM 16          | Experimental    |
 | LLVM 15          | Experimental    |
 | LLVM 14          | **Production**  |
 | LLVM 12 and older | Experimental    |
@@ -218,3 +219,8 @@ No additional steps are needed.
 
 **Experimental**
 There are no LLVM15/Clang15 conformance/performance guarantees.
+
+#### LLVM16/Clang16
+
+**Experimental**
+There are no LLVM16/Clang16 conformance/performance guarantees.
