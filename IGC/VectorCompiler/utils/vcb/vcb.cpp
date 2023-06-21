@@ -80,8 +80,8 @@ createTargetMachine(Triple &TheTriple, std::string CPUStr) {
   CodeGenOpt::Level OptLevel = CodeGenOpt::Default;
 
   std::unique_ptr<TargetMachine> TM{TheTarget->createTargetMachine(
-      TheTriple.getTriple(), CPUStr, FeaturesStr, Options, /*RelocModel=*/None,
-      /*CodeModel=*/None, OptLevel)};
+      TheTriple.getTriple(), CPUStr, FeaturesStr, Options, /*RelocModel=*/IGCLLVM::None,
+      /*CodeModel=*/IGCLLVM::None, OptLevel)};
   if (!TM)
     return make_error<vc::TargetMachineError>();
   return {std::move(TM)};

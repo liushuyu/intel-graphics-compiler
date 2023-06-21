@@ -254,7 +254,7 @@ void CompileUnit::addFlag(DIE *Die, dwarf::Attribute Attribute) {
 /// addUInt - Add an unsigned integer attribute data and value.
 ///
 void CompileUnit::addUInt(DIE *Die, dwarf::Attribute Attribute,
-                          Optional<dwarf::Form> Form, uint64_t Integer) {
+                          IGCLLVM::Optional<dwarf::Form> Form, uint64_t Integer) {
   if (!Form) {
     Form = DIEInteger::BestForm(false, Integer);
   }
@@ -289,7 +289,7 @@ void CompileUnit::addBitPiece(IGC::DIEBlock *Block, uint64_t SizeBits,
 /// addSInt - Add an signed integer attribute data and value.
 ///
 void CompileUnit::addSInt(DIE *Die, dwarf::Attribute Attribute,
-                          Optional<dwarf::Form> Form, int64_t Integer) {
+                          IGCLLVM::Optional<dwarf::Form> Form, int64_t Integer) {
   if (!Form) {
     Form = DIEInteger::BestForm(true, Integer);
   }
@@ -297,7 +297,7 @@ void CompileUnit::addSInt(DIE *Die, dwarf::Attribute Attribute,
   Die->addValue(Attribute, *Form, Value);
 }
 
-void CompileUnit::addSInt(IGC::DIEBlock *Die, Optional<dwarf::Form> Form,
+void CompileUnit::addSInt(IGC::DIEBlock *Die, IGCLLVM::Optional<dwarf::Form> Form,
                           int64_t Integer) {
   IGC_ASSERT_MESSAGE((Form == dwarf::Form::DW_FORM_data1 &&
                       Integer >= std::numeric_limits<signed char>::min() &&
