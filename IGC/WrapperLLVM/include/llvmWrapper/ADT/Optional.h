@@ -52,7 +52,7 @@ public:
 
   constexpr T &getValue() const &noexcept {
     assert(this->has_value());
-    std::optional<T>* opt = this;
+    const std::optional<T>* opt = this;
     return **opt;
   }
 
