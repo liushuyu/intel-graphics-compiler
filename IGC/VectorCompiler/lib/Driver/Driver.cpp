@@ -365,7 +365,11 @@ static void optimizeIR(const vc::CompileOptions &Opts,
   PMBuilder.PrepareForThinLTO = false;
   PMBuilder.PrepareForLTO = false;
 #endif
+#if LLVM_VERSION_MAJOR <= 16
   PMBuilder.RerollLoops = true;
+#else
+  PerFunctionPasses.add(createLoopRerollPass());
+#endif
 
   TM.adjustPassManager(PMBuilder);
 
