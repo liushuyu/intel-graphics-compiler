@@ -55,7 +55,9 @@ inline bool IsAddition(const UnsignedDivisionByConstantInfo &mu) {
 }
 
 inline unsigned ShiftAmount(const UnsignedDivisionByConstantInfo &mu) {
-#if LLVM_VERSION_MAJOR >= 14
+#if LLVM_VERSION_MAJOR >= 16
+    return mu.PostShift;
+#elif LLVM_VERSION_MAJOR >= 14
     return mu.ShiftAmount;
 #else
     return mu.s;
