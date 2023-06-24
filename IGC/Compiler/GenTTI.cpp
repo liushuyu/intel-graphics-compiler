@@ -60,7 +60,7 @@ namespace llvm {
     }
 
 
-    bool isSendMessage(GenIntrinsicInst* inst)
+    bool isSendMessage(const GenIntrinsicInst* inst)
     {
         if (isa<SamplerLoadIntrinsic>(inst) ||
             isa<SampleIntrinsic>(inst) ||
@@ -419,8 +419,8 @@ namespace llvm {
         }
 
         llvm::BasicBlock::InstListType::iterator I;
-        llvm::BasicBlock::InstListType& instructionList = L->getBlocks()[0]->getInstList();
-        int instCount = instructionList.size();
+        const llvm::BasicBlock* headBlock = L->getBlocks()[0];
+        int instCount = headBlock->size();
 
         // Check if the specific basic block has block read or write.
         auto hasBlockReadWrite = [](BasicBlock* BB) -> bool {
@@ -452,9 +452,9 @@ namespace llvm {
             return;
         }
 
-        for (I = instructionList.begin(); I != instructionList.end(); I++)
+        for (auto& I : *headBlock)
         {
-            if (llvm::GenIntrinsicInst* pIntrinsic = llvm::dyn_cast<llvm::GenIntrinsicInst>(I))
+            if (auto* pIntrinsic = llvm::dyn_cast<llvm::GenIntrinsicInst>(&I))
             {
                 if (isSendMessage(pIntrinsic))
                 {

@@ -194,7 +194,7 @@ static bool GenXUnifyReturnBlocks(Function& F) {
     if (PN)
       PN->addIncoming(BB->getTerminator()->getOperand(0), BB);
 
-    BB->getInstList().pop_back();  // Remove the return insn
+    IGCLLVM::eraseLastFromBB(BB);  // Remove the return insn
     BranchInst::Create(NewRetBlock, BB);
   }
 
@@ -342,7 +342,7 @@ Function *GenXPacketize::vectorizeSIMTFunction(Function *F, unsigned Width) {
   for (df_iterator<DomTreeNode*> DI = df_begin(DT.getRootNode()),
       DE = df_end(DT.getRootNode()); DI != DE; ++DI) {
     BasicBlock *BB = DI->getBlock();
-    for (auto &I : BB->getInstList()) {
+    for (auto &I : *BB) {
       if (!UniformInsts.count(&I)) {
         Value *pPacketizedInst = packetizeInstruction(&I);
         ReplaceMap[&I] = pPacketizedInst;
@@ -398,7 +398,7 @@ bool GenXPacketize::vectorizeSIMTEntry(Function &F) {
   for (df_iterator<DomTreeNode*> DI = df_begin(DT.getRootNode()),
       DE = df_end(DT.getRootNode()); DI != DE; ++DI) {
     BasicBlock *BB = DI->getBlock();
-    for (auto &I : BB->getInstList()) {
+    for (auto &I : *BB) {
       if (!UniformInsts.count(&I)) {
         Value *pPacketizedInst = packetizeInstruction(&I);
         ReplaceMap[&I] = pPacketizedInst;
@@ -1779,7 +1779,7 @@ void GenXPacketize::fixupLLVMIntrinsics(Function &F) {
   std::unordered_set<Instruction *> removeSet;
 
   for (auto &BB : F.getBasicBlockList()) {
-    for (auto &I : BB.getInstList()) {
+    for (auto &I : BB) {
       if (isa<CallInst>(I)) {
         CallInst *pCallInst = cast<CallInst>(&I);
         Function *pFunc = pCallInst->getCalledFunction();

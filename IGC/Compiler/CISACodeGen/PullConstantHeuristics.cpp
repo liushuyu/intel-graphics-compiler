@@ -167,7 +167,7 @@ bool PullConstantHeuristics::runOnModule(Module& M)
             if (F.getBasicBlockList().size() == 1)
             {
                 BasicBlock* BB = &(*F.begin());
-                if (BB->getInstList().size() < 200)
+                if (BB->size() < 200)
                 {//short shaders
                     int PSDBottleNeckThreshold = getPSDBottleNeckThreshold(F);
                     int PayloadWithoutConstants = getCurrentPayloadSizeEstimate(F);

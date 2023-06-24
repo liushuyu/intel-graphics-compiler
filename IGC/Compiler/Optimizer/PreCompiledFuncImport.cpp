@@ -873,7 +873,7 @@ bool PreCompiledFuncImport::runOnModule(Module& M)
             // Count number of instructions in the function
             unsigned NumInst = 0;
             for (BasicBlock& BB : Func->getBasicBlockList()) {
-                NumInst += BB.getInstList().size();
+                NumInst += BB.size();
             }
 
             // Don't want to subroutine small functions

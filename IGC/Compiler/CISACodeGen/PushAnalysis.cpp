@@ -1474,8 +1474,7 @@ namespace IGC
 
         for (auto BB = m_pFunction->begin(), E = m_pFunction->end(); BB != E; ++BB)
         {
-            llvm::BasicBlock::InstListType& instructionList = BB->getInstList();
-            for (auto instIter = instructionList.begin(), endInstIter = instructionList.end(); instIter != endInstIter; ++instIter)
+            for (auto instIter = BB->begin(), endInstIter = BB->end(); instIter != endInstIter; ++instIter)
             {
                 llvm::Instruction* inst = &(*instIter);
                 // skip dead instructions

@@ -18,6 +18,7 @@ SPDX-License-Identifier: MIT
 #include "Compiler/IGCPassSupport.h"
 #include "Compiler/MetaDataUtilsWrapper.h"
 #include "Probe/Assertion.h"
+#include "llvmWrapper/IR/BasicBlock.h"
 
 using namespace llvm;
 using namespace IGC;
@@ -809,7 +810,7 @@ static BasicBlock* insertUniqueBackedgeBlock(Loop* L, BasicBlock* Preheader,
         // eliminate the PHI Node.
         if (HasUniqueIncomingValue) {
             NewPN->replaceAllUsesWith(UniqueValue);
-            BEBlock->getInstList().erase(NewPN);
+            IGCLLVM::eraseOneFromBB(BEBlock, NewPN);
         }
     }
 

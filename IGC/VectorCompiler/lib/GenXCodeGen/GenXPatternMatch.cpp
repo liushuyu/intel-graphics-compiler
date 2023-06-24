@@ -3214,7 +3214,7 @@ bool GenXPatternMatch::decomposeSelect(Function *F) {
                                  .getGenXSubtarget();
   SelectDecomposer SD(ST);
   for (auto &BB : F->getBasicBlockList())
-    for (auto &Inst : BB.getInstList())
+    for (auto &Inst : BB)
       if (isa<SelectInst>(Inst))
         SD.addStartSelect(&Inst);
 
@@ -3298,7 +3298,7 @@ bool mergeApply(CallInst *CI) {
 bool GenXPatternMatch::mergeLscLoad(Function *F) {
   bool Changed = false;
   for (auto &BB : F->getBasicBlockList()) {
-    for (auto &Inst : BB.getInstList()) {
+    for (auto &Inst : BB) {
       if (auto *CI = dyn_cast<CallInst>(&Inst)) {
         Changed |= mergeApply(CI);
       }
@@ -3761,7 +3761,7 @@ bool GenXPatternMatch::placeConstants(Function *F) {
         Instruction *InsertBefore = InsertBB->getTerminator();
         for (auto UseInst : ConstantUsers) {
           if (InsertBB == UseInst->getParent()) {
-            for (auto &I : InsertBB->getInstList()) {
+            for (auto &I : *InsertBB) {
               if (ConstantUsers.find(&I) != ConstantUsers.end()) {
                 InsertBefore = &I;
                 goto Found;

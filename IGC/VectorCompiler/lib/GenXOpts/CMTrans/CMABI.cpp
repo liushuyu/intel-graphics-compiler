@@ -1329,7 +1329,7 @@ bool CMLowerVLoadVStore::promoteAllocas(Function &F) {
   bool Modified = false;
 
   SmallVector<AllocaInst *, 8> Allocas;
-  for (auto &Inst : F.front().getInstList()) {
+  for (auto &Inst : F.front()) {
     if (auto AI = dyn_cast<AllocaInst>(&Inst))
       Allocas.push_back(AI);
   }

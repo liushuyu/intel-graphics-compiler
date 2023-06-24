@@ -4815,7 +4815,7 @@ int NanHandling::longestPathInstCount(llvm::BasicBlock* BB, int& depth)
     {
         sumSuccInstCount += longestPathInstCount(*SI, depth);
     }
-    return (int)(BB->getInstList().size()) + sumSuccInstCount;
+    return (int)(BB->size()) + sumSuccInstCount;
 }
 
 void NanHandling::swapBranch(llvm::Instruction* inst, llvm::BranchInst& BI)

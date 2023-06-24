@@ -35,6 +35,24 @@ inline void eraseLastFromBB(llvm::BasicBlock *BB) {
   BB->back().eraseFromParent();
 #endif
 }
+
+inline void eraseOneFromBB(llvm::BasicBlock *BB, llvm::Instruction *I) {
+#if LLVM_VERSION_MAJOR < 16
+  BB->getInstList().erase(I);
+#else
+  auto IT = llvm::BasicBlock::iterator{I};
+  auto ITNext = std::next(IT);
+  BB->erase(IT, ITNext);
+#endif
+}
+
+inline void spliceBB(llvm::BasicBlock *ContextBB, llvm::BasicBlock::iterator ToIt, llvm::BasicBlock *FromBB, llvm::BasicBlock::iterator FromBeginIt, llvm::BasicBlock::iterator FromEndIt) {
+#if LLVM_VERSION_MAJOR < 16
+  ContextBB->getInstList().splice(ToIt, FromBB->getInstList(), FromBeginIt, FromEndIt);
+#else
+  ContextBB->splice(ToIt, FromBB, FromBeginIt, FromEndIt);
+#endif
+}
 } // namespace IGCLLVM
 
 #endif

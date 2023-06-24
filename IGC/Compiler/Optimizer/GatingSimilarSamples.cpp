@@ -23,6 +23,7 @@ SPDX-License-Identifier: MIT
 #include <llvmWrapper/IR/InstrTypes.h>
 #include "common/LLVMWarningsPop.hpp"
 #include "Probe/Assertion.h"
+#include "llvmWrapper/IR/BasicBlock.h"
 
 using namespace llvm;
 using namespace IGC;
@@ -217,7 +218,7 @@ detectSampleAveragePattern2(const std::vector<Instruction*>& sampleInsts, Instru
 // @llvm.genx.GenISA.sampleptr5 => samples(tex1....)
 bool GatingSimilarSamples::checkAndSaveSimilarSampleInsts()
 {
-    for (auto& I : BB->getInstList())
+    for (auto& I : *BB)
     {
         if (SampleIntrinsic * SI = dyn_cast<SampleIntrinsic>(&I))
         {
@@ -457,7 +458,7 @@ bool GatingSimilarSamples::runOnFunction(llvm::Function& F)
 
     //move all insts starting from similarSampleInst[0] upto resultInst(non-inluding) into the new then block
     BasicBlock* tailBlock = thenBlockTerminator->getSuccessor(0);
-    thenBlock->getInstList().splice(thenBlock->begin(), tailBlock->getInstList(), similarSampleInsts[0]->getIterator(), resultInst->getIterator());
+    IGCLLVM::spliceBB(thenBlock, thenBlock->begin(), tailBlock, similarSampleInsts[0]->getIterator(), resultInst->getIterator());
 
 
     Value* avg_color_x = resultInst->getOperand(0);

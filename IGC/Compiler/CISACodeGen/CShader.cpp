@@ -150,8 +150,7 @@ void CShader::PreAnalysisPass()
 
     for (auto BB = entry->begin(), BE = entry->end(); BB != BE; ++BB) {
         llvm::BasicBlock* pLLVMBB = &(*BB);
-        llvm::BasicBlock::InstListType& instructionList = pLLVMBB->getInstList();
-        for (auto I = instructionList.begin(), E = instructionList.end(); I != E; ++I) {
+        for (auto I = pLLVMBB->begin(), E = pLLVMBB->end(); I != E; ++I) {
             llvm::Instruction* inst = &(*I);
             ParseShaderSpecificOpcode(inst);
         }

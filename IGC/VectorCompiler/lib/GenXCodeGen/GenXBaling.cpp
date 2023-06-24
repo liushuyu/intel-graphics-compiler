@@ -2451,7 +2451,7 @@ bool GenXBaling::prologue(Function *F) {
   // to locate far away from inline asm call
   // which will lead to live range increasing.
   for (auto &BB : F->getBasicBlockList()) {
-    for (auto &Inst : BB.getInstList()) {
+    for (auto &Inst : BB) {
       auto CI = dyn_cast<CallInst>(&Inst);
       if (!CI || !CI->isInlineAsm())
         continue;

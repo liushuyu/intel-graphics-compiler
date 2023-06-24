@@ -19,6 +19,7 @@ SPDX-License-Identifier: MIT
 #include "common/LLVMWarningsPush.hpp"
 
 #include "llvm/IR/Attributes.h"
+#include "llvmWrapper/IR/BasicBlock.h"
 #include "llvmWrapper/IR/InstrTypes.h"
 #include "llvmWrapper/IR/Instructions.h"
 
@@ -438,7 +439,7 @@ bool ProcessFuncAttributes::runOnModule(Module& M)
         {
             bool isSet = false;
             for (auto& BB : F->getBasicBlockList()) {
-                for (auto& Inst : BB.getInstList()) {
+                for (auto& Inst : BB) {
                     if (AllocaInst* AI = dyn_cast<AllocaInst>(&Inst)) {
                         if (!isa<ConstantInt>(AI->getArraySize())) {
                             F->addFnAttr("hasVLA");

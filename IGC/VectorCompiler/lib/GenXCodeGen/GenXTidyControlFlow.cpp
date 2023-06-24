@@ -332,7 +332,7 @@ void GenXTidyControlFlow::fixReturns(Function *F) {
       if (PN)
         PN->addIncoming(BB->getTerminator()->getOperand(0), BB);
 
-      BB->getInstList().pop_back(); // Remove the return inst.
+      IGCLLVM::eraseLastFromBB(BB); // Remove the return inst.
       BranchInst::Create(NewRetBlock, BB);
     }
     Modified = true;
