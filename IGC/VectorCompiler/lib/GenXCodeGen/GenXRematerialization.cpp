@@ -94,7 +94,7 @@ bool GenXRematerialization::runOnFunctionGroup(FunctionGroup &FG) {
 void GenXRematerialization::remat(Function *F, PressureTracker &RP) {
   // Collect rematerialization candidates.
   std::vector<Use *> Candidates;
-  for (auto &BB : F->getBasicBlockList()) {
+  for (auto &BB : *F) {
     for (auto &Inst : BB) {
       // (1) upward cast
       if (auto CI = dyn_cast<CastInst>(&Inst)) {

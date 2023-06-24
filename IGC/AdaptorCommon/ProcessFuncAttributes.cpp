@@ -438,7 +438,7 @@ bool ProcessFuncAttributes::runOnModule(Module& M)
         // set hasVLA function attribute
         {
             bool isSet = false;
-            for (auto& BB : F->getBasicBlockList()) {
+            for (auto& BB : *F) {
                 for (auto& Inst : BB) {
                     if (AllocaInst* AI = dyn_cast<AllocaInst>(&Inst)) {
                         if (!isa<ConstantInt>(AI->getArraySize())) {
@@ -563,7 +563,7 @@ bool ProcessFuncAttributes::runOnModule(Module& M)
             if (pCtx->m_hasDPEmu && !mustAlwaysInline && !isKernel) {
                 // Prefer stackcall if a func has double operations
                 bool isSet = false;
-                for (auto& BB : F->getBasicBlockList()) {
+                for (auto& BB : *F) {
                     for (auto& aI : BB.getInstList()) {
                         auto opc = aI.getOpcode();
                         if (opc == Instruction::FMul || opc == Instruction::FDiv ||

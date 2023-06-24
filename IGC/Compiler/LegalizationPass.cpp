@@ -2711,7 +2711,7 @@ static bool needsNoScaling(Value* Val)
 bool IGC::expandFDIVInstructions(llvm::Function& F)
 {
     bool Changed = false;
-    for (auto& BB : F.getBasicBlockList()) {
+    for (auto& BB : F) {
         for (auto Iter = BB.begin(); Iter != BB.end();) {
             Instruction* Inst = &*Iter++;
             if (!isCandidateFDiv(Inst))

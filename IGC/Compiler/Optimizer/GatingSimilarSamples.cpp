@@ -396,9 +396,9 @@ bool GatingSimilarSamples::runOnFunction(llvm::Function& F)
 
     if (IGC_GET_FLAG_VALUE(DisableGatingSimilarSamples))
         return false;
-    if (F.getBasicBlockList().size() != 1)
+    if (F.size() != 1)
         return false;
-    BB = &*F.getBasicBlockList().begin();
+    BB = &*F.begin();
 
     if (!checkAndSaveSimilarSampleInsts())
         return false;
@@ -497,6 +497,3 @@ IGC_INITIALIZE_PASS_BEGIN(GatingSimilarSamples, "loop-gating",
 {
     return new GatingSimilarSamples();
 }
-
-
-

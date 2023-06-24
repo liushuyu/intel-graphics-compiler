@@ -1164,7 +1164,7 @@ Value *llvm::genx::simplifyRegionInst(Instruction *Inst, const DataLayout *DL,
 bool llvm::genx::simplifyRegionInsts(Function *F, const DataLayout *DL,
                                      const GenXSubtarget *ST) {
   bool Changed = false;
-  for (auto &BB : F->getBasicBlockList()) {
+  for (auto &BB : *F) {
     for (auto I = BB.begin(); I != BB.end();) {
       Instruction *Inst = &*I++;
       if (auto V = simplifyRegionInst(Inst, DL, ST)) {
@@ -1185,7 +1185,7 @@ bool llvm::genx::simplifyRegionInsts(Function *F, const DataLayout *DL,
 //
 bool llvm::genx::cleanupLoads(Function *F) {
   bool Changed = false;
-  for (auto &BB : F->getBasicBlockList()) {
+  for (auto &BB : *F) {
     // The dominating loads (may have different types) for each variable.
     std::unordered_map<GlobalVariable *, std::vector<LoadInst *>> DomLoads;
     for (auto I = BB.begin(); I != BB.end();) {

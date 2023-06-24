@@ -109,8 +109,7 @@ namespace IGC
         }
 
         // Assign a number to basic blocks and instructions.
-        auto& BBs = m_pFunc->getBasicBlockList();
-        for (auto BI = BBs.begin(), BE = BBs.end(); BI != BE; ++BI)
+        for (auto BI = m_pFunc->begin(), BE = m_pFunc->end(); BI != BE; ++BI)
         {
             BasicBlock* BB = &*BI;
             unsigned BlockNum = m_pNumbers[BB] = Num++;
@@ -153,9 +152,8 @@ namespace IGC
 
     void RegisterPressureEstimate::printNumbering(raw_ostream& OS)
     {
-        auto& BBs = m_pFunc->getBasicBlockList();
         unsigned UnamedBBNum = 1;
-        for (auto BI = BBs.begin(), BE = BBs.end(); BI != BE; ++BI)
+        for (auto BI = m_pFunc->begin(), BE = m_pFunc->end(); BI != BE; ++BI)
         {
             if (m_pNumbers.count(&(*BI)))
             {

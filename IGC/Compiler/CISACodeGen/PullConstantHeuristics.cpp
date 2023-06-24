@@ -74,7 +74,7 @@ static std::tuple<unsigned, unsigned, unsigned> getInstStats(const Function& F) 
     unsigned EUInstCnt = 0;
     unsigned int SendMsgInstCnt = 0;
     unsigned int RTWriteInstCnt = 0;
-    for (auto BBI = F.getBasicBlockList().begin(); BBI != F.getBasicBlockList().end(); BBI++)
+    for (auto BBI = F.begin(); BBI != F.end(); BBI++)
     {
         llvm::BasicBlock* BB = const_cast<llvm::BasicBlock*>(&*BBI);
         for (auto II = BB->begin(); II != BB->end(); II++)
@@ -132,7 +132,7 @@ static unsigned getCurrentPayloadSizeEstimate(const Function& F)
     //helper variables
     unsigned maxValueFromInputVec = 0;
     std::set<unsigned> countOfDifferentBary;
-    for (auto BBI = F.getBasicBlockList().begin(); BBI != F.getBasicBlockList().end(); BBI++)
+    for (auto BBI = F.begin(); BBI != F.end(); BBI++)
     {
         llvm::BasicBlock* BB = const_cast<llvm::BasicBlock*>(&*BBI);
         for (auto II = BB->begin(); II != BB->end(); II++)
@@ -164,7 +164,7 @@ bool PullConstantHeuristics::runOnModule(Module& M)
     {
         for (auto& F : M)
         {
-            if (F.getBasicBlockList().size() == 1)
+            if (F.size() == 1)
             {
                 BasicBlock* BB = &(*F.begin());
                 if (BB->size() < 200)

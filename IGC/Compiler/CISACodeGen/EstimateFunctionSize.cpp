@@ -573,7 +573,7 @@ void EstimateFunctionSize::runStaticAnalysis()
             FunctionNode* Node = get<FunctionNode>(&F);
             auto& BFI = getAnalysis<BlockFrequencyInfoWrapperPass>(F).getBFI();
             Scaled64 EntryFreq(BFI.getEntryFreq(), 0);
-            for (auto& B : F.getBasicBlockList())
+            for (auto& B : F)
             {
                 Scaled64 BBCount(BFI.getBlockFreq(&B).getFrequency(), 0);
 
@@ -665,7 +665,7 @@ void EstimateFunctionSize::runStaticAnalysis()
 void EstimateFunctionSize::analyze() {
     auto getSize = [](llvm::Function& F) -> std::size_t {
         std::size_t Size = 0;
-        for (auto& BB : F.getBasicBlockList())
+        for (auto& BB : F)
             Size += IGCLLVM::sizeWithoutDebug(&BB);
         return Size;
     };

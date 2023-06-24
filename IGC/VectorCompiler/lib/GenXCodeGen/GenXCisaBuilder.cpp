@@ -1468,7 +1468,7 @@ static bool setNoMaskByDefault(Function *F,
   if (vc::requiresStackCall(F))
     return true;
 
-  for (auto &BB : F->getBasicBlockList())
+  for (auto &BB : *F)
     if (GotoJoin::isGotoBlock(&BB))
       return true;
 
