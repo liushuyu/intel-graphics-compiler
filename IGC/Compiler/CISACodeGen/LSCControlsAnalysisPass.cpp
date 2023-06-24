@@ -84,7 +84,7 @@ void LSCControlsAnalysisPass::visitCallInst(CallInst& CI)
     if (!GII)
         return;
 
-    Optional<LSC_L1_L3_CC> cacheOpts;
+    IGCLLVM::Optional<LSC_L1_L3_CC> cacheOpts;
 
     switch (GII->getIntrinsicID())
     {
