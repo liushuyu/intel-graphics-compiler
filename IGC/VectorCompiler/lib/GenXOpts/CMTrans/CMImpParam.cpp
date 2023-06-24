@@ -1035,7 +1035,7 @@ template <bool IsEntry> void CallGraphTraverser::visitFunction(Function &F) {
     // Skipping reference edges.
     if (!CallEdge.first)
       continue;
-    Value *CI = CallEdge.first.getValue();
+    Value *CI = IGCLLVM::wrapOptional(CallEdge.first).getValue();
     // Skipping inline asm.
     if (isa<CallInst>(CI) && cast<CallInst>(CI)->isInlineAsm())
       continue;
