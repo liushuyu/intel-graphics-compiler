@@ -28,6 +28,7 @@ SPDX-License-Identifier: MIT
 
 #include "llvmWrapper/ADT/Optional.h"
 #include "llvm/CodeGen/BasicTTIImpl.h"
+#include "llvm/Transforms/IPO/PassManagerBuilder.h"
 #include "llvm/IR/DataLayout.h"
 #include "llvm/Transforms/Utils/UnrollLoop.h"
 #include "llvm/Target/TargetLoweringObjectFile.h"

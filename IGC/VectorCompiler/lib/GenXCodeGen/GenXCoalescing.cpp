@@ -201,6 +201,7 @@ SPDX-License-Identifier: MIT
 #include <algorithm>
 #include <map>
 #include <vector>
+#include <cmath>
 
 #define DEBUG_TYPE "GENX_COALESCING"
 
