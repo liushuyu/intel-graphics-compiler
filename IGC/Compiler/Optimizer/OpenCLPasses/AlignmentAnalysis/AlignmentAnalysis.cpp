@@ -446,11 +446,11 @@ alignment_t AlignmentAnalysis::visitCallInst(CallInst& I)
         MemCpyInst* memCpy = dyn_cast<MemCpyInst>(&I);
         IGC_ASSERT(memCpy);
         if (memCpy) {
-            alignment = std::min((alignment_t)memCpy->getDestAlignment(),
-                (alignment_t)memCpy->getSourceAlignment());
+            alignment = std::min(IGCLLVM::getAlignmentValue(IGCLLVM::getDestAlign(*memCpy)),
+                IGCLLVM::getAlignmentValue(IGCLLVM::getSourceAlign(*memCpy)));
         }
     } else if (ID == Intrinsic::memset) {
-        alignment = std::max((alignment_t)memIntr->getDestAlignment(),
+        alignment = std::max(IGCLLVM::getAlignmentValue(IGCLLVM::getDestAlign(*memIntr)),
             MinimumAlignment);
     }
 

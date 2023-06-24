@@ -116,7 +116,7 @@ static bool memSetCanBeCoalesced(MemSetInst &MemSet, int CoalescedTySize) {
   IGC_ASSERT_MESSAGE(CoalescedTySize >= 1 && isPowerOf2_32(CoalescedTySize),
                      "wrong argument: invalid CoalescedTySize");
   return OrigLength % CoalescedTySize == 0 &&
-         static_cast<int>(MemSet.getDestAlignment()) >= CoalescedTySize;
+         static_cast<int>(IGCLLVM::getAlignmentValue(IGCLLVM::getDestAlign(MemSet))) >= CoalescedTySize;
 }
 
 // Original memset intrinsic fills memory with 8-bit values.
@@ -227,7 +227,7 @@ bool GenXLowerAggrCopies::runOnFunction(Function &F) {
     } else if (MemSetInst *MemSet = dyn_cast<MemSetInst>(MemCall)) {
       if (doLinearExpand) {
         auto &&[SetVal, BaseAddr, Len] = defineOptimalValueAndLength(*MemSet);
-        auto Align = MemSet->getDestAlignment();
+        auto Align = IGCLLVM::getAlignmentValue(IGCLLVM::getDestAlign(*MemSet));
         std::vector<SliceInfo> LegalLengths =
             getLegalLengths(Len, Align ? Align : 1);
         for (SliceInfo Slice : LegalLengths)
