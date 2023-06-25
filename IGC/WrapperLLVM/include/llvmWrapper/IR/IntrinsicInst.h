@@ -40,8 +40,10 @@ namespace IGCLLVM
         DbgInst->setOperand(
             0, llvm::MetadataAsValue::get(DbgInst->getContext(),
                                           llvm::ValueAsMetadata::get(Undef)));
-#else
+#elif LLVM_VERSION_MAJOR <= 15
         DbgInst->setUndef();
+#else
+        DbgInst->setKillLocation();
 #endif
     }
 

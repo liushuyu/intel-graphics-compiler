@@ -79,7 +79,7 @@ bool DebugInfoPass::runOnModule(llvm::Module& M)
         for (auto &I : BB) {
           if (auto *dbgInst = dyn_cast<DbgVariableIntrinsic>(&I)) {
             if (dbgInst->getNumVariableLocationOps() > 1) {
-              dbgInst->setUndef();
+              IGCLLVM::setDbgVariableLocationToUndef(dbgInst);
             }
           }
         }

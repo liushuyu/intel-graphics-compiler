@@ -22,6 +22,7 @@ SPDX-License-Identifier: MIT
 //===----------------------------------------------------------------------===//
 #include "GenX.h"
 #include "GenXUtil.h"
+#include "llvmWrapper/IR/IntrinsicInst.h"
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/BasicBlock.h"
 #include "llvm/IR/CFG.h"
@@ -119,7 +120,7 @@ void GenXDebugLegalization::removeDIArgList(Function& F)
     for (auto &I : BB) {
       if (auto *dbgInst = dyn_cast<DbgVariableIntrinsic>(&I)) {
         if (dbgInst->getNumVariableLocationOps() > 1) {
-          dbgInst->setUndef();
+          IGCLLVM::setDbgVariableLocationToUndef(dbgInst);
           Modified = true;
         }
       }
