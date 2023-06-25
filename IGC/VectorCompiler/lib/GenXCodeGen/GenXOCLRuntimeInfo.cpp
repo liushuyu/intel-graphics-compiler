@@ -599,7 +599,7 @@ static alignment_t getAlignment(const GlobalVariable &GV) {
   auto Align = GV.getAlignment();
   if (Align)
     return Align;
-  return GV.getParent()->getDataLayout().getABITypeAlignment(GV.getValueType());
+  return IGCLLVM::getABITypeAlignment(&GV.getParent()->getDataLayout(), GV.getValueType());
 }
 
 static void appendGlobalVariableData(RawSectionInfo &Sect,
