@@ -17,9 +17,18 @@ using namespace llvm;
 using namespace IGC;
 
 namespace {
+    class AddressSpaceAAResult;
 
-    class AddressSpaceAAResult : public AAResultBase<AddressSpaceAAResult> {
+#if LLVM_VERSION_MAJOR < 16
+    typedef AAResultBase<AddressSpaceAAResult> AddressSpaceAAResultBase;
+#else
+    typedef AAResultBase AddressSpaceAAResultBase;
+#endif
+
+    class AddressSpaceAAResult : public AddressSpaceAAResultBase {
+#if LLVM_VERSION_MAJOR < 16
         friend AAResultBase<AddressSpaceAAResult>;
+#endif
         const TargetLibraryInfo& TLI;
         const CodeGenContext& CGC;
     public:
