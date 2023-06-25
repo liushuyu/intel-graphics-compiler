@@ -104,6 +104,14 @@ inline unsigned countLeadingOnes(T Val, [[maybe_unused]] bool ZB_Undefined = fal
   return llvm::countLeadingOnes(Val);
 #endif
 }
+
+inline uint64_t GreatestCommonDivisor64(uint64_t A, uint64_t B) {
+#if LLVM_VERSION_MAJOR < 16
+  return llvm::GreatestCommonDivisor64(A, B);
+#else
+  return std::gcd(A, B);
+#endif
+}
 } // namespace IGCLLVM
 
 #endif
