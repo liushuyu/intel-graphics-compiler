@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT
 #include "llvm/Analysis/CFG.h"
 #include "llvm/Analysis/ValueTracking.h"
 #include "llvm/GenXIntrinsics/GenXIntrinsics.h"
-#include "llvm/IR/Constants.h"
+#include "llvmWrapper/IR/Constants.h"
 #include "llvm/IR/DerivedTypes.h"
 #include "llvm/IR/Dominators.h"
 #include "llvm/IR/Function.h"
@@ -1531,7 +1531,7 @@ void GenXBaling::processMainInst(Instruction *Inst, int IntrinID) {
         } else {
           if (!ConstantExpr::getFCmp(CmpInst::FCMP_OLT, C,
                 Constant::getNullValue(C->getType()))->isNullValue())
-            C = ConstantExpr::getFNeg(C);
+            C = IGCLLVM::ConstantExpr::getFNeg(C);
         }
         Simplified = C;
       }

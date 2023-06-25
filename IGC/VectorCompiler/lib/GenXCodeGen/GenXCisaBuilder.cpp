@@ -2241,7 +2241,7 @@ VISA_VectorOpnd *GenXKernelBuilder::createSource(Value *V, Signedness Signed,
       if (C->getType()->isIntOrIntVectorTy())
         C = ConstantExpr::getNeg(C);
       else
-        C = ConstantExpr::getFNeg(C);
+        C = IGCLLVM::ConstantExpr::getFNeg(C);
     }
     return createImmediateOperand(C, Signed);
   }
@@ -2447,7 +2447,7 @@ std::string GenXKernelBuilder::createInlineAsmSourceOperand(
         if (C->getType()->isIntOrIntVectorTy())
           C = ConstantExpr::getNeg(C);
         else
-          C = ConstantExpr::getFNeg(C);
+          C = IGCLLVM::ConstantExpr::getFNeg(C);
       }
       VISA_VectorOpnd *ImmOp = createImmediateOperand(C, Signed);
       return Kernel->getVectorOperandName(ImmOp, false);

@@ -11,6 +11,9 @@ SPDX-License-Identifier: MIT
 
 #include "llvm/Config/llvm-config.h"
 #include "llvm/IR/Constants.h"
+#include <llvm/Analysis/ConstantFolding.h>
+#include <llvm/IR/ConstantFold.h>
+#include <llvm/IR/Instruction.h>
 
 #if LLVM_VERSION_MAJOR > 12
 #include "llvm/Support/TypeSize.h"
@@ -50,6 +53,13 @@ namespace IGCLLVM
                 OnlyIfReducedTy);
         }
 #endif
+        inline llvm::Constant *getFNeg(llvm::Constant *C) {
+#if LLVM_VERSION_MAJOR < 16
+            return llvm::ConstantExpr::getFNeg(C);
+#else
+            return llvm::ConstantFoldUnaryInstruction(llvm::Instruction::FNeg, C)
+#endif
+        }
     }
 
     namespace ConstantFixedVector
