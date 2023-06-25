@@ -95,6 +95,15 @@ inline unsigned countLeadingZeros(T Val, [[maybe_unused]] bool ZB_Undefined = fa
   return llvm::countLeadingZeros(Val);
 #endif
 }
+
+template <typename T>
+inline unsigned countLeadingOnes(T Val, [[maybe_unused]] bool ZB_Undefined = false) {
+#if LLVM_VERSION_MAJOR < 16
+  return llvm::countLeadingOnes(Val, ZB_Undefined ? llvm::ZB_Undefined : llvm::ZB_Width);
+#else
+  return llvm::countLeadingOnes(Val);
+#endif
 }
+} // namespace IGCLLVM
 
 #endif
