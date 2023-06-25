@@ -21,7 +21,8 @@ namespace IGCLLVM
 #if LLVM_VERSION_MAJOR <= 15
     using llvm::array_lengthof;
 #else
-    using array_lengthof = std::size;
+    template <typename T, size_t N>
+    constexpr size_t array_lengthof(const T (&A)[N]) { return N; }
 #endif
 }
 
