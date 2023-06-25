@@ -1071,14 +1071,14 @@ void GenXPromoteArray::selectAllocasToHandle() {
 
   std::sort(AllocasToPrivMem.begin(), AllocasToPrivMem.end(),
             [this](const AllocaInst *LHS, const AllocaInst *RHS) {
-              return LHS->getAllocationSizeInBits(*DL).getValue() <
-                     RHS->getAllocationSizeInBits(*DL).getValue();
+              return IGCLLVM::wrapOptional(LHS->getAllocationSizeInBits(*DL)).getValue() <
+                     IGCLLVM::wrapOptional(RHS->getAllocationSizeInBits(*DL)).getValue();
             });
   auto LastIt = vc::upper_partial_sum_bound(
       AllocasToPrivMem.begin(), AllocasToPrivMem.end(),
       TotalAllocaLimitOpt.getValue(),
       [this](std::size_t PrevSum, const AllocaInst *CurAlloca) {
-        return PrevSum + CurAlloca->getAllocationSizeInBits(*DL).getValue() /
+        return PrevSum + IGCLLVM::wrapOptional(CurAlloca->getAllocationSizeInBits(*DL)).getValue() /
                              genx::ByteBits;
       });
 

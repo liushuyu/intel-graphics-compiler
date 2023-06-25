@@ -1191,7 +1191,7 @@ void Substituter::createLifetime(Instruction *OldI, AllocaInst *NewAI) {
       IGC_ASSERT_EXIT(MaybeSize.hasValue());
 
       IRBuilder<> Builder(II);
-      auto *SizeC = Builder.getInt64(MaybeSize.getValue() / genx::ByteBits);
+      auto *SizeC = Builder.getInt64(IGCLLVM::wrapOptional(MaybeSize).getValue() / genx::ByteBits);
 
       switch (II->getIntrinsicID()) {
       case Intrinsic::lifetime_start:
@@ -1316,7 +1316,7 @@ void Substituter::updateDbgInfo(ArrayRef<Type *> TypesToGenerateDI,
     IGC_ASSERT_MESSAGE(FragExpr.hasValue(), "Failed to create new expression");
 
     Instruction &NewDbgDeclare =
-        *DIB.createDbgDeclare(NewAI, Var, *FragExpr.getValue(), DbgLoc, AI);
+        *DIB.createDbgDeclare(NewAI, Var, *IGCLLVM::wrapOptional(FragExpr).getValue(), DbgLoc, AI);
     LLVM_DEBUG(dbgs() << "New dbg.declare is created: " << NewDbgDeclare
                       << '\n';);
   }
