@@ -49,6 +49,8 @@ SPDX-License-Identifier: MIT
 #include "Probe/Assertion.h"
 #include "visaBuilder_interface.h"
 
+#include "llvmWrapper/ADT/STLArrayExtras.h"
+
 #include <map>
 #include <string>
 #include <vector>
@@ -72,7 +74,7 @@ namespace llvm {
     inline static const char *Prefix[] = {"ERR", "V", "A", "P", "S", "T"};
 
     static StringRef categoryToString(vc::RegCategory Category) {
-      if (static_cast<unsigned>(Category) >= array_lengthof(Prefix))
+      if (static_cast<unsigned>(Category) >= IGCLLVM::array_lengthof(Prefix))
         Category = vc::RegCategory::None;
       return accessContainer(Prefix, Category);
     }
