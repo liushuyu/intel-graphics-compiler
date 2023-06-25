@@ -149,13 +149,13 @@ IGCLLVM::Optional<unsigned> PromoteToBindless::tryConvertBuffer(unsigned Kind,
                                                        StringRef Desc) {
   // Do not change kind if promotion is not enabled.
   if (!BC.useBindlessBuffers())
-    return None;
+    return IGCLLVM::None;
 
   if (Kind != vc::KernelMetadata::AK_SURFACE)
-    return None;
+    return IGCLLVM::None;
 
   if (!vc::isDescBufferType(Desc))
-    return None;
+    return IGCLLVM::None;
 
   // If this is a buffer, change argument kind to general value.
   return vc::KernelMetadata::AK_NORMAL;
