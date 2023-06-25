@@ -57,7 +57,7 @@ namespace IGCLLVM
 #if LLVM_VERSION_MAJOR < 16
             return llvm::ConstantExpr::getFNeg(C);
 #else
-            return llvm::ConstantFoldUnaryInstruction(llvm::Instruction::FNeg, C)
+            return llvm::ConstantFoldUnaryInstruction(llvm::Instruction::FNeg, C);
 #endif
         }
     }
