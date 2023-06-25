@@ -12,6 +12,8 @@ SPDX-License-Identifier: MIT
 #include "llvm/Config/llvm-config.h"
 #include "llvm/Support/MathExtras.h"
 
+#include <numeric>
+
 namespace IGCLLVM
 {
 #if LLVM_VERSION_MAJOR < 10
