@@ -70,6 +70,12 @@ public:
     return this->has_value() == other.has_value() &&
            (this->has_value() ? this->getValue() == other.getValue() : true);
   }
+
+  T *getPointer() {
+    assert(this->has_value());
+    std::optional<T>* opt = this;
+    return &**opt;
+  }
 };
 
 template <typename T>
