@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
 #include "Compiler/CodeGenPublicEnums.h"
 #include "Compiler/IGCPassSupport.h"
 #include "Probe/Assertion.h"
+#include "llvmWrapper/ADT/Optional.h"
 #include "llvmWrapper/Analysis/CallGraph.h"
 
 #include "common/LLVMWarningsPush.hpp"
@@ -58,7 +59,7 @@ void CastToGASAnalysis::getAllFuncsAccessibleFromKernel(const Function* F, CallG
             const Function* child = CE.second->getFunction();
             if (!child)
             {
-                if (CallBase* CB = dyn_cast_or_null<CallBase>(CE.first.getValue()))
+                if (CallBase* CB = dyn_cast_or_null<CallBase>(IGCLLVM::wrapOptional(CE.first).getValue()))
                 {
                     if (CB->isIndirectCall())
                     {
