@@ -85,6 +85,7 @@ cmp+sel to avoid expensive VxH mov.
 #include <llvm/Analysis/ValueTracking.h>
 #include <llvm/Support/CommandLine.h>
 #include "common/LLVMWarningsPop.hpp"
+#include <cmath>
 #include <set>
 #include "common/secure_mem.h"
 #include "Probe/Assertion.h"
