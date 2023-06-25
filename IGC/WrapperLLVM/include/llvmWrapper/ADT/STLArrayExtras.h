@@ -10,9 +10,10 @@ SPDX-License-Identifier: MIT
 #define IGCLLVM_ADT_STLARRAYEXTRAS_H
 
 #include "llvm/Config/llvm-config.h"
-#include "llvm/ADT/STLArrayExtras.h"
 #if LLVM_VERSION_MAJOR > 15
 #include <iterator>
+#else
+#include "llvm/ADT/STLArrayExtras.h"
 #endif
 
 namespace IGCLLVM
