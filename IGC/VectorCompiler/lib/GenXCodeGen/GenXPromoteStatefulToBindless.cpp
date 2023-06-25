@@ -77,7 +77,7 @@ public:
   bool run();
 
 private:
-  Optional<unsigned> tryConvertBuffer(unsigned Kind, StringRef Desc);
+  IGCLLVM::Optional<unsigned> tryConvertBuffer(unsigned Kind, StringRef Desc);
   unsigned convertSingleArg(unsigned Kind, StringRef Desc);
   bool convertKernelArguments(Function &F);
   bool convertArguments();
@@ -145,7 +145,7 @@ static void reportUnhandledIntrinsic(const char *Func, GenXIntrinsic::ID Id) {
 
 // Buffer argument kind is converted to GENERAL to denote that
 // argument is not BTI but SSO.
-Optional<unsigned> PromoteToBindless::tryConvertBuffer(unsigned Kind,
+IGCLLVM::Optional<unsigned> PromoteToBindless::tryConvertBuffer(unsigned Kind,
                                                        StringRef Desc) {
   // Do not change kind if promotion is not enabled.
   if (!BC.useBindlessBuffers())
