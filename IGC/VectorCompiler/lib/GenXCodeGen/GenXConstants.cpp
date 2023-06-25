@@ -1938,7 +1938,7 @@ void ConstantLoader::analyzeForPackedInt(unsigned NumElements) {
   uint64_t GCD = Diffs[0];
   if (Diffs.size() > 1) {
     for(unsigned i = 1; i < Diffs.size(); i++)
-      GCD = GreatestCommonDivisor64(GCD, Diffs[i]);
+      GCD = IGCLLVM::GreatestCommonDivisor64(GCD, Diffs[i]);
   }
   // Scale should fit in signed integer
   if (GCD > static_cast<uint64_t>(std::numeric_limits<int64_t>::max()))
