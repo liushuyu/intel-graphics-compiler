@@ -19,20 +19,29 @@ SPDX-License-Identifier: MIT
 #include "common/LLVMWarningsPop.hpp"
 
 namespace IGC {
+class RayTracingAddressSpaceAAResult;
 
-class RayTracingAddressSpaceAAResult : public llvm::AAResultBase<RayTracingAddressSpaceAAResult>
+#if LLVM_VERSION_MAJOR < 16
+typedef llvm::AAResultBase<RayTracingAddressSpaceAAResult> RayTracingAddressSpaceAAResultBase;
+#else
+typedef llvm::AAResultBase RayTracingAddressSpaceAAResultBase;
+#endif
+
+class RayTracingAddressSpaceAAResult : public RayTracingAddressSpaceAAResultBase
 {
-    friend llvm::AAResultBase<RayTracingAddressSpaceAAResult>;
+#if LLVM_VERSION_MAJOR < 16
+    friend RayTracingAddressSpaceAAResultBase;
+#endif
     const llvm::TargetLibraryInfo& TLI;
     const CodeGenContext& CGC;
 public:
     explicit RayTracingAddressSpaceAAResult(
         const llvm::TargetLibraryInfo& TLI,
         const CodeGenContext& ctx)
-        : llvm::AAResultBase<RayTracingAddressSpaceAAResult>(),
+        : RayTracingAddressSpaceAAResultBase(),
           TLI(TLI), CGC(ctx), allStateful(checkStateful(ctx)) {}
     RayTracingAddressSpaceAAResult(RayTracingAddressSpaceAAResult&& Arg)
-        : llvm::AAResultBase<RayTracingAddressSpaceAAResult>(std::move(Arg)),
+        : RayTracingAddressSpaceAAResultBase(std::move(Arg)),
           TLI(Arg.TLI), CGC(Arg.CGC), allStateful(checkStateful(Arg.CGC)) {}
 
     IGCLLVM::AliasResultEnum alias(
