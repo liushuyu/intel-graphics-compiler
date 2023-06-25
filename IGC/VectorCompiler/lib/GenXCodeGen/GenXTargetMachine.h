@@ -165,7 +165,12 @@ public:
       }
     }
 
-    return BaseT::getUserCost(U, Operands
+#if LLVM_VERSION_MAJOR >= 16
+    return BaseT::getInstructionCost
+#else
+    return BaseT::getUserCost
+#endif
+                              (U, Operands
 #if LLVM_VERSION_MAJOR >= 11
                               ,
                               CostKind

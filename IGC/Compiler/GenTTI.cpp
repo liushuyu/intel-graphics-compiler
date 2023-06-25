@@ -622,8 +622,10 @@ namespace llvm {
 
 #if LLVM_VERSION_MAJOR <= 12
     int GenIntrinsicsTTIImpl::getUserCost(const User* U, ArrayRef<const Value*> Operands, TTI::TargetCostKind CostKind)
-#else
+#elif LLVM_VERSION_MAJOR <= 15
     llvm::InstructionCost GenIntrinsicsTTIImpl::getUserCost(const User* U, ArrayRef<const Value*> Operands, TTI::TargetCostKind CostKind)
+#else
+    llvm::InstructionCost GenIntrinsicsTTIImpl::getInstructionCost(const User* U, ArrayRef<const Value*> Operands, TTI::TargetCostKind CostKind)
 #endif
     {
         const Function* F = dyn_cast<Function>(U);
@@ -646,7 +648,11 @@ namespace llvm {
                 return TargetTransformInfo::TCC_Basic * FuncSize;
             }
         }
+#if LLVM_VERSION_MAJOR >= 16
+        return BaseT::getInstructionCost(U, Operands, CostKind);
+#else
         return BaseT::getUserCost(U, Operands, CostKind);
+#endif
     }
 #endif
 

@@ -13,6 +13,7 @@ SPDX-License-Identifier: MIT
 #include "llvm/Config/llvm-config.h"
 #include "llvm/Analysis/TargetTransformInfo.h"
 #include "llvm/Analysis/TargetTransformInfoImpl.h"
+#include <llvm/IR/Value.h>
 #include "common/LLVMWarningsPop.hpp"
 
 namespace llvm
@@ -77,7 +78,13 @@ namespace llvm
        int getUserCost(const User *U, ArrayRef<const Value *> Operands,
                       TTI::TargetCostKind CostKind);
 #else
-       llvm::InstructionCost getUserCost(const User* U, ArrayRef<const Value*> Operands,
+       llvm::InstructionCost 
+#if LLVM_VERSION_MAJOR >= 16
+       getInstructionCost
+#else
+       getUserCost
+#endif
+       (const User* U, ArrayRef<const Value*> Operands,
            TTI::TargetCostKind CostKind);
 #endif
 
