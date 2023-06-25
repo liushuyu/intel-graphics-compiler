@@ -50,7 +50,7 @@ public:
   constexpr Optional<T>(T &O): std::optional<T>(O) {}
   constexpr Optional<T>(T &&O): std::optional<T>(O) {}
 
-  constexpr T &getValue() const &noexcept {
+  constexpr const T &getValue() const &noexcept {
     assert(this->has_value());
     const std::optional<T>* opt = this;
     return **opt;
