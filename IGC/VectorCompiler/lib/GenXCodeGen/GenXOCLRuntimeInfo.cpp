@@ -26,6 +26,7 @@ SPDX-License-Identifier: MIT
 
 #include <visaBuilder_interface.h>
 
+#include "llvmWrapper/IR/DataLayout.h"
 #include <llvm/CodeGen/TargetPassConfig.h>
 #include <llvm/IR/Argument.h>
 #include <llvm/IR/Constants.h>
@@ -124,8 +125,7 @@ getAlignment(const Argument &Arg,
 
   Type *TypeToAlign = Arg.getType();
   TypeToAlign = IGCLLVM::getNonOpaquePtrEltTy(TypeToAlign);
-  return Arg.getParent()->getParent()->getDataLayout().getABITypeAlignment(
-      TypeToAlign);
+  return IGCLLVM::getABITypeAlignment(&Arg.getParent()->getParent()->getDataLayout(), TypeToAlign);
 }
 
 KernelArgBuilder::ArgAccessKindType

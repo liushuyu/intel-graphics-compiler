@@ -14,6 +14,7 @@ SPDX-License-Identifier: MIT
 #include "Compiler/MetaDataUtilsWrapper.h"
 #include "common/LLVMWarningsPush.hpp"
 #include "llvm/Config/llvm-config.h"
+#include "llvmWrapper/IR/DataLayout.h"
 #include "llvmWrapper/IR/DerivedTypes.h"
 #include "llvmWrapper/IR/Instructions.h"
 #include "llvmWrapper/Support/Alignment.h"
@@ -364,7 +365,7 @@ namespace IGC
 
         auto alignment = IGCLLVM::getAlignmentValue(inst);
         if (alignment == 0)
-            alignment = DL.getABITypeAlignment(inst->getType());
+            alignment = IGCLLVM::getABITypeAlignment(&DL, inst->getType());
 
         IRBuilder<> builder(inst);
 
@@ -411,7 +412,7 @@ namespace IGC
         IRBuilder<> builder(inst);
         auto alignment = IGCLLVM::getAlignmentValue(inst);
         if (alignment == 0)
-            alignment = DL.getABITypeAlignment(storeVal->getType());
+            alignment = IGCLLVM::getABITypeAlignment(&DL, storeVal->getType());
         Value* attr[] =
         {
             bufPtr,
