@@ -16,6 +16,7 @@ SPDX-License-Identifier: MIT
 #include "GenXSubtarget.h"
 #include "GenXTargetMachine.h"
 
+#include "llvmWrapper/IR/DataLayout.h"
 #include "vc/Support/BackendConfig.h"
 #include "vc/Support/GenXDiagnostic.h"
 #include "vc/Utils/GenX/InternalMetadata.h"
@@ -147,7 +148,7 @@ void StackAnalysis::visitAllocaInst(AllocaInst &AI) {
                                      genx::ByteBits);
   auto AllocaAlign = std::max(IGCLLVM::getAlignmentValue(&AI), visa::BytesPerSVMPtr);
   if (AllocaAlign == 0)
-    AllocaAlign = m_DL.getPrefTypeAlignment(AI.getAllocatedType());
+    AllocaAlign = IGCLLVM::getPrefTypeAlignment(&m_DL, AI.getAllocatedType());
   AllocaAlign = std::max(AllocaAlign, visa::BytesPerSVMPtr);
 
   CurFuncState.m_UsedSz = llvm::alignTo(CurFuncState.m_UsedSz, AllocaAlign);

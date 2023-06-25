@@ -30,6 +30,15 @@ namespace IGCLLVM
 #endif
     }
 
+    inline uint64_t getPrefTypeAlignment(const llvm::DataLayout* DL, llvm::Type *Ty)
+    {
+#if LLVM_VERSION_MAJOR <= 14
+        return DL->getPrefTypeAlignment(Ty);
+#else
+        return (uint64_t)DL->getPrefTypeAlign(Ty).value();
+#endif 
+    }
+
     inline uint64_t getABITypeAlignment(const llvm::DataLayout* DL, llvm::Type *Ty)
     {
 #if LLVM_VERSION_MAJOR <= 14

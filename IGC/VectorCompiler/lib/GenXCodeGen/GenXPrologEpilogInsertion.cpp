@@ -40,6 +40,7 @@ SPDX-License-Identifier: MIT
 #include "GenXModule.h"
 #include "GenXTargetMachine.h"
 #include "GenXUtil.h"
+#include "llvmWrapper/IR/DataLayout.h"
 #include "vc/Support/BackendConfig.h"
 #include "vc/Support/GenXDiagnostic.h"
 #include "vc/Utils/GenX/KernelInfo.h"
@@ -1193,7 +1194,7 @@ alignment_t
 GenXPrologEpilogInsertion::getAllocaAlignment(AllocaInst *AI) const {
   auto Align = IGCLLVM::getAlignmentValue(AI);
   if (Align == 0)
-    Align = DL->getPrefTypeAlignment(AI->getAllocatedType());
+    Align = IGCLLVM::getPrefTypeAlignment(DL, AI->getAllocatedType());
   return Align;
 }
 } // namespace

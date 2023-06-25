@@ -23,6 +23,7 @@ SPDX-License-Identifier: MIT
 #include "GenXUtil.h"
 #include "GenXVisa.h"
 
+#include "llvmWrapper/IR/DataLayout.h"
 #include "vc/Support/BackendConfig.h"
 #include "vc/Support/GenXDiagnostic.h"
 #include "vc/Utils/GenX/BreakConst.h"
@@ -769,7 +770,7 @@ Instruction *GenXLoadStoreLowering::createLSCLoadStore(Instruction &I,
   auto Align = IsLoad ? IGCLLVM::getAlignmentValue(&cast<LoadInst>(I))
                       : IGCLLVM::getAlignmentValue(&cast<StoreInst>(I));
   if (Align == 0)
-    Align = DL_->getPrefTypeAlignment(Ty);
+    Align = IGCLLVM::getPrefTypeAlignment(DL_, Ty);
 
   // Try to generate block messages
   auto BlockESizeBits = getLSCBlockElementSizeBits(VSize, Align);
@@ -1765,7 +1766,7 @@ Instruction *GenXLoadStoreLowering::createLegacyLoadStore(Instruction &I,
   auto Align = IsLoad ? IGCLLVM::getAlignmentValue(&cast<LoadInst>(I))
                       : IGCLLVM::getAlignmentValue(&cast<StoreInst>(I));
   if (Align == 0)
-    Align = DL_->getPrefTypeAlignment(VTy);
+    Align = IGCLLVM::getPrefTypeAlignment(DL_, VTy);
 
   if (!IsLoad)
     Data = Builder.CreateBitCast(Data, VTy);
