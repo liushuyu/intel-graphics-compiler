@@ -64,6 +64,7 @@ SPDX-License-Identifier: MIT
 #include "GenXSubtarget.h"
 #include "GenXTargetMachine.h"
 
+#include "llvmWrapper/ADT/Optional.h"
 #include "vc/Support/GenXDiagnostic.h"
 #include "vc/Utils/GenX/IntrinsicsWrapper.h"
 #include "vc/Utils/General/DebugInfo.h"
@@ -1186,7 +1187,7 @@ void Substituter::createLifetime(Instruction *OldI, AllocaInst *NewAI) {
     if (auto *CastI = dyn_cast<BitCastInst>(User)) {
       createLifetime(CastI, NewAI);
     } else if (auto *II = dyn_cast<IntrinsicInst>(User)) {
-      auto MaybeSize = NewAI->getAllocationSizeInBits(DL);
+      auto MaybeSize = IGCLLVM::wrapOptional(NewAI->getAllocationSizeInBits(DL));
       IGC_ASSERT_EXIT(MaybeSize.hasValue());
 
       IRBuilder<> Builder(II);

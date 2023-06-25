@@ -9,6 +9,7 @@ SPDX-License-Identifier: MIT
 #include "GenXGASCastAnalyzer.h"
 #include "GenX.h"
 
+#include "llvmWrapper/ADT/Optional.h"
 #include "vc/Utils/GenX/KernelInfo.h"
 #include "vc/Utils/General/Types.h"
 
@@ -100,7 +101,7 @@ void GenXGASCastWrapper::traverseCallGraph(
       Function *Child = CE.second->getFunction();
       if (!Child) {
         // Indirect call or inline asm.
-        if (CallBase *CB = dyn_cast_or_null<CallBase>(CE.first.getValue()))
+        if (CallBase *CB = dyn_cast_or_null<CallBase>(IGCLLVM::wrapOptional(CE.first).getValue()))
           if (CB->isIndirectCall())
             HasIndirectCall = true;
         continue;
