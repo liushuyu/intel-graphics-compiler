@@ -53,7 +53,7 @@ inline void spliceBasicBlockList(llvm::Function *F, llvm::Function::iterator ToI
 #if LLVM_VERSION_MAJOR < 16
   F->getBasicBlockList().splice(ToIt, FromF->getBasicBlockList());
 #else
-  F->splice(ToF, FromF);
+  F->splice(ToIt, FromF);
 #endif
 }
 
@@ -61,7 +61,7 @@ inline void spliceBasicBlockList(llvm::Function *F, llvm::Function::iterator ToI
 #if LLVM_VERSION_MAJOR < 16
   F->getBasicBlockList().splice(ToIt, FromF->getBasicBlockList(), FromIt);
 #else
-  F->splice(ToF, FromF, FromBeginIt);
+  F->splice(ToIt, FromF, FromBeginIt);
 #endif
 }
 
@@ -69,7 +69,7 @@ inline void spliceBasicBlockList(llvm::Function *F, llvm::Function::iterator ToI
 #if LLVM_VERSION_MAJOR < 16
   F->getBasicBlockList().splice(ToIt, FromF->getBasicBlockList(), FromBeginIt, FromEndIt);
 #else
-  F->splice(ToF, FromF, FromBeginIt, FromEndIt);
+  F->splice(ToIt, FromF, FromBeginIt, FromEndIt);
 #endif
 }
 
