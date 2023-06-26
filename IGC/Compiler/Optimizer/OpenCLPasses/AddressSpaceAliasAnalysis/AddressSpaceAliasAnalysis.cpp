@@ -44,7 +44,7 @@ namespace {
             , AAQueryInfo & AAQI
 #endif
 #if LLVM_VERSION_MAJOR >= 16
-            , const Instruction* CtxI
+            , const Instruction*
 #endif
         ) {
             // DO NOT strip any casting as the address space is encoded in pointer
@@ -144,7 +144,7 @@ namespace {
                 , AAQI
 #endif
 #if LLVM_VERSION_MAJOR >= 16
-                , CtxI
+                , nullptr
 #endif
             );
         }

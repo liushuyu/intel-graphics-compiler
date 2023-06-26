@@ -62,6 +62,9 @@ IGCLLVM::AliasResultEnum RayTracingAddressSpaceAAResult::alias(
 #if LLVM_VERSION_MAJOR >= 9
     , AAQueryInfo & AAQI
 #endif
+#if LLVM_VERSION_MAJOR >= 16
+    , const Instruction *
+#endif
 )
 {
     PointerType* PtrTy1 = dyn_cast<PointerType>(LocA.Ptr->getType());
@@ -81,6 +84,9 @@ IGCLLVM::AliasResultEnum RayTracingAddressSpaceAAResult::alias(
     return AAResultBase::alias(LocA, LocB
 #if LLVM_VERSION_MAJOR >= 9
         , AAQI
+#endif
+#if LLVM_VERSION_MAJOR >= 16
+    , nullptr
 #endif
     );
 }
