@@ -10,6 +10,7 @@ SPDX-License-Identifier: MIT
 #define IGCLLVM_IR_BASICBLOCK_H
 
 #include <llvm/Config/llvm-config.h>
+#include <llvm/Transforms/Utils/BasicBlockUtils.h>
 #include "llvm/IR/BasicBlock.h"
 
 namespace IGCLLVM {
@@ -51,6 +52,14 @@ inline void spliceBB(llvm::BasicBlock *ContextBB, llvm::BasicBlock::iterator ToI
   ContextBB->getInstList().splice(ToIt, FromBB->getInstList(), FromBeginIt, FromEndIt);
 #else
   ContextBB->splice(ToIt, FromBB, FromBeginIt, FromEndIt);
+#endif
+}
+
+inline void ReplaceInstWithValue([[maybe_unused]] llvm::BasicBlock *BB, llvm::BasicBlock::iterator &BI, llvm::Value *V) {
+#if LLVM_VERSION_MAJOR < 16
+  llvm::ReplaceInstWithValue(BB->getInstList(), BI, V);
+#else
+  llvm::ReplaceInstWithValue(BI, V);
 #endif
 }
 } // namespace IGCLLVM

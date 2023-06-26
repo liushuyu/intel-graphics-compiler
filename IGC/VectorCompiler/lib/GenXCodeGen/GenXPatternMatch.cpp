@@ -75,6 +75,7 @@ SPDX-License-Identifier: MIT
 #include "llvm/Transforms/Utils/Local.h"
 
 #include "llvmWrapper/ADT/APInt.h"
+#include "llvmWrapper/IR/BasicBlock.h"
 #include "llvmWrapper/IR/Constants.h"
 #include "llvmWrapper/IR/DerivedTypes.h"
 #include "llvmWrapper/Support/TypeSize.h"
@@ -2816,7 +2817,7 @@ static bool mergeToWrRegion(SelectInst *SI) {
                                                    : SI->getTrueValue(),
                                           Wr->getName(), Wr, Wr->getDebugLoc());
       BasicBlock::iterator WrIt(Wr);
-      ReplaceInstWithValue(Wr->getParent()->getInstList(), WrIt, NewWr);
+      IGCLLVM::ReplaceInstWithValue(Wr->getParent(), WrIt, NewWr);
     };
 
     if (std::all_of(SI->use_begin(), SI->use_end(), CanMergeToWrRegion)) {
