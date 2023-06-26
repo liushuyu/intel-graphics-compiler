@@ -16,6 +16,7 @@ SPDX-License-Identifier: MIT
 #include "llvm/Analysis/CallGraph.h"
 #include "llvm/ADT/PostOrderIterator.h"
 #include "common/LLVMWarningsPop.hpp"
+#include "llvmWrapper/IR/Function.h"
 
 #define PASS_FLAG "igc-gas-ret-value-propagator"
 #define PASS_DESC "Resolve generic pointer return value"
@@ -172,7 +173,7 @@ Function* GASRetValuePropagator::createNewFunctionDecl(Function* oldFunc, Type* 
 void GASRetValuePropagator::transferFunctionBody(Function* oldFunc, Function* newFunc)
 {
     newFunc->stealArgumentListFrom(*oldFunc);
-    newFunc->getBasicBlockList().splice(newFunc->begin(), oldFunc->getBasicBlockList());
+    IGCLLVM::spliceBasicBlockList(newFunc, newFunc->begin(), oldFunc);
 }
 
 void GASRetValuePropagator::updateFunctionRetInstruction(Function* F)

@@ -14,6 +14,7 @@ SPDX-License-Identifier: MIT
 #include "llvm/Config/llvm-config.h"
 #include "llvm/AsmParser/Parser.h"
 #include "llvmWrapper/IR/DerivedTypes.h"
+#include "llvmWrapper/IR/Function.h"
 #include "llvm/Support/Casting.h"
 #include "common/LLVMWarningsPop.hpp"
 #include "Probe/Assertion.h"
@@ -2250,7 +2251,7 @@ inline SampleD_DC_FromCubeParams LLVM3DBuilder<preserveNames, T, Inserter>::Prep
         }
         this->CreateCondBr(int1_tgesr, block_major_t, block_not_t);
         this->SetInsertPoint(block_major_t);
-        parentFunc->getBasicBlockList().push_back(block_major_t);
+        IGCLLVM::appendBasicBlockList(parentFunc, block_major_t);
 
         // Normalize coordinates and gradients.
         llvm::Value* float_tnorm_r = this->CreateFDiv(float_src_r, float_abs_t, VALUE_NAME("tnorm_r"));
@@ -2266,7 +2267,7 @@ inline SampleD_DC_FromCubeParams LLVM3DBuilder<preserveNames, T, Inserter>::Prep
         llvm::Value* int1_cmpx_t = this->CreateFCmp(llvm::FCmpInst::FCMP_OGE, float_src_t, zero, VALUE_NAME("cmpx_t"));
         this->CreateCondBr(int1_cmpx_t, block_zp, block_zm);
         this->SetInsertPoint(block_zp);
-        parentFunc->getBasicBlockList().push_back(block_zp);
+        IGCLLVM::appendBasicBlockList(parentFunc, block_zp);
 
         // Face +Z,
         // major = neg T
@@ -2301,7 +2302,7 @@ inline SampleD_DC_FromCubeParams LLVM3DBuilder<preserveNames, T, Inserter>::Prep
 
         this->CreateBr(block_final);
         this->SetInsertPoint(block_zm);
-        parentFunc->getBasicBlockList().push_back(block_zm);
+        IGCLLVM::appendBasicBlockList(parentFunc, block_zm);
 
         // Face -Z,
         // major = T
@@ -2334,7 +2335,7 @@ inline SampleD_DC_FromCubeParams LLVM3DBuilder<preserveNames, T, Inserter>::Prep
 
         this->CreateBr(block_final);
         this->SetInsertPoint(block_not_t);
-        parentFunc->getBasicBlockList().push_back(block_not_t);
+        IGCLLVM::appendBasicBlockList(parentFunc, block_not_t);
 
         // Choose major S or R.
         llvm::Value* int1_cmp_sger = this->CreateFCmp(llvm::FCmpInst::FCMP_OGE, float_abs_s, float_abs_r, VALUE_NAME("cmp_sger"));
@@ -2342,7 +2343,7 @@ inline SampleD_DC_FromCubeParams LLVM3DBuilder<preserveNames, T, Inserter>::Prep
         // Major coordinate is S, faces could be +Y or -Y
         this->CreateCondBr(int1_cmp_sger, block_major_s, block_major_r);
         this->SetInsertPoint(block_major_s);
-        parentFunc->getBasicBlockList().push_back(block_major_s);
+        IGCLLVM::appendBasicBlockList(parentFunc, block_major_s);
 
         // Normalize coordinates and gradients.
         llvm::Value* float_snorm_r = this->CreateFDiv(float_src_r, float_abs_s, VALUE_NAME("snorm_r"));
@@ -2358,7 +2359,7 @@ inline SampleD_DC_FromCubeParams LLVM3DBuilder<preserveNames, T, Inserter>::Prep
         llvm::Value* int1_cmpx_s = this->CreateFCmp(llvm::FCmpInst::FCMP_OGE, float_src_s, zero, VALUE_NAME("cmpx_s"));
         this->CreateCondBr(int1_cmpx_s, block_yp, block_ym);
         this->SetInsertPoint(block_yp);
-        parentFunc->getBasicBlockList().push_back(block_yp);
+        IGCLLVM::appendBasicBlockList(parentFunc, block_yp);
 
         // Face +Y,
         // major = neg S
@@ -2393,7 +2394,7 @@ inline SampleD_DC_FromCubeParams LLVM3DBuilder<preserveNames, T, Inserter>::Prep
 
         this->CreateBr(block_final);
         this->SetInsertPoint(block_ym);
-        parentFunc->getBasicBlockList().push_back(block_ym);
+        IGCLLVM::appendBasicBlockList(parentFunc, block_ym);
 
         // Face -Y,
         // major = S
@@ -2426,7 +2427,7 @@ inline SampleD_DC_FromCubeParams LLVM3DBuilder<preserveNames, T, Inserter>::Prep
 
         this->CreateBr(block_final);
         this->SetInsertPoint(block_major_r);
-        parentFunc->getBasicBlockList().push_back(block_major_r);
+        IGCLLVM::appendBasicBlockList(parentFunc, block_major_r);
 
         // Major coordinate is R, faces could be +X or -X
 
@@ -2444,7 +2445,7 @@ inline SampleD_DC_FromCubeParams LLVM3DBuilder<preserveNames, T, Inserter>::Prep
         llvm::Value* int1_cmpx_r = this->CreateFCmp(llvm::FCmpInst::FCMP_OGE, float_src_r, zero, VALUE_NAME("cmpx_r"));
         this->CreateCondBr(int1_cmpx_r, block_xp, block_xm);
         this->SetInsertPoint(block_xp);
-        parentFunc->getBasicBlockList().push_back(block_xp);
+        IGCLLVM::appendBasicBlockList(parentFunc, block_xp);
 
         // Face +X,
         // major = neg R
@@ -2477,7 +2478,7 @@ inline SampleD_DC_FromCubeParams LLVM3DBuilder<preserveNames, T, Inserter>::Prep
 
         this->CreateBr(block_final);
         this->SetInsertPoint(block_xm);
-        parentFunc->getBasicBlockList().push_back(block_xm);
+        IGCLLVM::appendBasicBlockList(parentFunc, block_xm);
 
         // Face -X,
         // major = R
@@ -2510,7 +2511,7 @@ inline SampleD_DC_FromCubeParams LLVM3DBuilder<preserveNames, T, Inserter>::Prep
 
         this->CreateBr(block_final);
         this->SetInsertPoint(block_final);
-        parentFunc->getBasicBlockList().push_back(block_final);
+        IGCLLVM::appendBasicBlockList(parentFunc, block_final);
 
         llvm::PHINode* phi_u = this->CreatePHI(coordType, 6, VALUE_NAME("phi_u"));
         phi_u->addIncoming(float_face_xp_u, block_xp);

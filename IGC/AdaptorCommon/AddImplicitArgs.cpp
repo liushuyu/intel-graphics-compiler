@@ -32,6 +32,7 @@ SPDX-License-Identifier: MIT
 #include <utility>
 #include <iostream>
 #include "Probe/Assertion.h"
+#include "llvmWrapper/IR/Function.h"
 
 using namespace llvm;
 using namespace IGC;
@@ -119,7 +120,7 @@ bool AddImplicitArgs::runOnModule(Module &M)
 
         // Since we have now created the new function, splice the body of the old
         // function right into the new function, leaving the old body of the function empty.
-        pNewFunc->getBasicBlockList().splice(pNewFunc->begin(), func.getBasicBlockList());
+        IGCLLVM::spliceBasicBlockList(pNewFunc, pNewFunc->begin(), &func);
 
         // Loop over the argument list, transferring uses of the old arguments over to
         // the new arguments

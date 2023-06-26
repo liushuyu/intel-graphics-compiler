@@ -19,6 +19,7 @@ See LICENSE.TXT for details.
 #include "Compiler/IGCPassSupport.h"
 #include <Compiler/CodeGenContextWrapper.hpp>
 #include <Compiler/CodeGenPublic.h>
+#include <iterator>
 #include <set>
 #include "common/debug/Debug.hpp"
 #include "common/debug/Dump.hpp"
@@ -30,6 +31,7 @@ See LICENSE.TXT for details.
 #include <llvm/Transforms/Utils/Local.h>
 #include "common/LLVMWarningsPop.hpp"
 #include "Probe/Assertion.h"
+#include "llvmWrapper/IR/Function.h"
 
 using namespace llvm;
 using namespace IGC::Debug;
@@ -355,8 +357,9 @@ namespace IGC
         DenseMap<BasicBlock*, std::set<Value*>> BlockLiveMap;
         auto& BBs = m_pFunc->getBasicBlockList();
         // Top level loop to visit each block once in reverse order.
-        for (auto BI = BBs.rbegin(), BE = BBs.rend(); BI != BE; ++BI)
-        {
+        for (auto BI = IGCLLVM::getFunctionReverseIteratorBegin(m_pFunc),
+                  BE = IGCLLVM::getFunctionReverseIteratorEnd(m_pFunc);
+             BI != BE; ++BI) {
             BasicBlock* BB = &*BI;
             auto Result = BlockLiveMap.insert(std::make_pair(BB, std::set<Value*>()));
             IGC_ASSERT_MESSAGE(Result.second, "must not be processed yet");

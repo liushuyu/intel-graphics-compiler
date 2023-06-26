@@ -17,6 +17,7 @@ SPDX-License-Identifier: MIT
 #include "GenXIntrinsics.h"
 #include "GenXLiveness.h"
 
+#include "llvmWrapper/IR/Function.h"
 #include "vc/Support/GenXDiagnostic.h"
 #include "vc/Utils/GenX/GlobalVariable.h"
 #include "vc/Utils/GenX/InternalMetadata.h"
@@ -1480,9 +1481,9 @@ void genx::LayoutBlocks(Function &func, LoopInfo &LI)
           else {
             // loop-header is not moved yet, so should be at the end
             // use splice
-            llvm::Function::BasicBlockListType& BBList = func.getBasicBlockList();
-            BBList.splice(insp->getIterator(), BBList, LoopStart->getIterator(),
-              hd->getIterator());
+            IGCLLVM::spliceBasicBlockList(&func, insp->getIterator(), &func,
+                                          LoopStart->getIterator(),
+                                          hd->getIterator());
             hd->moveBefore(LoopStart);
           }
           InsPos[PaHd] = hd;

@@ -16,6 +16,7 @@ SPDX-License-Identifier: MIT
 #include "llvm/ADT/PostOrderIterator.h"
 #include <llvm/IR/DIBuilder.h>
 #include "common/LLVMWarningsPop.hpp"
+#include "llvmWrapper/IR/Function.h"
 
 // (1)
 // Optimization pass to lower generic pointers in function arguments.
@@ -168,7 +169,7 @@ Function* LowerGPCallArg::createFuncWithLoweredArgs(Function* F, GenericPointerA
     newFunc->setSubprogram(F->getSubprogram());
     m_module->getFunctionList().insert(F->getIterator(), newFunc);
     newFunc->takeName(F);
-    newFunc->getBasicBlockList().splice(newFunc->begin(), F->getBasicBlockList());
+    IGCLLVM::spliceBasicBlockList(newFunc, newFunc->begin(), F);
 
     return newFunc;
 }

@@ -142,6 +142,7 @@ SPDX-License-Identifier: MIT
 #include "GenXSubtarget.h"
 #include "GenXUtil.h"
 
+#include "llvmWrapper/IR/Function.h"
 #include "vc/Support/GenXDiagnostic.h"
 #include "vc/Utils/GenX/KernelInfo.h"
 #include "vc/Utils/GenX/RegCategory.h"
@@ -1260,7 +1261,7 @@ std::pair<Value *, Value *> SubroutineArg::addAddressArg() {
   // Set the name of the new address arg.
   NewArgs[OldArgs.size()]->setName(Arg->getName() + ".addr");
   // Move the function code across.
-  NewFunc->getBasicBlockList().splice(NewFunc->begin(), F->getBasicBlockList());
+  IGCLLVM::spliceBasicBlockList(NewFunc, NewFunc->begin(), F);
 
   return std::make_pair(OldArg, AddressArgument);
 }

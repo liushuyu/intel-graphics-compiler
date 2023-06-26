@@ -13,6 +13,7 @@ SPDX-License-Identifier: MIT
 #include "Compiler/Optimizer/OpenCLPasses/NamedBarriers/NamedBarriersResolution.hpp"
 #include "AdaptorCommon/RayTracing/RTStackFormat.h"
 #include "DeSSA.hpp"
+#include "llvmWrapper/IR/Function.h"
 #include "messageEncoding.hpp"
 #include "PayloadMapping.hpp"
 #include "VectorProcess.hpp"
@@ -1152,7 +1153,7 @@ bool EmitPass::runOnFunction(llvm::Function& F)
     {
         bool hasReturn = false;
         // Find if any return insts exist in all BBs
-        for (auto it = F.getBasicBlockList().rbegin(), ie = F.getBasicBlockList().rend(); it != ie; it++)
+        for (auto it = IGCLLVM::getFunctionReverseIteratorBegin(&F), ie = IGCLLVM::getFunctionReverseIteratorEnd(&F); it != ie; it++)
         {
             if (isa_and_nonnull<ReturnInst>(it->getTerminator()))
             {

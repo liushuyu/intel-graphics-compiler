@@ -10,6 +10,7 @@ SPDX-License-Identifier: MIT
 #include "FunctionUpgrader.h"
 #include "IGCIRBuilder.h"
 #include "Probe/Assertion.h"
+#include "llvmWrapper/IR/Function.h"
 
 using namespace llvm;
 
@@ -187,7 +188,7 @@ Function* FunctionUpgrader::UpgradeFunctionWithNewArgs()
         ++i_arg_new;
     }
 
-    pNewFunc->getBasicBlockList().splice(pNewFunc->begin(), m_pFunction->getBasicBlockList());
+    IGCLLVM::spliceBasicBlockList(pNewFunc, pNewFunc->begin(), m_pFunction);
 
     return pNewFunc;
 }

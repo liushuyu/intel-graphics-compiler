@@ -10,6 +10,8 @@ SPDX-License-Identifier: MIT
 #define IGCLLVM_IR_FUNCTION_H
 
 #include "llvm/IR/Function.h"
+#include <iterator>
+#include <llvm/IR/Value.h>
 
 #include "Probe/Assertion.h"
 
@@ -49,9 +51,57 @@ inline bool onlyWritesMemory(llvm::Function *F) {
 
 inline void spliceBasicBlockList(llvm::Function *F, llvm::Function::iterator ToIt, llvm::Function *FromF) {
 #if LLVM_VERSION_MAJOR < 16
-  IGCLLVM::spliceBasicBlockList(F, ToIt, FromF);
+  F->getBasicBlockList().splice(ToIt, FromF->getBasicBlockList());
 #else
   F->splice(ToF, FromF);
+#endif
+}
+
+inline void spliceBasicBlockList(llvm::Function *F, llvm::Function::iterator ToIt, llvm::Function *FromF, llvm::Function::iterator FromIt) {
+#if LLVM_VERSION_MAJOR < 16
+  F->getBasicBlockList().splice(ToIt, FromF->getBasicBlockList(), FromIt);
+#else
+  F->splice(ToF, FromF, FromBeginIt);
+#endif
+}
+
+inline void spliceBasicBlockList(llvm::Function *F, llvm::Function::iterator ToIt, llvm::Function *FromF, llvm::Function::iterator FromBeginIt, llvm::Function::iterator FromEndIt) {
+#if LLVM_VERSION_MAJOR < 16
+  F->getBasicBlockList().splice(ToIt, FromF->getBasicBlockList(), FromBeginIt, FromEndIt);
+#else
+  F->splice(ToF, FromF, FromBeginIt, FromEndIt);
+#endif
+}
+
+inline void appendBasicBlockList(llvm::Function *F, llvm::BasicBlock *BB) {
+#if LLVM_VERSION_MAJOR < 16
+  F->getBasicBlockList().push_back(BB);
+#else
+  BB->insertInto(F, F->end());
+#endif
+}
+
+inline llvm::Function::iterator insertBasicBlockList(llvm::Function *F, llvm::Function::iterator Position, llvm::BasicBlock *BB) {
+#if LLVM_VERSION_MAJOR < 16
+  return F->getBasicBlockList().insert(Position, BB);
+#else
+  return F->insert(Position, BB);
+#endif
+}
+
+inline auto getFunctionReverseIteratorBegin(llvm::Function *F) {
+#if LLVM_VERSION_MAJOR < 16
+  return F->getBasicBlockList().rbegin();
+#else
+  return std::make_reverse_iterator(F->begin());
+#endif
+}
+
+inline auto getFunctionReverseIteratorEnd(llvm::Function *F) {
+#if LLVM_VERSION_MAJOR < 16
+  return F->getBasicBlockList().rend();
+#else
+  return std::make_reverse_iterator(F->end());
 #endif
 }
 

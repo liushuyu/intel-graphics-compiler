@@ -2409,7 +2409,7 @@ void PreCompiledFuncImport::createFuncWithIA()
 
         // Since we have now created the new function, splice the body of the old
         // function right into the new function, leaving the old body of the function empty.
-        pNewFunc->getBasicBlockList().splice(pNewFunc->begin(), pFunc->getBasicBlockList());
+        IGCLLVM::spliceBasicBlockList(pNewFunc, pNewFunc->begin(), pFunc);
 
         // Loop over the argument list, transferring uses of the old arguments over to
         // the new arguments
