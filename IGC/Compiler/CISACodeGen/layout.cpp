@@ -355,11 +355,10 @@ BasicBlock* Layout::getLastReturnBlock(Function& Func)
     // otherwise, return the last BB that has no succ;
     //     or nullptr if every BB has Succ (infinite looping)
     BasicBlock* noRetAndNoSucc = nullptr;  // for func that never returns
-    for (Function::BasicBlockListType::reverse_iterator
-             RI = IGCLLVM::getFunctionReverseIteratorBegin(&Func),
-             RE = IGCLLVM::getFunctionReverseIteratorEnd(&Func);
+    for (auto RI = IGCLLVM::getFunctionReverseIteratorBegin(&Func),
+              RE = IGCLLVM::getFunctionReverseIteratorEnd(&Func);
          RI != RE; ++RI) {
-        BasicBlock* bb = &*RI;
+        BasicBlock *bb = &*RI;
         if (succ_begin(bb) == succ_end(bb))
         {
             if (isa_and_nonnull<ReturnInst>(bb->getTerminator()))

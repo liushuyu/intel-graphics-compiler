@@ -1153,8 +1153,9 @@ bool EmitPass::runOnFunction(llvm::Function& F)
     {
         bool hasReturn = false;
         // Find if any return insts exist in all BBs
-        for (auto it = IGCLLVM::getFunctionReverseIteratorBegin(&F), ie = IGCLLVM::getFunctionReverseIteratorEnd(&F); it != ie; it++)
-        {
+        for (auto it = IGCLLVM::getFunctionReverseIteratorBegin(&F),
+                  ie = IGCLLVM::getFunctionReverseIteratorEnd(&F);
+             it != ie; it++) {
             if (isa_and_nonnull<ReturnInst>(it->getTerminator()))
             {
                 hasReturn = true;
