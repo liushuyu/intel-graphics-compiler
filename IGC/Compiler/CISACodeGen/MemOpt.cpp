@@ -2850,7 +2850,12 @@ void LdStCombine::combineStores(Function& F)
 
     // Keep store candidates for checking alias to see if those
     // stores can be moved to the place of the last store.
+#if LLVM_VERSION_MAJOR < 16
     AliasSetTracker AST(*m_AA);
+#else
+    llvm::BatchAAResults BAA{*m_AA}; 
+    AliasSetTracker AST{BAA};
+#endif
 
     auto isStoreCandidate = [&](Instruction* I)
     {
