@@ -47,6 +47,14 @@ inline bool onlyWritesMemory(llvm::Function *F) {
 #endif
 }
 
+inline void spliceBasicBlockList(llvm::Function *F, llvm::Function::iterator ToIt, llvm::Function *FromF) {
+#if LLVM_VERSION_MAJOR < 16
+  IGCLLVM::spliceBasicBlockList(F, ToIt, FromF);
+#else
+  F->splice(ToF, FromF);
+#endif
+}
+
 } // namespace IGCLLVM
 
 #endif
