@@ -61,7 +61,7 @@ inline void spliceBasicBlockList(llvm::Function *F, llvm::Function::iterator ToI
 #if LLVM_VERSION_MAJOR < 16
   F->getBasicBlockList().splice(ToIt, FromF->getBasicBlockList(), FromIt);
 #else
-  F->splice(ToIt, FromF, FromBeginIt);
+  F->splice(ToIt, FromF, FromIt);
 #endif
 }
 
@@ -77,7 +77,7 @@ inline void appendBasicBlockList(llvm::Function *F, llvm::BasicBlock *BB) {
 #if LLVM_VERSION_MAJOR < 16
   F->getBasicBlockList().push_back(BB);
 #else
-  BB->insertInto(F, F->end());
+  BB->insertInto(F, nullptr);
 #endif
 }
 

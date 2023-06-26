@@ -355,7 +355,6 @@ namespace IGC
             return false;
 
         DenseMap<BasicBlock*, std::set<Value*>> BlockLiveMap;
-        auto& BBs = m_pFunc->getBasicBlockList();
         // Top level loop to visit each block once in reverse order.
         for (auto BI = IGCLLVM::getFunctionReverseIteratorBegin(m_pFunc),
                   BE = IGCLLVM::getFunctionReverseIteratorEnd(m_pFunc);
