@@ -173,7 +173,6 @@ namespace {
 #endif
                 OrLocal);
         }
-    };
 #else
         ModRefInfo getModRefInfoMask(const MemoryLocation &Loc, AAQueryInfo &AAQI, bool IgnoreLocals) {
             // Pointers to constant address space memory, well, point to constant memory
@@ -191,6 +190,7 @@ namespace {
             return AAResultBase::getModRefInfoMask(Loc, AAQI, IgnoreLocals);
         }
 #endif
+    };
 
     class AddressSpaceAAWrapperPass : public ImmutablePass {
         std::unique_ptr<AddressSpaceAAResult> Result;

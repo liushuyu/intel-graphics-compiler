@@ -50,7 +50,7 @@ public:
         , llvm::AAQueryInfo& AAQI
 #endif
 #if LLVM_VERSION_MAJOR >= 16
-        , const Instruction *
+        , const llvm::Instruction*
 #endif
     );
 
