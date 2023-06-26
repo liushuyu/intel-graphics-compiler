@@ -49,6 +49,9 @@ public:
 #if LLVM_VERSION_MAJOR >= 9
         , llvm::AAQueryInfo& AAQI
 #endif
+#if LLVM_VERSION_MAJOR >= 16
+        , const Instruction *
+#endif
     );
 
     llvm::ModRefInfo getModRefInfo(
