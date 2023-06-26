@@ -43,6 +43,9 @@ namespace {
 #if LLVM_VERSION_MAJOR >= 9
             , AAQueryInfo & AAQI
 #endif
+#if LLVM_VERSION_MAJOR >= 16
+            , const Instruction* CtxI
+#endif
         ) {
             // DO NOT strip any casting as the address space is encoded in pointer
             // type. For `addrspacecast`, the current implementation in LLVM is too
@@ -140,9 +143,13 @@ namespace {
 #if LLVM_VERSION_MAJOR >= 9
                 , AAQI
 #endif
+#if LLVM_VERSION_MAJOR >= 16
+                , CtxI
+#endif
             );
         }
 
+#if LLVM_VERSION_MAJOR < 16
         bool pointsToConstantMemory(const llvm::MemoryLocation& Loc,
 #if LLVM_VERSION_MAJOR >= 9
             AAQueryInfo & AAQI,
@@ -167,6 +174,23 @@ namespace {
                 OrLocal);
         }
     };
+#else
+        ModRefInfo getModRefInfoMask(const MemoryLocation &Loc, AAQueryInfo &AAQI, bool IgnoreLocals) {
+            // Pointers to constant address space memory, well, point to constant memory
+            PointerType* ptrType = dyn_cast<PointerType>(Loc.Ptr->getType());
+            if (ptrType && ptrType->getAddressSpace() == ADDRESS_SPACE_CONSTANT)
+                return ModRefInfo::NoModRef;
+
+            bool DirectIdx;
+            unsigned BufId;
+            BufferType BufTy = DecodeAS4GFXResource(ptrType->getAddressSpace(),
+                DirectIdx, BufId);
+            if (BufTy == CONSTANT_BUFFER)
+                return ModRefInfo::NoModRef;
+
+            return AAResultBase::getModRefInfoMask(Loc, AAQI, IgnoreLocals);
+        }
+#endif
 
     class AddressSpaceAAWrapperPass : public ImmutablePass {
         std::unique_ptr<AddressSpaceAAResult> Result;
